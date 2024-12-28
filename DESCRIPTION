@@ -1,0 +1,32 @@
+Package: theorytools
+Type: Package
+Title: FAIR Theory Construction Toolkit
+Version: 0.1.0
+Authors@R: c(
+    person(
+      given = c("Caspar", "J."),
+      family = "Van Lissa",
+      email = "c.j.vanlissa@tilburguniversity.edu",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-0808-5024")
+    )
+    )
+Description: Create, maintain, and reuse FAIR theories in 'R'.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/cjvanlissa/theorytools
+RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)
+Imports:
+    methods,
+    worcs,
+    gert,
+    credentials,
+    usethis (>= 3.0.0),
+    gh,
+    cli
+Suggests:
+    knitr,
+    testthat (>= 2.1.0)
+VignetteBuilder: knitr
