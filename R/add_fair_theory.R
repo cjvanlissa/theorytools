@@ -189,7 +189,9 @@ add_fair_theory <- function(path = ".",
 
 # Push local repo to remote -----------------------------------------------
   if(repo_exists){
-    worcs::git_update(message = "Initial commit", repo = path, files = ".")
+    usethis::with_project(path, {
+      worcs::git_update(message = "Initial commit", repo = path, files = ".")
+    }, quiet = TRUE)
   }
 
 # Output ------------------------------------------------------------------
