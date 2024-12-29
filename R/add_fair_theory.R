@@ -16,7 +16,6 @@ add_fair_theory <- function(path = ".",
                               "proprietary",
                               "none"
                             )) {
-  browser()
   # Select first license
   if (is.null(add_license))
     add_license = "none"
@@ -64,6 +63,7 @@ add_fair_theory <- function(path = ".",
           cli::cli_process_start("Connecting to existing remote repository {.val {repo_url}}")
         if (nrow(test_repo) > 0) {
           cli_msg("i" = "Repository {.val {repo_url}} already exists and has previous commits. If this is intentional, please add it manually and resolve merge conflicts. You are now working with a local repository only.")
+          stop()
         } else {
           Args_gert <- list(name = "origin",
                             url = repo_url,
@@ -189,14 +189,7 @@ add_fair_theory <- function(path = ".",
 
 # Push local repo to remote -----------------------------------------------
   if(repo_exists){
-    tryCatch({
-      if (!is_quiet())
-        cli::cli_process_start("Push local repository to remote")
-      worcs::git_update(message = "Initial commit", repo = path)
-      cli::cli_process_done()
-    }, error = function(err) {
-      cli::cli_process_failed()
-    })
+    worcs::git_update(message = "Initial commit", repo = path, files = ".")
   }
 
 # Output ------------------------------------------------------------------
