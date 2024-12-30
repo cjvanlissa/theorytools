@@ -11,10 +11,18 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-0808-5024")
     )
     )
-Description: Create, maintain, and reuse FAIR theories in 'R'.
+Description: An integrated suite of tools for creating, maintaining, and reusing
+    FAIR (Findable, Accessible, Interoperable, Reusable) theories in R.
+    Designed to support transparent and collaborative theory development,
+    the package enables users to formalize theories,
+    track changes with version control,
+    assess pre-empirical coherence,
+    and derive testable hypotheses.
+    Aligning with open science principles and workflows,
+    theorytools facilitates the systematic improvement of theoretical frameworks
+    and enhances their discoverability and usability.
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 URL: https://github.com/cjvanlissa/theorytools
 RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
