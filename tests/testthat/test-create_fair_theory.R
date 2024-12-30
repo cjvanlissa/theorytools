@@ -14,7 +14,7 @@ test_that("create_fair_theory() creates github repo", {
   expect_true(startsWith(remote_url, "https://"))
   out <- gert::git_remote_ls(remote_url)
   expect_true(nrow(out) > 0)
-  ghee:::gh_repos_delete_internal(owner = ownr, repo = "delete_test")
+  gh::gh("DELETE /repos/{owner}/{repo}", owner = ownr, repo = "delete_test")
   out <- try(gert::git_remote_ls(remote_url), silent = TRUE)
   expect_true(any(grepl("404", out))) # Test to make sure the github repo is cleanly deleted
 })
