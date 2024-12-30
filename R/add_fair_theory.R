@@ -1,22 +1,74 @@
-add_fair_theory <- function(path = ".",
+# These functions are better placed in worcs:
+#' @importFrom utils getFromNamespace
+with_cli_try <- utils::getFromNamespace("with_cli_try", "worcs")
+cli_msg <- utils::getFromNamespace("cli_msg", "worcs")
+is_quiet <- utils::getFromNamespace("is_quiet", "worcs")
+git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs")
+
+# c(
+#   "cc0",
+#   "ccby",
+#   "gpl",
+#   "gpl3",
+#   "agpl",
+#   "agpl3",
+#   "apache",
+#   "apl2",
+#   "lgpl",
+#   "mit",
+#   "proprietary",
+#   "none"
+# )
+
+#' @title Create FAIR Theory Repository
+#' @description Partly automates the process of creating a FAIR theory
+#' repository, see Details.
+#' @param path Character, indicating the directory in which to create the FAIR
+#' theory. The default value `"."` points to the current directory.
+#' @param title Character, indicating the theory title. Default: `NULL`
+#' @param theory_file Character, referring to an existing theory file to be
+#' copied, or a new theory file to be created. Default `NULL` does nothing.
+#' @param remote_repo Name of a 'GitHub' repository that exists or should be
+#' created on the current authenticated user's account, see
+#' \code{\link[gh]{gh_whoami}}, Default: NULL
+#' @param add_license PARAM_DESCRIPTION, Default: 'cc0'
+#' @return OUTPUT_DESCRIPTION
+#' @details The following steps are executed sequentially:
+#'
+#' 1. Create a project folder at `path`
+#' 2. Initialize a local Git repository at `path`
+#' 3. If `remote_repo` refers to a user's existing 'GitHub' repository, add it
+#'    as remote to the local 'Git' repository. Otherwise, create a new 'GitHub'
+#'    repository by that name and add it as remote.
+#' 4. Add theory file. If `theory_file` refers to an existing file, copy it to
+#'    `path`. If `theory_file` refers to a new file, create it in `path`.
+#' 5. Add the license named by `add_license`
+#' 6. Add a README.md file
+#' 7. Add 'Zenodo' metadata so that it recognizes the repository as a FAIR
+#'    theory
+#' 8. If it is possible to push to the remote repository, use
+#'    \code{\link[worcs]{git_update}} to push the repository to 'GitHub'
+#' @examples
+#' # Create a theory with no remote repository (for safe testing)
+#' theory_dir <- file.path(tempdir(), "theory")
+#' create_fair_theory(path = theory_dir,
+#'                    title = "This is My Theory",
+#'                    theory_file = "theory.txt",
+#'                    remote_repo = NULL,
+#'                    add_license = "cc0")
+#' @seealso
+#'  \code{\link[gert]{git_repo}}
+#'  \code{\link[worcs]{add_license_file}}, \code{\link[worcs]{git_update}}
+#' @rdname create_fair_theory
+#' @export
+#' @importFrom gert git_init
+#' @importFrom worcs add_license_file git_update
+create_fair_theory <- function(path = ".",
                             title = NULL,
                             theory_file = NULL,
                             remote_repo = NULL,
-                            add_license = c(
-                              "cc0",
-                              "ccby",
-                              "gpl",
-                              "gpl3",
-                              "agpl",
-                              "agpl3",
-                              "apache",
-                              "apl2",
-                              "lgpl",
-                              "mit",
-                              "proprietary",
-                              "none"
-                            )) {
-  # Select first license
+                            add_license = "cc0") {
+  # Clean arguments
   if (is.null(add_license))
     add_license = "none"
   add_license <- tryCatch(
@@ -27,99 +79,35 @@ add_fair_theory <- function(path = ".",
   )
 
   # 1. Create project folder
-  tryCatch({
-    if(!is_quiet()) cli::cli_process_start("Create project folder")
+  with_cli_try("Create project folder", {
     if (!dir.exists(path)) {
       dir.create(path)
     }
-    cli::cli_process_done() },
-    error = function(err) {
-      cli::cli_process_failed()
-    }
-  )
+  })
 
   # 2. Initialize Git repo
-  tryCatch({
-    if(!is_quiet()) cli::cli_process_start("Initialize Git repository")
+  with_cli_try("Initialize Git repository", {
     gert::git_init(path = path)
-    cli::cli_process_done() },
-    error = function(err) {
-      cli::cli_process_failed()
-    }
-  )
+  })
 
-  # Connect to remote repo if possible
-  if (is.null(remote_repo)) {
-    cli_msg("i" = "Argument {.val remote_repo} is {.val NULL}; you are working with a local repository only.")
+
+# Connect remote repo -----------------------------------------------------
+  if(!is.null(remote_repo)){
+    repo_properties <- git_connect_or_create(path, remote_repo)
+    repo_url <- repo_properties$repo_url
+    repo_exists <- repo_properties$repo_exists
+    prior_commits <- repo_properties$prior_commits
   } else {
-    ownr <- gh::gh_whoami()$login
-    repo_name <- paste0(ownr, "/", remote_repo)
-    repo_url <- paste0("https://github.com/", repo_name)
-    test_repo <- try(gert::git_remote_ls(remote = repo_url), silent = TRUE)
-    repo_exists <- isFALSE(inherits(test_repo, "try-error"))
-    if (repo_exists) {
-      tryCatch({
-        if (!is_quiet())
-          cli::cli_process_start("Connecting to existing remote repository {.val {repo_url}}")
-        if (nrow(test_repo) > 0) {
-          cli_msg("i" = "Repository {.val {repo_url}} already exists and has previous commits. If this is intentional, please add it manually and resolve merge conflicts. You are now working with a local repository only.")
-          stop()
-        } else {
-          Args_gert <- list(name = "origin",
-                            url = repo_url,
-                            repo = path)
-          do.call(gert::git_remote_add, Args_gert)
-        }
-        cli::cli_process_done()
-      }, error = function(err) {
-        cli::cli_process_failed()
-      })
-    } else {
-      tryCatch({
-        if (!is_quiet())
-          cli::cli_process_start("Creating new remote repository at {.val {repo_url}}")
-        worcs::git_remote_create(remote_repo, private = FALSE)
-        Args_gert <- list(name = "origin",
-                          url = repo_url,
-                          repo = path)
-        do.call(gert::git_remote_add, Args_gert)
-        cli::cli_process_done()
-      }, error = function(err) {
-        cli::cli_process_failed()
-      })
-
-    }
+    repo_url <- ""
+    repo_exists <- FALSE
+    prior_commits <- FALSE
   }
-  test_repo <- try(gert::git_remote_list(repo = path), silent = TRUE)
-  repo_exists <- isFALSE(inherits(test_repo, "try-error"))
 
 
 # Add theory file ---------------------------------------------------------
   has_theory_file <- !is.null(theory_file)
   if (has_theory_file) {
-    existing_theory_file <- file.exists(theory_file)
-    if (existing_theory_file) {
-      tryCatch({
-        if (!is_quiet())
-          cli::cli_process_start("Copying theory file {.val {theory_file}}")
-        out <- file.copy(normalizePath(theory_file), file.path(path, basename(theory_file)))
-        if (!out)
-          stop()
-        cli::cli_process_done()
-      }, error = function(err) {
-        cli::cli_process_failed()
-      })
-    } else {
-      tryCatch({
-        if (!is_quiet())
-          cli::cli_process_start("Creating new theory file {.val {theory_file}}")
-        file.create(file.path(path, theory_file))
-        cli::cli_process_done()
-      }, error = function(err) {
-        cli::cli_process_failed()
-      })
-
-    }
+    add_theory_file(path = path, theory_file = theory_file)
   }
 
   # 1. Add LICENSE file
@@ -128,9 +116,33 @@ add_fair_theory <- function(path = ".",
   }
 
   # 1. Add readme.md
-  tryCatch({
-    if (!is_quiet())
-      cli::cli_process_start("Creating README.md")
+  add_readme_fair_theory(title = title, path = path, repo_url = repo_url, repo_exists = repo_exists)
+
+# Add Zenodo metadata -----------------------------------------------------
+  add_zenodo_json_theory(path, title = title)
+
+
+# Push local repo to remote -----------------------------------------------
+
+  if(repo_exists & isFALSE(prior_commits)){
+    worcs::git_update(message = "Initial commit", repo = path, files = ".")
+  }
+
+# Output ------------------------------------------------------------------
+  invisible()
+}
+
+add_readme_fair_theory <- function(title, path, ...){
+  dots <- list(...)
+  if(!all(c("test_repo", "repo_exists") %in% names(dots))){
+    repo_url <- try(gert::git_remote_list(repo = path)$url[1], silent = TRUE)
+    repo_exists <- isFALSE(inherits(repo_url, "try-error"))
+  } else {
+    repo_url <- dots[["repo_url"]]
+    repo_exists <- dots[["repo_exists"]]
+  }
+
+  with_cli_try("Creating README.md", {
     lines_readme <- c(
       "# FAIR theory: Theory Title Goes Here",
       "",
@@ -146,7 +158,7 @@ add_fair_theory <- function(path = ".",
       "",
       "If you want to contribute to this project, please get involved. You can do so in three ways:",
       "",
-      "1. **To discuss the current implementation and discuss potential changes**, file a ‘GitHub’ issue",
+      "1. **To discuss the current implementation and discuss potential changes**, file a 'GitHub' issue",
       "2. **To directly propose changes**, send a pull request containing the proposed changes",
       "3. **To create a derivative theory**, please fork the repository",
       "",
@@ -166,47 +178,25 @@ add_fair_theory <- function(path = ".",
     if (repo_exists) {
       lines_readme[15:17] <- paste0(lines_readme[15:17],
                                     " [here](",
-                                    gsub(".git", "", test_repo$url[1], fixed = TRUE),
+                                    gsub(".git", "", repo_url, fixed = TRUE),
                                     c("/issues)", "/pulls)", "/fork)"))
     }
     writeLines(lines_readme, file.path(path, "README.md"))
 
-    cli::cli_process_done()
-  }, error = function(err) {
-    cli::cli_process_failed()
   })
-
-# Add Zenodo metadata -----------------------------------------------------
-  tryCatch({
-    if (!is_quiet())
-      cli::cli_process_start("Add Zenodo metadata")
-    add_zenodo_json_theory(path, title = title)
-    cli::cli_process_done()
-  }, error = function(err) {
-    cli::cli_process_failed()
-  })
-
-
-# Push local repo to remote -----------------------------------------------
-  if(repo_exists){
-    usethis::with_project(path, {
-      worcs::git_update(message = "Initial commit", repo = path, files = ".")
-    }, quiet = TRUE)
-  }
-
-# Output ------------------------------------------------------------------
-  invisible()
 }
-#
-# options("usethis.quiet" = FALSE)
-thepath = file.path(tempdir(), "test5")
-add_fair_theory(
-  path = thepath,
-  title = "This is a test",
-  theory_file = "c:/git_repositories/empirical_cycle/empirical_cycle.dot",
-  remote_repo = "theory_test5",
-  add_license = "ccby"
-)
-unlink(thepath, recursive = TRUE)
-#
-# utils::browseURL(dirname(thepath))
+
+add_theory_file <- function(path = ".", theory_file = "theory.txt"){
+  existing_theory_file <- file.exists(theory_file)
+  if (existing_theory_file) {
+    with_cli_try("Copying theory file {.val {theory_file}}", {
+      out <- file.copy(normalizePath(theory_file), file.path(path, basename(theory_file)))
+      if (!out) stop()
+    })
+  } else {
+    with_cli_try("Creating new theory file {.val {theory_file}}", {
+      file.create(file.path(path, theory_file))
+    })
+
+  }
+}
