@@ -32,7 +32,9 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #' created on the current authenticated user's account, see
 #' \code{\link[gh]{gh_whoami}}, Default: NULL
 #' @param add_license PARAM_DESCRIPTION, Default: 'cc0'
-#' @return OUTPUT_DESCRIPTION
+#' @param ... Additional arguments passed to other functions.
+#' @return Invisibly returns a logical value,
+#' indicating whether the function was successful or not.
 #' @details The following steps are executed sequentially:
 #'
 #' 1. Create a project folder at `path`
@@ -56,6 +58,16 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #'                    theory_file = "theory.txt",
 #'                    remote_repo = NULL,
 #'                    add_license = "cc0")
+#'
+#' # Create a theory with a remote repository
+#' theory_dir <- file.path(tempdir(), "theory_github")
+#' \dontrun{
+#' out <- create_fair_theory(path = theory_dir,
+#'                           title = "This is My GitHub Theory",
+#'                           theory_file = "theory.txt",
+#'                           remote_repo = "delete_test",
+#'                           add_license = "ccby")
+#' }
 #' @seealso
 #'  \code{\link[gert]{git_repo}}
 #'  \code{\link[worcs]{add_license_file}}, \code{\link[worcs]{git_update}}
@@ -67,7 +79,10 @@ create_fair_theory <- function(path = ".",
                             title = NULL,
                             theory_file = NULL,
                             remote_repo = NULL,
-                            add_license = "cc0") {
+                            add_license = "cc0",
+                            ...) {
+  successes <- rep(TRUE, 8)
+  names(successes) <- c("folder", "git", "remote", "theory", "license", "readme", "zenodo", "push")
   # Clean arguments
   if (is.null(add_license))
     add_license = "none"
@@ -79,14 +94,14 @@ create_fair_theory <- function(path = ".",
   )
 
   # 1. Create project folder
-  with_cli_try("Create project folder", {
+  successes["folder"] <- with_cli_try("Create project folder", {
     if (!dir.exists(path)) {
       dir.create(path)
     }
   })
 
   # 2. Initialize Git repo
-  with_cli_try("Initialize Git repository", {
+  successes["git"] <- with_cli_try("Initialize Git repository", {
     gert::git_init(path = path)
   })
 
@@ -97,41 +112,53 @@ create_fair_theory <- function(path = ".",
     repo_url <- repo_properties$repo_url
     repo_exists <- repo_properties$repo_exists
     prior_commits <- repo_properties$prior_commits
+    successes["remote"] <- repo_exists
   } else {
     repo_url <- ""
     repo_exists <- FALSE
     prior_commits <- FALSE
   }
 
-
 # Add theory file ---------------------------------------------------------
   has_theory_file <- !is.null(theory_file)
   if (has_theory_file) {
-    add_theory_file(path = path, theory_file = theory_file)
+    successes["theory"] <- add_theory_file(path = path, theory_file = theory_file)
   }
 
   # 1. Add LICENSE file
   if (!add_license == "none") {
-    worcs::add_license_file(repo = path, license = add_license)
+    dots <- list(...)
+    dots <- dots[which(names(dots) %in% c("version", "include_future", "copyright_holder"))]
+    Args <- c(list(repo = path, license = add_license), dots)
+    successes["license"] <- do.call(worcs::add_license_file, args = Args)
   }
 
   # 1. Add readme.md
-  add_readme_fair_theory(title = title, path = path, repo_url = repo_url, repo_exists = repo_exists)
+  successes["readme"] <- add_readme_fair_theory(title = title, path = path, repo_url = repo_url, repo_exists = repo_exists)
 
 # Add Zenodo metadata -----------------------------------------------------
-  add_zenodo_json_theory(path, title = title)
+  successes["zenodo"] <- add_zenodo_json_theory(path, title = title)
 
 
 # Push local repo to remote -----------------------------------------------
 
   if(repo_exists & isFALSE(prior_commits)){
     worcs::git_update(message = "Initial commit", repo = path, files = ".")
+    successes["push"] <- TRUE
   }
 
 # Output ------------------------------------------------------------------
-  invisible()
+  return(invisible(all(successes)))
 }
 
+#' @title Add Readme File
+#' @description Writes a README file to a specific path.
+#' @inheritParams create_fair_theory
+#' @inherit create_fair_theory return
+#' @examples
+#' add_readme_fair_theory(title = "My Theory", path = tempdir())
+#' @rdname add_readme_fair_theory
+#' @export
 add_readme_fair_theory <- function(title, path, ...){
   dots <- list(...)
   if(!all(c("test_repo", "repo_exists") %in% names(dots))){
@@ -186,6 +213,18 @@ add_readme_fair_theory <- function(title, path, ...){
   })
 }
 
+#' @title Add Theory File
+#' @description Writes a theory file to a specific path.
+# @param path Character, path to write the theory to. The default of `'.'`
+# writes to the current directory.
+# @param theory_file Character, referring to either an existing file or naming
+# a new file to be created. Default: `'theory.txt'`
+#' @inheritParams create_fair_theory
+#' @inherit create_fair_theory return
+#' @examples
+#' add_theory_file(path = tempdir(), theory_file = "theory.txt")
+#' @rdname add_theory_file
+#' @export
 add_theory_file <- function(path = ".", theory_file = "theory.txt"){
   existing_theory_file <- file.exists(theory_file)
   if (existing_theory_file) {
@@ -197,6 +236,6 @@ add_theory_file <- function(path = ".", theory_file = "theory.txt"){
     with_cli_try("Creating new theory file {.val {theory_file}}", {
       file.create(file.path(path, theory_file))
     })
-
   }
+  return(invisible(file.exists(file.path(path, basename(theory_file)))))
 }

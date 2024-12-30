@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 # theorytools
 
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html)

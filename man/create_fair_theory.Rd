@@ -9,7 +9,8 @@ create_fair_theory(
   title = NULL,
   theory_file = NULL,
   remote_repo = NULL,
-  add_license = "cc0"
+  add_license = "cc0",
+  ...
 )
 }
 \arguments{
@@ -26,9 +27,12 @@ created on the current authenticated user's account, see
 \code{\link[gh]{gh_whoami}}, Default: NULL}
 
 \item{add_license}{PARAM_DESCRIPTION, Default: 'cc0'}
+
+\item{...}{Additional arguments passed to other functions.}
 }
 \value{
-OUTPUT_DESCRIPTION
+Invisibly returns a logical value,
+indicating whether the function was successful or not.
 }
 \description{
 Partly automates the process of creating a FAIR theory
@@ -60,6 +64,16 @@ create_fair_theory(path = theory_dir,
                    theory_file = "theory.txt",
                    remote_repo = NULL,
                    add_license = "cc0")
+
+# Create a theory with a remote repository
+theory_dir <- file.path(tempdir(), "theory_github")
+\dontrun{
+out <- create_fair_theory(path = theory_dir,
+                          title = "This is My GitHub Theory",
+                          theory_file = "theory.txt",
+                          remote_repo = "delete_test",
+                          add_license = "ccby")
+}
 }
 \seealso{
 \code{\link[gert]{git_repo}}
