@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette:
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Making a Theory FAIR}
+  %\VignetteIndexEntry{fairtheory}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: vignettes.bib
@@ -13,7 +13,7 @@ bibliography: vignettes.bib
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  eval = FALSE,
+  eval = isTRUE(Sys.info()["user"] == 'vanlissa'),
   comment = "#>"
 )
 ```
@@ -86,7 +86,7 @@ If we want to create a new folder called `empirical_cycle` in the existing folde
 project_path <- file.path("c:/theories", "empirical_cycle")
 dir.create(project_path)
 ```
-```{r eval = TRUE, echo = FALSE}
+```{r echo = FALSE}
 project_path <- file.path(tempdir(), "empirical_cycle")
 dir.create(project_path)
 ```
@@ -226,7 +226,7 @@ We encourage users to edit the resulting `README.md` file, in particular, to add
 Zenodo uses metadata files to archive and index repositories. Create a `.zenodo.json` file with metadata about your theory so that it is indexed appropriately:
 
 ```{r}
-theorytools::add_zenodo_json_theory(
+add_zenodo_json_theory(
   path = project_path,
   title = "The Empirical Cycle",
   keywords = c("philosophy of science", "methodology")
@@ -252,7 +252,7 @@ worcs::git_update("First commit of my theory", repo = project_path)
 Navigate to your repository on GitHub and check that all committed files, including the theory file, license, README, and Zenodo metadata, are now visible in the remote repository (green box in the image below).
 
 ```{r  include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, out.width = "70%", fig.cap="Front Page of a GitHub Repository"}
-knitr::include_graphics("github.png")
+knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true")
 ```
 
 Furthermore, the repository visibility must be set to "Public"
@@ -341,7 +341,7 @@ We can further document our Zenodo archive as a FAIR theory by adding some extra
 On Zenodo click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
 
 ```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
-knitr::include_graphics("zenodo_edit.png")
+knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true")
 ```
 
 Click the orange `Edit` button, and verify/supply the following information:
@@ -363,7 +363,7 @@ The GitHub/Zenodo integration will assign one "mother-DOI" to the project, as we
 
 > **Pro-tip**: Check the `Citation` field on the Zenodo page, and copy-paste it into the README file of your GitHub repo to make cross-linking even easier (or refer users to the Zenodo page to find the citation, which obviates the need to manually update this information). Click the DOI bage in the `Details` field to get instructions on how to add a clear highlighted DOI badge to your GitHub repository, for users to see and make use of your DOI:
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1323437.svg)](https://doi.org/10.5281/zenodo.1323437)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14552329.svg)](https://doi.org/10.5281/zenodo.14552329)
 
 ## CONGRATULATIONS!
 
@@ -388,7 +388,7 @@ The function `theorytools::create_fair_theory()` automates most of the preceding
 Assuming you have already created a shareable theory file called `theory.txt` which resides in the currently active directory (`getwd()`),
 you can create your FAIR theory as follows:
 
-```{r}
+```{r eval = FALSE}
 create_fair_theory(
   path = file.path("c:/theories", "empirical_cycle"),
   title = "The Empirical Cycle, Again",

@@ -129,7 +129,7 @@ create_fair_theory <- function(path = ".",
   if (!add_license == "none") {
     dots <- list(...)
     dots <- dots[which(names(dots) %in% c("version", "include_future", "copyright_holder"))]
-    Args <- c(list(repo = path, license = add_license), dots)
+    Args <- c(list(path = path, license = add_license), dots)
     successes["license"] <- do.call(worcs::add_license_file, args = Args)
   }
 
@@ -137,7 +137,10 @@ create_fair_theory <- function(path = ".",
   successes["readme"] <- add_readme_fair_theory(title = title, path = path, repo_url = repo_url, repo_exists = repo_exists)
 
 # Add Zenodo metadata -----------------------------------------------------
-  successes["zenodo"] <- add_zenodo_json_theory(path, title = title)
+  successes["zenodo"] <- add_zenodo_json(path,
+                                         title = paste0("FAIR theory: ", title),
+                                         upload_type = "model",
+                                         keywords = "fairtheory")
 
 
 # Push local repo to remote -----------------------------------------------

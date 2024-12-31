@@ -16,7 +16,8 @@ add_zenodo_json <- function(path = ".", title, upload_type, keywords){
   json_data <- list(title = title,
                   upload_type = upload_type,
                   keywords = as.list(keywords))
-  jsonlite::write_json(json_data, file.path(path, ".zenodo.json"), pretty = TRUE, auto_unbox = TRUE)
+  out <- jsonlite::toJSON(x = json_data, path = , pretty = TRUE, auto_unbox = TRUE)
+  writeLines(out, con = file.path(path, ".zenodo.json"), useBytes = TRUE)
   return(invisible(file.exists(file.path(path, ".zenodo.json"))))
 }
 
@@ -28,14 +29,16 @@ add_zenodo_json <- function(path = ".", title, upload_type, keywords){
 #' @examples
 #' add_zenodo_json_theory(path = tempdir(), title = "My Theory",
 #'                        keywords = "secondkeyword")
+#' add_zenodo_json_theory(path = tempdir(), title = "My Theory",
+#'                        keywords = c("secondkeyword", "thirdkeyword"))
 #' @rdname add_zenodo_json
 #' @export
-add_zenodo_json_theory <- function(path= ".", title, keywords){
-  with_cli_try("Add Zenodo metadata", {
+add_zenodo_json_theory <- function(path = ".", title, keywords){
+  worcs:::with_cli_try("Add Zenodo metadata", {
   cl <- match.call()
   cl[["title"]] <- paste0("FAIR theory: ", cl[["title"]])
   cl[["upload_type"]] <- "model"
-  cl[["keywords"]] = c("fairtheory", cl[["keywords"]])
+  cl[["keywords"]] = c("fairtheory", keywords)
   cl[[1L]] <- str2lang("theorytools::add_zenodo_json")
   eval.parent(cl)
   })

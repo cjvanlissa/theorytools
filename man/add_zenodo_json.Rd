@@ -33,6 +33,8 @@ add_zenodo_json(path = tempdir(), title = "Theory Title",
                 upload_type = "software", keywords = "R")
 add_zenodo_json_theory(path = tempdir(), title = "My Theory",
                        keywords = "secondkeyword")
+add_zenodo_json_theory(path = tempdir(), title = "My Theory",
+                       keywords = c("secondkeyword", "thirdkeyword"))
 }
 \seealso{
 \code{\link[jsonlite]{read_json}}

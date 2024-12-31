@@ -5,7 +5,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cjvanlissa/theorytools/actions/workflows/R-CMD-check.yaml)
@@ -35,12 +34,16 @@ pak::pak("cjvanlissa/theorytools")
 
 ## Documentation
 
+[View the package website
+here.](https://cjvanlissa.github.io/theorytools)
+
 Every user-facing function in the package is documented, and the
 documentation can be accessed by running `?function_name` in the R
-console, e.g., `?bain`.
+console, e.g., `?create_fair_theory`.
 
-Moreover, you can read the *Introduction to bain* vignette by running
-`vignette("Introduction_to_bain", package = "bain")`
+Moreover, you can check the package vignettes by running
+`vignette(package = "theorytools")`, and read specific vignettes by
+running, e.g., `vignette("fairtheory", package = "theorytools")`.
 
 ## Citing `theorytools`
 
