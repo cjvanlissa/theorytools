@@ -24,7 +24,7 @@ Description: An integrated suite of tools for creating, maintaining, and reusing
 License: GPL (>= 3)
 Encoding: UTF-8
 URL: https://github.com/cjvanlissa/theorytools
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Imports:
     worcs (>= 0.1.16),
@@ -37,6 +37,5 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     pkgdown
-Remotes: cjvanlissa/worcs
 VignetteBuilder: knitr
 Config/testthat/edition: 3
