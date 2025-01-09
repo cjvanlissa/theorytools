@@ -35,7 +35,7 @@ pak::pak("cjvanlissa/theorytools")
 ## Documentation
 
 [View the package website
-here.](https://cjvanlissa.github.io/theorytools)
+here.](https://cjvanlissa.github.io/theorytools/)
 
 Every user-facing function in the package is documented, and the
 documentation can be accessed by running `?function_name` in the R
