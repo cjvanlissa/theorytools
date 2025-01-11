@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
   eval = isTRUE(Sys.info()["user"] == 'vanlissa'),
   comment = "#>"
 )
+in_packagedown <- tryCatch({pkgdown::in_pkgdown()}, error = function(e){ FALSE })
 ```
 
 # Creating a FAIR Theory
@@ -51,7 +52,7 @@ Estimated time to complete: 45-60 minutes.
 
 <!-- fig.width=600, fig.height=861,  -->
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Conceptual workflow for this task."}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Conceptual workflow for this task."}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/Task2.png?raw=true")
 ```
 
@@ -251,7 +252,7 @@ worcs::git_update("First commit of my theory", repo = project_path)
 
 Navigate to your repository on 'GitHub' and check that all committed files, including the theory file, license, README, and 'Zenodo' metadata, are now visible in the remote repository (green box in the image below).
 
-```{r  include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, out.width = "70%", fig.cap="Front Page of a 'GitHub' Repository"}
+```{r  include = in_packagedown, eval = TRUE, echo = FALSE, out.width = "70%", fig.cap="Front Page of a 'GitHub' Repository"}
 knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true")
 ```
 
@@ -266,7 +267,7 @@ If necessary, change the visibility setting to Public by clicking on "Settings" 
 Head over to [zenodo.org](https://zenodo.org). 'Zenodo' is a platform where you can permanently archive your code and other project elements. 'Zenodo' does this by assigning projects a **Digital Object Identifier** (DOI), which also helps to make the work more citable. This is different to 'GitHub', which acts as a place where the actual work on a project takes place, rather than long-term archiving of it. At 'GitHub', content can be modified, deleted, rewritten, and irreversibly changed, which makes it a bit concerning to be used for longer lasting referencing purposes. 'Zenodo' offers more security and permanence for research outputs.
 
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Sign up for 'Zenodo'"}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Sign up for 'Zenodo'"}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true")
 ```
 
@@ -277,7 +278,7 @@ If not, follow the steps to create one — you can **login using your 'GitHub' a
 
 On the 'Zenodo' website authorize it to connect to your 'GitHub' account in the '[Using 'GitHub'](https://zenodo.org/account/settings/github/)' section. Here, 'Zenodo' will redirect you to 'GitHub' to ask for permissions to use '[webhooks](https://developer.github.com/webhooks/)' on your repositories. You want to authorize 'Zenodo' here with the permissions it needs to form those links.
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Authorize  to connect with 'GitHub'"}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Authorize  to connect with 'GitHub'"}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/_github.png?raw=true")
 ```
 
@@ -289,7 +290,7 @@ If your repository **does not show up** in the list, you may need to press the '
 At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
 If so, take a break or come back to this last step tomorrow!
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Enable individual 'GitHub' repositories to be archived in 'Zenodo'"}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Enable individual 'GitHub' repositories to be archived in 'Zenodo'"}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true")
 ```
 
@@ -299,7 +300,7 @@ If you were successful, you have now set up a new webhook between 'Zenodo' and y
 
 Optionally, you can verify this. In 'GitHub', click on the settings for your repository, and the Webhooks tab on the left hand side menu. This should display the new 'Zenodo' webhook configured to 'Zenodo'. Note, it may take a little time for the webhook listing to show up.
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Check that webhooks are enabled for your 'GitHub' repository."}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Check that webhooks are enabled for your 'GitHub' repository."}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true")
 ```
 
@@ -331,7 +332,7 @@ worcs::git_release_publish(repo = project_path,
 To verify that your release was archived on 'Zenodo' and assigned a DOI,
 you need to visit the [Uploads](https://zenodo.org/deposit) tab.
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Check the new release has been uploaded."}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Check the new release has been uploaded."}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true")
 ```
 
@@ -340,7 +341,7 @@ knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Resear
 We can further document our 'Zenodo' archive as a FAIR theory by adding some extra information on 'Zenodo'.
 On 'Zenodo' click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
 
-```{r include = pkgdown::in_pkgdown(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
 knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true")
 ```
 
