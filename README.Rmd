@@ -30,12 +30,12 @@ track changes with version control,
 assess pre-empirical coherence,
 and derive testable hypotheses.
 Aligning with open science principles and workflows,
-theorytools facilitates the systematic improvement of theoretical frameworks
+`theorytools` facilitates the systematic improvement of theoretical frameworks
 and enhances their discoverability and usability.
 
 ## Installation
 
-You can install the development version of theorytools from [GitHub](https://github.com/) with:
+You can install the development version of `theorytools` from ['GitHub'](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
@@ -58,9 +58,9 @@ You can cite the R-package with the following citation:
 
 ## Contributing and Contact Information
 
-If you have ideas, please get involved. You can contribute by opening an issue on GitHub, or sending a pull request with proposed features. Contributions in code must adhere to the [tidyverse style guide](https://style.tidyverse.org/).
+If you have ideas, please get involved. You can contribute by opening an issue on 'GitHub', or sending a pull request with proposed features. Contributions in code must adhere to the [tidyverse style guide](https://style.tidyverse.org/).
 
-* File a GitHub issue [here](https://github.com/cjvanlissa/theorytools/issues)
+* File a 'GitHub' issue [here](https://github.com/cjvanlissa/theorytools/issues)
 * Make a pull request [here](https://github.com/cjvanlissa/theorytools/pulls)
 
 By participating in this project, you agree to abide by the [Contributor Code of Conduct v2.0](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).

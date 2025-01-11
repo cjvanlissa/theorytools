@@ -4,13 +4,13 @@
 \alias{add_readme_fair_theory}
 \title{Add Readme File}
 \usage{
-add_readme_fair_theory(title, path, ...)
+add_readme_fair_theory(path, title, ...)
 }
 \arguments{
-\item{title}{Character, indicating the theory title. Default: \code{NULL}}
-
 \item{path}{Character, indicating the directory in which to create the FAIR
-theory. The default value \code{"."} points to the current directory.}
+theory.}
+
+\item{title}{Character, indicating the theory title. Default: \code{NULL}}
 
 \item{...}{Additional arguments passed to other functions.}
 }
@@ -22,5 +22,5 @@ indicating whether the function was successful or not.
 Writes a README file to a specific path.
 }
 \examples{
-add_readme_fair_theory(title = "My Theory", path = tempdir())
+add_readme_fair_theory(path = tempdir(), title = "My Theory")
 }

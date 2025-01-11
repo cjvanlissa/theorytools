@@ -5,26 +5,11 @@ cli_msg <- utils::getFromNamespace("cli_msg", "worcs")
 is_quiet <- utils::getFromNamespace("is_quiet", "worcs")
 git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs")
 
-# c(
-#   "cc0",
-#   "ccby",
-#   "gpl",
-#   "gpl3",
-#   "agpl",
-#   "agpl3",
-#   "apache",
-#   "apl2",
-#   "lgpl",
-#   "mit",
-#   "proprietary",
-#   "none"
-# )
-
 #' @title Create FAIR Theory Repository
 #' @description Partly automates the process of creating a FAIR theory
 #' repository, see Details.
 #' @param path Character, indicating the directory in which to create the FAIR
-#' theory. The default value `"."` points to the current directory.
+#' theory.
 #' @param title Character, indicating the theory title. Default: `NULL`
 #' @param theory_file Character, referring to an existing theory file to be
 #' copied, or a new theory file to be created. Default `NULL` does nothing.
@@ -38,7 +23,7 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #' @details The following steps are executed sequentially:
 #'
 #' 1. Create a project folder at `path`
-#' 2. Initialize a local Git repository at `path`
+#' 2. Initialize a local 'Git' repository at `path`
 #' 3. If `remote_repo` refers to a user's existing 'GitHub' repository, add it
 #'    as remote to the local 'Git' repository. Otherwise, create a new 'GitHub'
 #'    repository by that name and add it as remote.
@@ -60,8 +45,8 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #'                    add_license = "cc0")
 #'
 #' # Create a theory with a remote repository
-#' theory_dir <- file.path(tempdir(), "theory_github")
 #' \dontrun{
+#' theory_dir <- file.path(tempdir(), "theory_github")
 #' out <- create_fair_theory(path = theory_dir,
 #'                           title = "This is My GitHub Theory",
 #'                           theory_file = "theory.txt",
@@ -75,7 +60,7 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #' @export
 #' @importFrom gert git_init
 #' @importFrom worcs add_license_file git_update
-create_fair_theory <- function(path = ".",
+create_fair_theory <- function(path,
                             title = NULL,
                             theory_file = NULL,
                             remote_repo = NULL,
@@ -101,7 +86,7 @@ create_fair_theory <- function(path = ".",
   })
 
   # 2. Initialize Git repo
-  successes["git"] <- with_cli_try("Initialize Git repository", {
+  successes["git"] <- with_cli_try("Initialize 'Git' repository", {
     gert::git_init(path = path)
   })
 
@@ -134,7 +119,7 @@ create_fair_theory <- function(path = ".",
   }
 
   # 1. Add readme.md
-  successes["readme"] <- add_readme_fair_theory(title = title, path = path, repo_url = repo_url, repo_exists = repo_exists)
+  successes["readme"] <- add_readme_fair_theory(path = path, title = title, repo_url = repo_url, repo_exists = repo_exists)
 
 # Add Zenodo metadata -----------------------------------------------------
   successes["zenodo"] <- add_zenodo_json(path,
@@ -159,10 +144,10 @@ create_fair_theory <- function(path = ".",
 #' @inheritParams create_fair_theory
 #' @inherit create_fair_theory return
 #' @examples
-#' add_readme_fair_theory(title = "My Theory", path = tempdir())
+#' add_readme_fair_theory(path = tempdir(), title = "My Theory")
 #' @rdname add_readme_fair_theory
 #' @export
-add_readme_fair_theory <- function(title, path, ...){
+add_readme_fair_theory <- function(path, title, ...){
   dots <- list(...)
   if(!all(c("test_repo", "repo_exists") %in% names(dots))){
     repo_url <- try(gert::git_remote_list(repo = path)$url[1], silent = TRUE)
@@ -192,17 +177,17 @@ add_readme_fair_theory <- function(title, path, ...){
       "2. **To directly propose changes**, send a pull request containing the proposed changes",
       "3. **To create a derivative theory**, please fork the repository",
       "",
-      "If you fork the repository, please cite this repository (see below), and add it as a related work (below and by adding the appropriate metadata on Zenodo).",
+      "If you fork the repository, please cite this repository (see below), and add it as a related work (below and by adding the appropriate metadata on 'Zenodo').",
       "",
       "By participating in this project, you agree to abide by the [Contributor Covenant](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).",
       "",
       "## Related works",
       "",
-      "Optionally, cite the canonical reference for the theory implemented in this repository here. This is redundant with adding the cross-reference in Zenodo, but may be useful nonetheless.",
+      "Optionally, cite the canonical reference for the theory implemented in this repository here. This is redundant with adding the cross-reference in 'Zenodo', but may be useful nonetheless.",
       "",
       "## Citing this work",
       "",
-      "See this project's Zenodo page for the preferred citation."
+      "See this project's 'Zenodo' page for the preferred citation."
     )
     if(!is.null(title)) lines_readme[1] <- gsub("Theory Title Goes Here", title, lines_readme[1], fixed = TRUE)
     if (repo_exists) {
@@ -218,17 +203,14 @@ add_readme_fair_theory <- function(title, path, ...){
 
 #' @title Add Theory File
 #' @description Writes a theory file to a specific path.
-# @param path Character, path to write the theory to. The default of `'.'`
-# writes to the current directory.
-# @param theory_file Character, referring to either an existing file or naming
-# a new file to be created. Default: `'theory.txt'`
 #' @inheritParams create_fair_theory
 #' @inherit create_fair_theory return
 #' @examples
 #' add_theory_file(path = tempdir(), theory_file = "theory.txt")
 #' @rdname add_theory_file
 #' @export
-add_theory_file <- function(path = ".", theory_file = "theory.txt"){
+add_theory_file <- function(path, theory_file = "theory.txt"){
+  if(!dir.exists(path)) stop("Path does not exist.")
   existing_theory_file <- file.exists(theory_file)
   if (existing_theory_file) {
     with_cli_try("Copying theory file {.val {theory_file}}", {

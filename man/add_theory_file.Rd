@@ -4,11 +4,11 @@
 \alias{add_theory_file}
 \title{Add Theory File}
 \usage{
-add_theory_file(path = ".", theory_file = "theory.txt")
+add_theory_file(path, theory_file = "theory.txt")
 }
 \arguments{
 \item{path}{Character, indicating the directory in which to create the FAIR
-theory. The default value \code{"."} points to the current directory.}
+theory.}
 
 \item{theory_file}{Character, referring to an existing theory file to be
 copied, or a new theory file to be created. Default \code{NULL} does nothing.}

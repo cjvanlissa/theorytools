@@ -12,7 +12,8 @@
 #' @rdname add_zenodo_json
 #' @export
 #' @importFrom jsonlite write_json
-add_zenodo_json <- function(path = ".", title, upload_type, keywords){
+add_zenodo_json <- function(path, title, upload_type, keywords){
+  if(!dir.exists(path)) stop("Path does not exist.")
   json_data <- list(title = title,
                   upload_type = upload_type,
                   keywords = as.list(keywords))
@@ -33,8 +34,8 @@ add_zenodo_json <- function(path = ".", title, upload_type, keywords){
 #'                        keywords = c("secondkeyword", "thirdkeyword"))
 #' @rdname add_zenodo_json
 #' @export
-add_zenodo_json_theory <- function(path = ".", title, keywords){
-  worcs:::with_cli_try("Add Zenodo metadata", {
+add_zenodo_json_theory <- function(path, title, keywords){
+  worcs:::with_cli_try("Add 'Zenodo' metadata", {
   cl <- match.call()
   cl[["title"]] <- paste0("FAIR theory: ", cl[["title"]])
   cl[["upload_type"]] <- "model"

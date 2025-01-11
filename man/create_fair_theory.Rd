@@ -5,7 +5,7 @@
 \title{Create FAIR Theory Repository}
 \usage{
 create_fair_theory(
-  path = ".",
+  path,
   title = NULL,
   theory_file = NULL,
   remote_repo = NULL,
@@ -15,7 +15,7 @@ create_fair_theory(
 }
 \arguments{
 \item{path}{Character, indicating the directory in which to create the FAIR
-theory. The default value \code{"."} points to the current directory.}
+theory.}
 
 \item{title}{Character, indicating the theory title. Default: \code{NULL}}
 
@@ -42,7 +42,7 @@ repository, see Details.
 The following steps are executed sequentially:
 \enumerate{
 \item Create a project folder at \code{path}
-\item Initialize a local Git repository at \code{path}
+\item Initialize a local 'Git' repository at \code{path}
 \item If \code{remote_repo} refers to a user's existing 'GitHub' repository, add it
 as remote to the local 'Git' repository. Otherwise, create a new 'GitHub'
 repository by that name and add it as remote.
@@ -66,8 +66,8 @@ create_fair_theory(path = theory_dir,
                    add_license = "cc0")
 
 # Create a theory with a remote repository
-theory_dir <- file.path(tempdir(), "theory_github")
 \dontrun{
+theory_dir <- file.path(tempdir(), "theory_github")
 out <- create_fair_theory(path = theory_dir,
                           title = "This is My GitHub Theory",
                           theory_file = "theory.txt",

@@ -5,13 +5,13 @@
 \alias{add_zenodo_json_theory}
 \title{Add 'Zenodo' JSON File}
 \usage{
-add_zenodo_json(path = ".", title, upload_type, keywords)
+add_zenodo_json(path, title, upload_type, keywords)
 
-add_zenodo_json_theory(path = ".", title, keywords)
+add_zenodo_json_theory(path, title, keywords)
 }
 \arguments{
 \item{path}{Character, indicating the directory in which to create the FAIR
-theory. The default value \code{"."} points to the current directory.}
+theory.}
 
 \item{title}{Character, indicating the theory title. Default: \code{NULL}}
 

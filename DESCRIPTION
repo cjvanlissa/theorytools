@@ -1,6 +1,6 @@
 Package: theorytools
 Type: Package
-Title: FAIR Theory Construction Toolkit
+Title: FAIR Theory Construction
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -12,14 +12,14 @@ Authors@R: c(
     )
     )
 Description: An integrated suite of tools for creating, maintaining, and reusing
-    FAIR (Findable, Accessible, Interoperable, Reusable) theories in R.
+    FAIR (Findable, Accessible, Interoperable, Reusable) theories.
     Designed to support transparent and collaborative theory development,
     the package enables users to formalize theories,
     track changes with version control,
     assess pre-empirical coherence,
     and derive testable hypotheses.
     Aligning with open science principles and workflows,
-    theorytools facilitates the systematic improvement of theoretical frameworks
+    'theorytools' facilitates the systematic improvement of theoretical frameworks
     and enhances their discoverability and usability.
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -36,6 +36,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    pkgdown
+    pkgdown,
+    withr,
+    usethis,
+    fs
 VignetteBuilder: knitr
 Config/testthat/edition: 3
