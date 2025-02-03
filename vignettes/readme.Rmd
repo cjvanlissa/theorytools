@@ -12,9 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-```{r setup}
 library(theorytools)
 ```
 
@@ -92,6 +90,8 @@ The Interoperability section tells readers how the theory is implemented, and in
 The theory is implemented in the DOT language for describing graphs.
 
 ### Rendering the theory using graphviz
+
+See the graphviz manual for more information: https://graphviz.org
 
 ```
 

@@ -5,61 +5,49 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="theorytools">
 <title>Making a Theory FAIR • theorytools</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making a Theory FAIR">
-<meta property="og:description" content="theorytools">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making a Theory FAIR">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">theorytools</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
+    <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+  </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/cjvanlissa/theorytools/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cjvanlissa/theorytools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -68,7 +56,8 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Making a Theory FAIR</h1>
+
+      <h1>Making a Theory FAIR</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/cjvanlissa/theorytools/blob/HEAD/vignettes/fair-theory.Rmd" class="external-link"><code>vignettes/fair-theory.Rmd</code></a></small>
@@ -103,24 +92,24 @@ users might use this function directly.</p>
 <li><label><input type="checkbox">Creating a project folder for your
 theory</label></li>
 <li><label><input type="checkbox">Version controlling this folder with
-Git</label></li>
+‘Git’</label></li>
 <li><label><input type="checkbox">Connecting the local repository to a
-remote (GitHub) repository</label></li>
+remote (‘GitHub’) repository</label></li>
 <li><label><input type="checkbox">Adding a shareable theory file to
 the repository</label></li>
 <li><label><input type="checkbox">Adding a LICENSE file to the
 repository (we recommend CC0)</label></li>
 <li><label><input type="checkbox">Adding a README file to the
 repository</label></li>
-<li><label><input type="checkbox">Adding a Zenodo metadata to the
+<li><label><input type="checkbox">Adding a ‘Zenodo’ metadata to the
 repository</label></li>
 <li><label><input type="checkbox">Pushing these changes to the remote
 repository</label></li>
-<li><label><input type="checkbox">Turning on Zenodo archiving for the
-remote repository</label></li>
+<li><label><input type="checkbox">Turning on ‘Zenodo’ archiving for
+the remote repository</label></li>
 <li><label><input type="checkbox">Publishing a release of your
 theory</label></li>
-<li><label><input type="checkbox">Verifying that Zenodo mints a DOI
+<li><label><input type="checkbox">Verifying that ‘Zenodo’ mints a DOI
 for your theory and its latest release</label></li>
 </ul>
 <!-- fig.width=600, fig.height=861,  --><div class="figure" style="text-align: center">
@@ -173,26 +162,32 @@ existing folder <code>c:/theories/</code>, we can call:</p>
 <div class="section level3">
 <h3 id="version-controlling-the-project-folder">Version Controlling The Project Folder<a class="anchor" aria-label="anchor" href="#version-controlling-the-project-folder"></a>
 </h3>
-<p>We use Git to version control the project folder. If you do not
-already have Git installed on your computer, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" class="external-link">install
-it now</a>. You can verify that Git is installed and working by
+<p>We use ‘Git’ to version control the project folder. If you do not
+already have ‘Git’ installed on your computer, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" class="external-link">install
+it now</a>. You can verify that ‘Git’ is installed and working by
 running:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check if Git is available on the command line.<span style="color: #00BB00;">✔</span> Check if Git is available on the command line. ... done</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Checking if libgit2 is properly installed, required for connecting to Git rem…<span style="color: #00BB00;">✔</span> Checking if libgit2 is properly installed, required for connecting to Git rem…</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Initiating Git repository.<span style="color: #00BB00;">✔</span> Initiating Git repository. ... done</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Git user is configured.<span style="color: #00BB00;">✔</span> Git user is configured. ... done</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Adding files with `gert::git_add()`.<span style="color: #00BB00;">✔</span> Adding files with `gert::git_add()`. ... done</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Committing with `gert::git_commit()`.<span style="color: #00BB00;">✔</span> Committing with `gert::git_commit()`. ... done</span></span></code></pre></div>
 <p>If this function shows a green checkmark, you can initialize version
 control in your project repository by running:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_repo.html" class="external-link">git_init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="connecting-to-a-remote-github-repository">Connecting to a Remote (GitHub) Repository<a class="anchor" aria-label="anchor" href="#connecting-to-a-remote-github-repository"></a>
+<h3 id="connecting-to-a-remote-github-repository">Connecting to a Remote (‘GitHub’) Repository<a class="anchor" aria-label="anchor" href="#connecting-to-a-remote-github-repository"></a>
 </h3>
 <p>To make your FAIR theory accessible to collaborators and discoverable
-by the wider community, you must connect your local Git repository to a
-remote repository on a platform like GitHub.</p>
+by the wider community, you must connect your local ‘Git’ repository to
+a remote repository on a platform like ‘GitHub’.</p>
 <p>Before proceeding, ensure you <a href="https://github.com/" class="external-link">have a
-GitHub account</a>. Academics may qualify for a <a href="https://github.com/education/teachers" class="external-link">free upgrade</a>. To
-authorize R to interact with your GitHub account, run
+‘GitHub’ account</a>. Academics may qualify for a <a href="https://github.com/education/teachers" class="external-link">free upgrade</a>. To
+authorize ‘R’ to interact with your ‘GitHub’ account, run
 <code><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">usethis::create_github_token()</a></code>, which takes you to a
 website to create a personal access token (PAT). Copy it, then run
 <code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> and paste the PAT when asked. If
@@ -200,18 +195,20 @@ you still experience problems try <code><a href="https://usethis.r-lib.org/refer
 for help.</p>
 <p>To check that you are ready to proceed, run:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Active project has a remote repository that requires PAT authentication.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check for PAT.<span style="color: #00BB00;">✔</span> Check for PAT. ... done</span></span></code></pre></div>
 <p>If you see a green checkmark, you can create a new repository on
-GitHub directly from R:</p>
+‘GitHub’ directly from ‘R’:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_remote_create</a></span><span class="op">(</span><span class="st">"empirical_cycle"</span>, private <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>This command will create a new public repository on GitHub and link
+<p>This command will create a new public repository on ‘GitHub’ and link
 it to your local repository. The <code>private = FALSE</code> argument
 ensures the repository is public by default.</p>
 <p>Alternatively, you may have already created a remote repository on
-the GitHub website. Either way, assuming the name of that repository is
-<code>empirical_cycle</code>, you can connect it to your project folder
-as follows:</p>
+the ‘GitHub’ website. Either way, assuming the name of that repository
+is <code>empirical_cycle</code>, you can connect it to your project
+folder as follows:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_connect.html" class="external-link">git_remote_connect</a></span><span class="op">(</span><span class="va">project_path</span>, remote_repo <span class="op">=</span> <span class="st">"empirical_cycle"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -219,8 +216,8 @@ as follows:</p>
 <h3 id="adding-a-shareable-theory-file-to-the-repository">Adding a Shareable Theory File to the Repository<a class="anchor" aria-label="anchor" href="#adding-a-shareable-theory-file-to-the-repository"></a>
 </h3>
 <p>Your theory should be represented as a digital artifact, such as a
-structured plain-text document or a machine-readable file (e.g., DOT,
-JSON, YAML, R code). At this point, we offer two alternatives.</p>
+structured plain-text document or a machine-readable file (e.g., ‘DOT’,
+‘JSON’, ‘YAML’, ‘R’ code). At this point, we offer two alternatives.</p>
 <div class="section level4">
 <h4 id="creating-a-plain-text-theory">Creating a Plain-Text Theory<a class="anchor" aria-label="anchor" href="#creating-a-plain-text-theory"></a>
 </h4>
@@ -286,7 +283,10 @@ Zero) license, which places your work in the public domain. Add a
 license file to your repository:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/add_license_file.html" class="external-link">add_license_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span>, license <span class="op">=</span> <span class="st">"cc0"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Writing license file<span style="color: #00BB00;">✔</span> Writing license file ... done</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Writing license file</span></span>
+<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Writing license file ... done</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-a-readme-file-to-the-repository">Adding a README File to the Repository<a class="anchor" aria-label="anchor" href="#adding-a-readme-file-to-the-repository"></a>
@@ -304,18 +304,18 @@ like so:</p>
 in particular, to add relevant information about X-interoperability.</p>
 </div>
 <div class="section level3">
-<h3 id="adding-zenodo-metadata-to-the-repository">Adding Zenodo Metadata to the Repository<a class="anchor" aria-label="anchor" href="#adding-zenodo-metadata-to-the-repository"></a>
+<h3 id="adding-zenodo-metadata-to-the-repository">Adding ‘Zenodo’ Metadata to the Repository<a class="anchor" aria-label="anchor" href="#adding-zenodo-metadata-to-the-repository"></a>
 </h3>
-<p>Zenodo uses metadata files to archive and index repositories. Create
-a <code>.zenodo.json</code> file with metadata about your theory so that
-it is indexed appropriately:</p>
+<p>‘Zenodo’ uses metadata files to archive and index repositories.
+Create a <code>.zenodo.json</code> file with metadata about your theory
+so that it is indexed appropriately:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/add_zenodo_json.html">add_zenodo_json_theory</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="va">project_path</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"The Empirical Cycle"</span>,</span>
 <span>  keywords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"philosophy of science"</span>, <span class="st">"methodology"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Add Zenodo metadata<span style="color: #00BB00;">✔</span> Add Zenodo metadata ... done</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Add 'Zenodo' metadata<span style="color: #00BB00;">✔</span> Add 'Zenodo' metadata ... done</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pushing-these-changes-to-the-remote-repository">Pushing These Changes to the Remote Repository<a class="anchor" aria-label="anchor" href="#pushing-these-changes-to-the-remote-repository"></a>
@@ -334,77 +334,77 @@ acting like a kind of “quick-save” function:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Push local commits to remote repository.<span style="color: #BB0000;">✖</span> Push local commits to remote repository. ... failed</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="check-your-github-repository">Check Your GitHub Repository<a class="anchor" aria-label="anchor" href="#check-your-github-repository"></a>
+<h3 id="check-your-github-repository">Check Your ‘GitHub’ Repository<a class="anchor" aria-label="anchor" href="#check-your-github-repository"></a>
 </h3>
-<p>Navigate to your repository on GitHub and check that all committed
-files, including the theory file, license, README, and Zenodo metadata,
-are now visible in the remote repository (green box in the image
-below).</p>
+<p>Navigate to your repository on ‘GitHub’ and check that all committed
+files, including the theory file, license, README, and ‘Zenodo’
+metadata, are now visible in the remote repository (green box in the
+image below).</p>
 <div class="figure">
-<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true" alt="Front Page of a GitHub Repository" width="70%"><p class="caption">
-Front Page of a GitHub Repository
+<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true" alt="Front Page of a 'GitHub' Repository" width="70%"><p class="caption">
+Front Page of a ‘GitHub’ Repository
 </p>
 </div>
 <p>Furthermore, the repository visibility must be set to “Public” to
-ensure that Zenodo can discover and archive it. If you created the
+ensure that ‘Zenodo’ can discover and archive it. If you created the
 repository programmatically as shown above, it should already be public
 (see red box in the image above). If necessary, change the visibility
 setting to Public by clicking on “Settings” &gt; “General” &gt; “Change
 repository visibility.”</p>
 </div>
 <div class="section level3">
-<h3 id="login-to-zenodo">Login to Zenodo<a class="anchor" aria-label="anchor" href="#login-to-zenodo"></a>
+<h3 id="login-to-zenodo">Login to ‘Zenodo’<a class="anchor" aria-label="anchor" href="#login-to-zenodo"></a>
 </h3>
-<p>Head over to <a href="https://zenodo.org" class="external-link">zenodo.org</a>. Zenodo is a
-platform where you can permanently archive your code and other project
-elements. Zenodo does this by assigning projects a <strong>Digital
+<p>Head over to <a href="https://zenodo.org" class="external-link">zenodo.org</a>. ‘Zenodo’ is
+a platform where you can permanently archive your code and other project
+elements. ‘Zenodo’ does this by assigning projects a <strong>Digital
 Object Identifier</strong> (DOI), which also helps to make the work more
-citable. This is different to GitHub, which acts as a place where the
+citable. This is different to ‘GitHub’, which acts as a place where the
 actual work on a project takes place, rather than long-term archiving of
-it. At GitHub, content can be modified, deleted, rewritten, and
+it. At ‘GitHub’, content can be modified, deleted, rewritten, and
 irreversibly changed, which makes it a bit concerning to be used for
-longer lasting referencing purposes. Zenodo offers more security and
+longer lasting referencing purposes. ‘Zenodo’ offers more security and
 permanence for research outputs.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true" alt="Sign up for Zenodo" width="70%"><p class="caption">
-Sign up for Zenodo
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true" alt="Sign up for 'Zenodo'" width="70%"><p class="caption">
+Sign up for ‘Zenodo’
 </p>
 </div>
-<p>If you already have a Zenodo account, this is easy. If not, follow
-the steps to create one — you can <strong>login using your GitHub
+<p>If you already have a ‘Zenodo’ account, this is easy. If not, follow
+the steps to create one — you can <strong>login using your ‘GitHub’
 account</strong>.</p>
 </div>
 <div class="section level3">
-<h3 id="authorise-github-to-connect-with-zenodo">Authorise GitHub to connect with Zenodo<a class="anchor" aria-label="anchor" href="#authorise-github-to-connect-with-zenodo"></a>
+<h3 id="authorize-github-to-connect-with-zenodo">Authorize ‘GitHub’ to connect with ‘Zenodo’<a class="anchor" aria-label="anchor" href="#authorize-github-to-connect-with-zenodo"></a>
 </h3>
-<p>On the Zenodo website authorise it to connect to your GitHub account
-in the ‘<a href="https://zenodo.org/account/settings/github/" class="external-link">Using
-GitHub</a>’ section. Here, Zenodo will redirect you to GitHub to ask for
+<p>On the ‘Zenodo’ website authorize it to connect to your ‘GitHub’
+account in the ‘<a href="https://zenodo.org/account/settings/github/" class="external-link">Using ’GitHub’</a>’
+section. Here, ‘Zenodo’ will redirect you to ‘GitHub’ to ask for
 permissions to use ‘<a href="https://developer.github.com/webhooks/" class="external-link">webhooks</a>’ on your
-repositories. You want to authorise Zenodo here with the permissions it
-needs to form those links.</p>
+repositories. You want to authorize ‘Zenodo’ here with the permissions
+it needs to form those links.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo_github.png?raw=true" alt="Authorize Zenodo to connect with GitHub" width="70%"><p class="caption">
-Authorize Zenodo to connect with GitHub
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/_github.png?raw=true" alt="Authorize  to connect with 'GitHub'" width="70%"><p class="caption">
+Authorize to connect with ‘GitHub’
 </p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="select-the-repository-to-archive">Select the Repository to Archive<a class="anchor" aria-label="anchor" href="#select-the-repository-to-archive"></a>
 </h3>
-<p>If you have got this far, this means that Zenodo is now authorised to
-configure the repository webhooks that it needs to archive the
-repository and issue it a DOI. To do this, on the Zenodo website
-navigate to the <a href="https://zenodo.org/account/settings/github/" class="external-link">GitHub repository
+<p>If you have got this far, this means that ‘Zenodo’ is now authorized
+to configure the repository webhooks that it needs to archive the
+repository and issue it a DOI. To do this, on the ‘Zenodo’ website
+navigate to the <a href="https://zenodo.org/account/settings/github/" class="external-link">‘GitHub’ repository
 listing page</a> and simply “flip the switch” next to your repository.
 If your repository <strong>does not show up</strong> in the list, you
 may need to press the ‘Syncronize now’ button. At the time of writing,
-we noticed that it can take quite a while (hours?) for Zenodo to detect
-new GitHub repositories. If so, take a break or come back to this last
-step tomorrow!</p>
+we noticed that it can take quite a while (hours?) for ‘Zenodo’ to
+detect new ‘GitHub’ repositories. If so, take a break or come back to
+this last step tomorrow!</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true" alt="Enable individual GitHub repositories to be archived in Zenodo" width="70%"><p class="caption">
-Enable individual GitHub repositories to be archived in Zenodo
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true" alt="Enable individual 'GitHub' repositories to be archived in 'Zenodo'" width="70%"><p class="caption">
+Enable individual ‘GitHub’ repositories to be archived in ‘Zenodo’
 </p>
 </div>
 </div>
@@ -413,22 +413,22 @@ Enable individual GitHub repositories to be archived in Zenodo
 <em>Optional:</em> Check repository settings<a class="anchor" aria-label="anchor" href="#optional-check-repository-settings"></a>
 </h3>
 <p>If you were successful, you have now set up a new webhook between
-Zenodo and your repository.</p>
-<p>Optionally, you can verify this. In GitHub, click on the settings for
-your repository, and the Webhooks tab on the left hand side menu. This
-should display the new Zenodo webhook configured to Zenodo. Note, it may
-take a little time for the webhook listing to show up.</p>
+‘Zenodo’ and your repository.</p>
+<p>Optionally, you can verify this. In ‘GitHub’, click on the settings
+for your repository, and the Webhooks tab on the left hand side menu.
+This should display the new ‘Zenodo’ webhook configured to ‘Zenodo’.
+Note, it may take a little time for the webhook listing to show up.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true" alt="Check that webhooks are enabled for your GitHub repository." width="70%"><p class="caption">
-Check that webhooks are enabled for your GitHub repository.
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true" alt="Check that webhooks are enabled for your 'GitHub' repository." width="70%"><p class="caption">
+Check that webhooks are enabled for your ‘GitHub’ repository.
 </p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="create-a-new-release">Create a New Release<a class="anchor" aria-label="anchor" href="#create-a-new-release"></a>
 </h3>
-<p>To archive a repository on Zenodo, you must create a new release. You
-can do this using the following code:</p>
+<p>To archive a repository on ‘Zenodo’, you must create a new release.
+You can do this using the following code:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 <p>If you have not previously published any releases, this function will
@@ -444,9 +444,9 @@ middle digit like so:</p>
 <span>                           release_name <span class="op">=</span> <span class="st">"0.2.0"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="verify-on-zenodo">Verify on Zenodo<a class="anchor" aria-label="anchor" href="#verify-on-zenodo"></a>
+<h3 id="verify-on-zenodo">Verify on ‘Zenodo’<a class="anchor" aria-label="anchor" href="#verify-on-zenodo"></a>
 </h3>
-<p>To verify that your release was archived on Zenodo and assigned a
+<p>To verify that your release was archived on ‘Zenodo’ and assigned a
 DOI, you need to visit the <a href="https://zenodo.org/deposit" class="external-link">Uploads</a> tab.</p>
 <div class="figure" style="text-align: center">
 <img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true" alt="Check the new release has been uploaded." width="70%"><p class="caption">
@@ -457,8 +457,8 @@ Check the new release has been uploaded.
 <div class="section level3">
 <h3 id="entering-meta-data">Entering Meta-Data<a class="anchor" aria-label="anchor" href="#entering-meta-data"></a>
 </h3>
-<p>We can further document our Zenodo archive as a FAIR theory by adding
-some extra information on Zenodo. On Zenodo click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
+<p>We can further document our ‘Zenodo’ archive as a FAIR theory by
+adding some extra information on ‘Zenodo’. On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
 you should find your newly uploaded repository.</p>
 <div class="figure" style="text-align: center">
 <img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true" alt="Click the orange Edit button." width="70%"><p class="caption">
@@ -491,39 +491,40 @@ in print (paper, book chapter) but not made FAIR</li>
 <p>To save these changes, click ‘Publish’.</p>
 </div>
 <div class="section level3">
-<h3 id="verifying-that-zenodo-mints-a-doi-for-your-theory">Verifying That Zenodo Mints a DOI for Your Theory<a class="anchor" aria-label="anchor" href="#verifying-that-zenodo-mints-a-doi-for-your-theory"></a>
+<h3 id="verifying-that-zenodo-mints-a-doi-for-your-theory">Verifying That ‘Zenodo’ Mints a DOI for Your Theory<a class="anchor" aria-label="anchor" href="#verifying-that-zenodo-mints-a-doi-for-your-theory"></a>
 </h3>
-<p>After publishing a release, Zenodo will archive the repository and
-mint a DOI. Verify this by checking the Zenodo entry for your
+<p>After publishing a release, ‘Zenodo’ will archive the repository and
+mint a DOI. Verify this by checking the ‘Zenodo’ entry for your
 repository, where the DOI will be displayed. Include this DOI in any
 citations or references to your theory to enhance its discoverability
 and reusability.</p>
-<p>The GitHub/Zenodo integration will assign one “mother-DOI” to the
+<p>The ‘GitHub’/‘Zenodo’ integration will assign one “mother-DOI” to the
 project, as well as a unique DOI to each version/release of the FAIR
 theory. This enables users to refer to and cite specific versions of the
 theory. The list of authors for the citation is automatically determined
-by the GitHub user account names used by the repository - this can be
-edited on Zenodo, as explained above. DOIs used in Zenodo are registered
-through the <a href="https://www.datacite.org/" class="external-link">DataCite</a>
+by the ‘GitHub’ user account names used by the repository - this can be
+edited on ‘Zenodo’, as explained above. DOIs used in ‘Zenodo’ are
+registered through the <a href="https://www.datacite.org/" class="external-link">DataCite</a>
 service.</p>
 <blockquote>
 <p><strong>Pro-tip</strong>: Check the <code>Citation</code> field on
-the Zenodo page, and copy-paste it into the README file of your GitHub
-repo to make cross-linking even easier (or refer users to the Zenodo
-page to find the citation, which obviates the need to manually update
-this information). Click the DOI bage in the <code>Details</code> field
-to get instructions on how to add a clear highlighted DOI badge to your
-GitHub repository, for users to see and make use of your DOI:</p>
+the ‘Zenodo’ page, and copy-paste it into the README file of your
+‘GitHub’ repo to make cross-linking even easier (or refer users to the
+‘Zenodo’ page to find the citation, which obviates the need to manually
+update this information). Click the DOI badge in the
+<code>Details</code> field to get instructions on how to add a clear
+highlighted DOI badge to your ‘GitHub’ repository, for users to see and
+make use of your DOI:</p>
 </blockquote>
 <p><a href="https://doi.org/10.5281/zenodo.14552329" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14552329.svg" alt="DOI"></a></p>
 </div>
 <div class="section level3">
 <h3 id="congratulations">CONGRATULATIONS!<a class="anchor" aria-label="anchor" href="#congratulations"></a>
 </h3>
-<p>Your FAIR theory is now archived in Zenodo, and with a DOI that can
+<p>Your FAIR theory is now archived in ‘Zenodo’, and with a DOI that can
 be versioned to reflect updates to the repository version through time.
-You should be able to see details of this on the GitHub Zenodo page for
-your repository. This also means that your archived projects can get
+You should be able to see details of this on the ‘GitHub’ ‘Zenodo’ page
+for your repository. This also means that your archived projects can get
 picked up by other indexing services and search engines that use DOIs
 too.</p>
 <p>Providing a long-term archive and a DOI for your work is required for
@@ -537,29 +538,29 @@ and software.</p>
 <blockquote>
 <p><strong>Pro-tip</strong>: Is your research funded by an EU grant? Now
 you can directly connect your FAIR theory to your grant by updating the
-grant section of the metadata on the project’s Zenodo record. This
+grant section of the metadata on the project’s ‘Zenodo’ record. This
 massively helps to increase its discoverability!</p>
 </blockquote>
 </div>
 <div class="section level3">
 <h3 id="checklist-for-citing-your-project">Checklist for citing your project<a class="anchor" aria-label="anchor" href="#checklist-for-citing-your-project"></a>
 </h3>
-<p>So now you have a sustainably archived GitHub repository in Zenodo
-that is ready to be re-used and cited! Before continuing, make sure that
-you have:</p>
+<p>So now you have a sustainably archived ‘GitHub’ repository in
+‘Zenodo’ that is ready to be re-used and cited! Before continuing, make
+sure that you have:</p>
 <ul class="task-list">
-<li><label><input type="checkbox">Linked your GitHub project to
-Zenodo. If you see a complete copy of your GitHub repository in Zenodo
-then things are working.</label></li>
-<li><label><input type="checkbox">Zenodo and GitHub integrated setup
-works nicely. For example have all the author names, and correct project
-title come across to Zenodo. If not, or if authors just have nicknames
-you can edit these details in Zenodo.</label></li>
+<li><label><input type="checkbox">Linked your ‘GitHub’ project to
+‘Zenodo’. If you see a complete copy of your ‘GitHub’ repository in
+‘Zenodo’ then things are working.</label></li>
+<li><label><input type="checkbox">‘Zenodo’ and ‘GitHub’ integrated
+setup works nicely. For example have all the author names, and correct
+project title come across to ‘Zenodo’. If not, or if authors just have
+nicknames you can edit these details in ‘Zenodo’.</label></li>
 <li><label><input type="checkbox">Project has a first release, with a
-DOI. You should have a DOI displayed on your projects Zenodo page. This
-first DOI is called the ‘concept DOI’ and is the master DOI linking to
-all subsequent release DOIs. Copy this DOI link and embed it in your
-GitHub projects README page. You’re done!</label></li>
+DOI. You should have a DOI displayed on your projects ‘Zenodo’ page.
+This first DOI is called the ‘concept DOI’ and is the master DOI linking
+to all subsequent release DOIs. Copy this DOI link and embed it in your
+‘GitHub’ projects README page. You’re done!</label></li>
 </ul>
 </div>
 </div>
@@ -612,7 +613,7 @@ Zenodo. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">h
 </div>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -623,15 +624,15 @@ Zenodo. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">h
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
