@@ -35,6 +35,8 @@ DAGs can be implemented as FAIR theories, or can be derived from FAIR theories.
 In this vignette, we'll illustrate how to use DAGs for causal inference in `R`,
 inspired by the *Tripartite Model* of the impact of the family on children’s emotion regulation and adjustment [@morrisRoleFamilyContext2007].
 
+### Learning Goals
+
 Once you have completed this tutorial, you will know how to:
 
 - [ ] Implement a theory represented as a diagram as a FAIR theory
@@ -44,6 +46,17 @@ Once you have completed this tutorial, you will know how to:
 - [ ] Perform basic causal inference based on a FAIR theory
 
 <!-- Below, we’ll translate this example into a simple DAG, simulate some data, and demonstrate how controlling for the collider can change the observed relationship between Immigrant Status and Self-Efficacy. -->
+
+```{asis echo = knitr::is_html_output()}
+
+### Optional: Video Lecture
+
+[This video lecture](https://www.youtube.com/watch?v=wBB4sed9ku0) gives an introduction to causal inference, with a focus on DAGs comprising three variables, including the distinction between confounders and colliders.
+
+
+<!-- <iframe width="560" height="315" src="http://www.youtube.com/embed/wBB4sed9ku0?rel=0" frameborder="0" allowfullscreen></iframe> -->
+
+```
 
 ## Install and Load Required Packages
 
@@ -272,7 +285,7 @@ Update the `README.md` file as necessary.
 Then, go to Zenodo, and [switch on archiving for this GitHub repository](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#select-the-repository-to-archive).
 Once this is done, run:
 
-```{r}
+```{r eval = FALSE}
 worcs::git_release_publish(repo = file.path("c:/theories", "tripartite_model"))
 ```
 
@@ -363,8 +376,8 @@ and some may be better suited to particular use cases.
 
 ```{r simulate-data}
 set.seed(1)
-sim_data <- simulateSEM(tripartite, N = 497)
-head(sim_data)
+df_sim <- simulateSEM(tripartite, N = 497)
+head(df_sim)
 ```
 
 This synthetic dataset is consistent with the structure encoded in our Tripartite Model, though the parameter values are arbitrary.
@@ -398,8 +411,8 @@ PP -> O [beta=0]
 EC -> O [beta=0]
 PP -> EC  [beta=.2]
 }')
-set.seed(1)
-sim_data <- simulateSEM(tripartite_coef, N = 497)
+set.seed(51)
+df_sim <- simulateSEM(tripartite_coef, N = 497)
 ```
 
 ## Selecting Control Variables
@@ -421,3 +434,132 @@ theorytools:::quizz(
   "When estimating the effect of Observation on Emotion Regulation, It is fine to control for both Child Characteristics and Parent Characteristics." = FALSE,
   "What is the smallest possible simple adjustment set for the effect of Child Characteristics on Adjustment?" = c(answer = "PC", "EC, O, PP", "EC, PC, PP"))
 ```
+
+
+## Basic Causal Inference
+
+Once we know which variables to control for, we can use standard regression to estimate the causal effect.
+Using regression assumes that all causal effects are linear and additive, with normally distributed residuals and predictors without measurement error.
+Other methods exist which do not make these assumptions.
+We can use the function `select_controls()` to construct a `data.frame` with our exposure, outcome, and the relevant control variables.
+This facilitates conducting causal inference with the appropriate control variables,
+as you can just use the model formula `outcome ~ exposure` to obtain the uncontrolled effect, and `outcome ~ .` to obtain the causal estimate.
+
+```{r}
+df_controls <- select_controls(tripartite, df_sim, exposure = "O", outcome = "ER")
+model_bivariate <- lm(ER ~ O, df_controls)
+model_causal <- lm(ER ~., df_controls)
+summary(model_bivariate)
+summary(model_causal)
+```
+
+```{r results='asis', echo=FALSE}
+theorytools:::quizz(
+  "What is the causal effect of Observation on Emotion Regulation?" = c(0.14, .01),
+  "There is a significant causal effect of Observation on Emotion Regulation." = TRUE,
+  "If the DAG is correct, then `model_bivariate` gives us an unbiased estimate of the effect of Observation on Emotion Regulation." = FALSE)
+```
+
+
+## Using Real Data
+
+When working with real data, causal inference quickly becomes more complicated.
+Therefore, we provide a "real data" example here, to practice the relevant skills.
+The `theorytools` package includes a dataset that is based on ["Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC)](https://aifs.gov.au/growing-up-in-australia).
+As the LSAC dataset is accessible by explicit permission only,
+this is a synthetic dataset with similar properties to the real data.
+Let's access the data:
+
+```{r}
+head(lsac)
+```
+
+### Mapping Measured Variables onto Theoretical Constructs
+
+Here, we are using real data to operationalize the theoretical constructs in our DAG.
+If we inspect the documentation of the data, we can conclude that the most likely mapping of constructs to variables is:
+
+```{r}
+operationalizations <- c(PP = "warmth", EC = "relationship_quality", CC = "temperament_negreact", ER = "emotion_regulation", A = "social_functioning", PC = "coping")
+```
+
+Let's rename the variables, so the data and the DAG are consistent.
+We will also perform a rudimentary imputation,
+as missing data can cause problems later on.
+Note that there is abundant literature on best practices in handling missing data;
+here, we use single imputation for pragmatic reasons.
+
+```{r, eval = FALSE}
+# Impute missing data
+df_real <- VIM::kNN(lsac, numFun = median)
+names(df_real) <- names(operationalizations)[match(operationalizations, names(df_real))]
+```
+
+```{r echo = FALSE}
+# saveRDS(df_real, "df_real.RData")
+df_real <- readRDS("df_real.RData")
+```
+
+Note that one variable is missing: Observation (O).
+This is unfortunate, as for the previous example we used O as our exposure variable. 
+For the remainder of the examples, we will use Parenting Practices as our exposure variable.
+Obtain the adjusment set for the effect of Parenting Practices on Emotion Regulation:
+
+```{r}
+adjustmentSets(tripartite, exposure = "EC", outcome = "ER")
+```
+
+Any DAG implies conditional independencies:
+variables that should be statistically independent from one another, after controlling for a specific adjustment set.
+As a kind of assumption check, we could test if the variables in our dataset indeed show these statistical independencies.
+If our data show dependencies where the DAG implies independence,
+this can be taken as evidence against the veracity of our DAG.
+Of course, there are alternative explanations: how we operationalized the construct, the presence of measurement error, sampling bias, et cetera.
+
+The function `localTests` applies the d-separation criterion to determine all conditional independencies implied by a DAG,
+and then performs tests for each of them.
+Different types of tests are available for different types of variables.
+For continuous variables (which we have),
+the `"cis.loess"` method provides non-parametric conditional independence tests using bootstrapped loess regression.
+
+Let's first conduct conditional independence tests for the dataset that we simulated from the DAG.
+Because we're conducting a lot of significance tests,
+we can control the overall probability of making a Type I error (i.e., drawing false positive conclusions about discrepancies between DAG and data).
+We can use Bonferroni-corrected bootstrapped confidence intervals for testing, as demonstrated in the following code block:
+
+```{r}
+# Get all DAG-implied conditional independencies
+cis <- impliedConditionalIndependencies(tripartite)
+# Bonferroni-corrected confidence interval
+bonferroni <- 1-(.05/length(cis))
+# Conduct the tests
+ci_tests <- localTests(tripartite, df_sim, type = "cis.loess", R = 1000, tests = cis, conf.level = bonferroni)
+# Print result, with added significance asterisks
+add_significance(ci_tests)
+```
+
+Now, let's perform the same tests for the real data.
+Because we have a missing variable, we cannot test the complete set.
+We can filter all conditional independencies that cannot be tested.
+Don't forget to use a different Bonferroni correction for the resulting (smaller number of) tests!
+
+```{r}
+cis_real <- filter_conditional_independencies(cis, df_real)
+bonferroni <- 1-(.05/length(cis_real))
+# Conduct the tests
+ci_tests <- localTests(tripartite, df_real, type = "cis.loess", R = 1000, tests = cis_real, conf.level = bonferroni)
+# Print result, with added significance asterisks
+add_significance(ci_tests)
+```
+
+
+```{r results='asis', echo=FALSE}
+theorytools:::quizz(
+  "We can use Parenting Practices because O is not in its adjustment set." = TRUE,
+  "Which of these causal effects can we estimate using these data?" = c("All of these ", "PP -> A", "ER  -> PC", "CC -> A"),
+  "The `ci_tests` give us reasons to doubt that `df_sim` is consistent with the DAG." = FALSE,
+  "The `ci_tests` give us reasons to doubt that `df_real` is consistent with the DAG." = TRUE,
+  "Consider the sample size of `df_real`. Could this be related to your answers in the previous two questions?" = c("Yes", "No")
+)
+```
+

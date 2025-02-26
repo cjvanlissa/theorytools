@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>/404.html</loc></url>
+<url><loc>/articles/causal-inference.html</loc></url>
 <url><loc>/articles/fair-theory.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/articles/readme.html</loc></url>
@@ -7,9 +8,17 @@
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
 <url><loc>/reference/add_readme_fair_theory.html</loc></url>
+<url><loc>/reference/add_significance.html</loc></url>
 <url><loc>/reference/add_theory_file.html</loc></url>
 <url><loc>/reference/add_zenodo_json.html</loc></url>
 <url><loc>/reference/create_fair_theory.html</loc></url>
+<url><loc>/reference/download_zenodo.html</loc></url>
+<url><loc>/reference/filter_conditional_independencies.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/lsac.html</loc></url>
+<url><loc>/reference/mottistefanidi2012.html</loc></url>
+<url><loc>/reference/quizz.html</loc></url>
+<url><loc>/reference/select_controls.html</loc></url>
+<url><loc>/reference/webex_vignette.html</loc></url>
 </urlset>
 

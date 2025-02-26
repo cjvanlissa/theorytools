@@ -32,9 +32,11 @@ Imports:
     gh,
     cli,
     jsonlite,
-    curl
-Suggests:
+    curl,
     knitr,
+    webexercises,
+    dagitty
+Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     pkgdown,
@@ -43,9 +45,9 @@ Suggests:
     fs,
     dagitty,
     ggplot2,
-    tidySEM,
-    webexercises
+    tidySEM
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5)
+LazyData: true
