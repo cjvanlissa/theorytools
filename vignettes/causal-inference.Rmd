@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{js, class.source = "jsvis1", echo = FALSE}
+```{js, class.source = "jsvis1", echo = FALSE, eval = TRUE}
 <script>
 
 /* update total correct if #webex-total_correct exists */
