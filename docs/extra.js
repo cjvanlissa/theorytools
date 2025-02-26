@@ -1,5 +1,3 @@
-<script>
-
 /* update total correct if #webex-total_correct exists */
 update_total_correct = function() {
   console.log("webex: update total_correct");
@@ -202,5 +200,3 @@ window.onload = function() {
 
   update_total_correct();
 }
-
-</script>

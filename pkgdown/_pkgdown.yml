@@ -1,0 +1,7 @@
+url: https://cjvanlissa.github.io/theorytools
+home:
+  title: Build websites for R packages
+template:
+  bootstrap: 5
+  include:
+    after_body: <script scr="extra.js"></script>

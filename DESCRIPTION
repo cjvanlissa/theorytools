@@ -23,7 +23,7 @@ Description: An integrated suite of tools for creating, maintaining, and reusing
     and enhances their discoverability and usability.
 License: GPL (>= 3)
 Encoding: UTF-8
-URL: https://github.com/cjvanlissa/theorytools
+URL: https://github.com/cjvanlissa/theorytools, https://cjvanlissa.github.io/theorytools
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Imports:
