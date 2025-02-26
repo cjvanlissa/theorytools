@@ -31,7 +31,8 @@ Imports:
     gert,
     gh,
     cli,
-    jsonlite
+    jsonlite,
+    curl
 Suggests:
     knitr,
     rmarkdown,
@@ -39,6 +40,12 @@ Suggests:
     pkgdown,
     withr,
     usethis,
-    fs
+    fs,
+    dagitty,
+    ggplot2,
+    tidySEM,
+    webexercises
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5)

@@ -1,0 +1,423 @@
+---
+title: "Using FAIR Theory for Causal Inference"
+output: theorytools:::webex_vignette
+vignette: >
+  %\VignetteIndexEntry{Using FAIR Theory for Causal Inference}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<!-- In this example, we illustrate how to use DAGs for causal inference, including the detection of a violation of the initial model and subsequent adaptation of the DAG. We could use that to illustrate updating FAIR theory: -->
+
+<!-- https://currentprotocols.onlinelibrary.wiley.com/doi/full/10.1002/cpz1.45 -->
+
+<!-- We can find more examples of causal inference with DAGs in these tutorials: -->
+
+<!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ -->
+
+<!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ -->
+
+
+## Introduction
+
+Directed acyclic graphs (DAGs) are a powerful tool for expressing and testing causal assumptions.
+They allow researchers to identify potential confounders or colliders,
+and guide decisions about which variables to control for (or not) in statistical analyses [@cinelliCrashCourseGood2022].
+DAGs can be implemented as FAIR theories, or can be derived from FAIR theories.
+In this vignette, we'll illustrate how to use DAGs for causal inference in `R`,
+inspired by the *Tripartite Model* of the impact of the family on children’s emotion regulation and adjustment [@morrisRoleFamilyContext2007].
+
+Once you have completed this tutorial, you will know how to:
+
+- [ ] Implement a theory represented as a diagram as a FAIR theory
+- [ ] Access that FAIR theory in the data analysis environment (i.e., theory reuse)
+- [ ] Generate synthetic data from a FAIR theory
+- [ ] Select control variables using a FAIR theory
+- [ ] Perform basic causal inference based on a FAIR theory
+
+<!-- Below, we’ll translate this example into a simple DAG, simulate some data, and demonstrate how controlling for the collider can change the observed relationship between Immigrant Status and Self-Efficacy. -->
+
+## Install and Load Required Packages
+
+We'll use the following packages:
+
+- `theorytools` for functions pertaining to FAIR theory and a sample dataset
+- `dagitty` for interacting with Directed Acyclic Graphs (DAGs)
+- `tidySEM` for visualizing DAGs
+
+If you already have these packages installed, it is not necessary to run this code:
+
+```{r install-packages, eval=FALSE}
+install.packages("theorytools")
+install.packages("dagitty")
+install.packages("tidySEM")
+```
+
+```{r load-libraries, results='hide'}
+library(theorytools)
+library(dagitty)
+library(tidySEM)
+library(ggplot2)
+```
+
+## The Tripartite Model
+
+The tripartite model identifies three major familial influences on children's ER:
+
+1. **Observation (O)**, e.g., modeling parents' behavior
+2. **Parenting practices (PP)**, e.g., emotion coaching
+3. **Emotional Family Climate (EC)**, e.g., attachment style
+
+These three factors, together with **parent characteristics (PC)** and **child characteristics (CC)**, shape the child's **emotion regulation (ER)**, which in turn influences the child's **adjustment (A)** (e.g., internalizing/externalizing problems, social competence).
+
+The model is visually represented below:
+
+```{r figmorris, echo = FALSE, out.width="70%", fig.cap="An interpretation of Morris' Tripartite Model of Emotion Regulation Development"}
+lo <- get_layout(
+  "",   "O",  "",   "", "",
+  "",   "PP", "",   "ER",   "A",
+  "",   "EC", "",   "",   "",
+  "PC", "",   "CC", "",   "",
+  rows = 4
+)
+edg <- data.frame(
+  from = c("EC", "EC", "EC", "ER", "O", "PC", "PC",
+           "PC", "PC", "PP", "PP", "PP", "O"),
+  to =   c("A", "ER", "O", "A", "ER", "CC", "EC",
+           "O", "PP", "EC", "ER", "O", "A"),
+  curvature = c(NA, NA, 60, NA, NA, NA, NA, NA,
+                NA, -60, NA, 60, NA))
+p <- prepare_graph(edges = edg, layout = lo)
+p$edges$connect_from = c("right", "right", "left",
+                         "right", "right", "right",
+                         "top", "top", "top", "left",
+                         "right", "left", "right")
+p$edges$connect_to = c("left", "left", "left", "left",
+                       "left", "left", "left", "left",
+                       "left", "left", "left", "left", "left")
+p$edges$arrow <- "both"
+p$edges$arrow[which(p$edges$from == "PC")] <- "last"
+g <- plot(p) +
+  geom_segment(aes(
+    x = p$nodes$x[p$nodes$name == "CC"], 
+    y = p$nodes$node_ymax[p$nodes$name == "CC"]+.2,
+    yend = (p$nodes$node_ymax[p$nodes$name == "CC"]+2),
+    linewidth = 4),
+    arrow = arrow(length = unit(0.03, "npc"), ends = "both"))
+ggsave("morris.png", g, device = "png", width = 6, height = 4)
+knitr::include_graphics("morris.png")
+```
+
+This figure, loosely based on the visual representation of the theory in the paper by Morris and colleagues,
+is relatively formalized compared to the standard for developmental psychological theories.
+Before we can FAIRify this theory, however, we have to clarify a few things, and make some decisions. 
+
+First, notice that the model does not explicitly follow any graphing convention.
+It resembles a structural equation model - but notice that there is an unconnected bold double-headed arrow near CC (Child Characteristics). The written description of the text clarifies the meaning of the bold arrow: the authors argue that Child Characteristics *"moderate relations between family context [and] ER"* (Morris et al., 2007, p. 364).
+
+Second, note that most arrows are bidirectional.
+This would be fine if we wished to specify the model as a structural equation model where associations can be undirected.
+However, since our goal is to perform causal inference, we need a **directed** acyclic graph.
+This means we have to assume a direction of causality for all bidirectional arrows.
+Reading the text helps us direct some arrows: we read that *"children __learn__ about ER through [Observation]"*, *"parenting practices __affect__ ER"*, and *"ER __is affected by__ the emotional climate"*.
+This is all causal language [@norouziCapturingCausalClaims2024].
+Even though we later read that *"ER and familial influences are bidirectional processes in our model"*,
+and even though some recent publications have argued that child effects on parents outweigh parents' effects on children in emotional development [@vanlissaMothersFathersQuantitative2020],
+for the purpose of this tutorial, we will assume only parent effects on children.
+It is fine to make strong assumptions when specifying theory;
+if they are inconsistent with the data, we can revise them later.
+
+Third, note that it is not clear if there is a path from Parenting Practices to Adjustment. While there are paths from Observation and Emotional Climate to Adjustment, we read in the text: *"although there are direct effects of the family context on children’s adjustment [...] a mediational model is proposed"*. Elsewhere in the text, "family context" is defined in terms of all three predictors (O, PP, and EC).
+We can thus either include all three direct effects, or omit them and assume full mediation.
+Since the latter option results in a much simpler DAG, we opt for full mediation.
+
+### Implementing the Tripartite Model as a DAG
+
+We can implement the model as a DAG using the `dagitty` package.
+We start with an "ontology", or simply, by stating which constructs exist in our DAG:
+
+```
+tripartite <- dagitty('dag {
+O
+PP
+EC
+PC
+CC
+ER
+A
+```
+
+Next, we add the directed edges that were present in the original theory:
+
+```
+PC -> CC
+PC -> EC
+PC -> PP
+PC -> O
+```
+
+Next, we direct the edges that run from Observation, Parenting Practices, and Emotional Climate to Emotion Regulation. We omit direct effects to Adjustment, and include an effect from ER to Adjustment.
+
+
+```
+O -> ER
+PP -> ER
+EC -> ER
+
+ER -> A
+```
+
+Next, we incorporate the effects of Child Characteristics.
+These are moderation effects. In a DAG, the interaction effect of two predictors on an outcome is simply represented by specifying both predictors as common causes of the outcome.
+When specifying a model, however, we may have to explicitly include interaction effects.
+We can annotate the graph in such a way that it is clear which variables are involved in interactions with O, PP, and EC, like this:
+
+```
+CC -> ER [form="CC:O+CC:PP+CC:EC"];
+```
+
+Finally, we have to make a decision about the interrelations between the predictors of emotion regulation.
+We could omit them, or delve further into the literature to direct them.
+For now, I made the following assumptions:
+
+* The Emotional Climate and specific Parenting Practices affect children's Observation (=modeling) of parents' behavior
+* Parenting Practices affect the Emotional Climate
+
+```
+PP -> O
+EC -> O
+PP -> EC}')
+```
+
+Now, we have a complete DAG!
+
+```{r, include=FALSE}
+tripartite <- dagitty('dag {
+O
+PP
+EC
+PC
+CC
+ER
+A
+
+PC -> CC
+PC -> EC
+PC -> PP
+PC -> O
+
+O -> ER
+PP -> ER
+EC -> ER
+
+ER -> A
+
+CC -> ER [form="CC:O+CC:PP+CC:EC"];
+
+PP -> O
+EC -> O
+PP -> EC}')
+```
+
+
+
+```{r eval=knitr::is_html_output(), results='asis', echo=FALSE}
+theorytools:::quizz(
+  "A DAG can have arrows that run left to right, arrows that run right to left, and bidirectional arrows." = FALSE,
+  "An interaction effect of X1 and X2 on Y is represented in a DAG by drawing a directed arrow from X1 to Y, and from X2 to Y." = TRUE,
+  "Information about functional form, like `[form=\"CC:O+CC:PP+CC:EC\"]`, is part of the DAG." = FALSE)
+```
+
+
+
+## From DAG to FAIR Theory 
+
+A DAG is not yet a FAIR theory.
+We can FAIRify the DAG we specified above by following the steps outlined in the [Making a Theory FAIR vignette](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html).
+We briefly go over the steps here.
+First, let's save the DAG to a text file:
+
+```{r eval = FALSE}
+writeLines(tripartite, "tripartite_model.txt")
+```
+
+Your [GitHub integration must be set up](https://cjvanlissa.github.io/worcs/articles/setup.html) for the next step to work.
+You can check if everything is set up correctly by running:
+
+```{r eval = FALSE}
+worcs::check_git()
+worcs::check_github()
+```
+
+Next, we can create a FAIR theory repository:
+
+```{r eval = FALSE}
+create_fair_theory(
+  path = file.path("c:/theories", "tripartite_model"),
+  title = "Tripartite Model",
+  theory_file = "tripartite_model.txt",
+  remote_repo = "tripartite_model",
+  add_license = "cc0")
+```
+
+Update the `README.md` file as necessary.
+Then, go to Zenodo, and [switch on archiving for this GitHub repository](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#select-the-repository-to-archive).
+Once this is done, run:
+
+```{r}
+worcs::git_release_publish(repo = file.path("c:/theories", "tripartite_model"))
+```
+
+Finally, you can [edit the metadata](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#entering-meta-data) for the archived version on Zenodo.
+
+The following DOI shows my version of the FAIR Tripartite Model: <https://doi.org/10.5281/zenodo.14921521>
+
+## Accessing an Existing FAIR Theory
+
+There are several ways in which we can access an existing FAIR theory.
+If our goal is simply to use it in our analysis workflow (as is the case in this tutorial),
+then we can access the static archived version on Zenodo by running:
+
+```{r eval = FALSE}
+download_zenodo(
+  doi = "https://doi.org/10.5281/zenodo.14921521",
+  path = "c:/theories/tripartite_downloaded")
+```
+
+If we want to contribute to further theory development, we might instead prefer to [fork the original GitHub repository](https://github.com/github/docs/blob/main/content/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo.md) to our own GitHub account,
+and create a local clone of our newly forked repository.
+In R, you can clone a repository like so:
+
+```{r eval = FALSE}
+gert::git_clone(
+  url = "https://github.com/cjvanlissa/tripartite_model.git",
+  path = "c:/theories/tripartite_clone")
+```
+
+The difference between these two approaches is that the former only copies the statically archived files to your device,
+whereas the latter copies the entire Git repository with its history of commits and all branches, and continues to version control changes you make.
+
+For this tutorial, please download my version of the Tripartite Model using `download_zenodo()`.
+
+## X-Interoperability in R
+
+Interoperability pertains to the ability to use a theory in scientific workflows.
+X-interoperability refers to the ability to use a theory for *specific operations* in scientific workflows.
+When we go through the remainder of the turorial, we are demonstrating that our FAIR tripartite model is X-interoperable for visualization in R, for selecting control variables, for performing causal inference, et cetera.
+That is to say: we can directly ingest the FAIR theory in R, and interact with it in our analysis environment and use it to construct fully reproducible analysis workflows, including for causal inference.
+
+First, let's ingest the theory into our R environment:
+
+```{r eval = FALSE}
+tripartite <- dagitty(paste(readLines("c:/theories/tripartite_downloaded/tripartite_model.txt"), collapse = "\n"))
+```
+
+Then, we can plot the model using the `tidySEM` package:
+
+```{r eval = knitr::is_html_output()}
+graph_sem(tripartite)
+```
+
+We can optionally specify a layout for the graph, so that it resembles the model as visualized by Morris and colleagues:
+
+```{r}
+lo <- get_layout(
+  "",   "O",  "",   "", "",
+  "",   "PP", "",   "ER",   "A",
+  "",   "EC", "",   "",   "",
+  "PC", "",   "CC", "",   "",
+  rows = 4
+)
+graph_sem(tripartite, layout = lo)
+```
+
+The tidySEM vignette on [plotting structural equation models](https://cjvanlissa.github.io/tidySEM/articles/Plotting_graphs.html) further explains how to customize this figure, which is a `ggplot` object.
+
+```{r eval=knitr::is_html_output(), results='asis', echo=FALSE}
+theorytools:::quizz(
+  "Which of the following describes the property of X-interoperability of a FAIR theory?" = c("It can be reused for a specific operation.", "It can be reused by any person.", "It can be reused for any operation.", "It is licenced to be reused."),
+  "If you are contributing to theory development, which platform provides infrastructure to coordinate collaborate with known others and strangers?" = c("GitHub", "Zenodo", "RStudio"))
+```
+
+## Simulating Data from the FAIR Theory
+
+Simulation studies allow us to explore the implications of model assumptions,
+to plan our analyses before data collection,
+to conduct power analysis and plan our sample size,
+and to preregister a fully reproducible analysis pipeline [Preregistration-As-Code, @peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
+
+Below is a simplistic code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
+This function interprets the DAG as a structural equation model,
+samples random values for the path coefficients (unless specific values are provided),
+and assumes normal residual variances.
+Note that many other functions for simulating data exist,
+and some may be better suited to particular use cases.
+
+```{r simulate-data}
+set.seed(1)
+sim_data <- simulateSEM(tripartite, N = 497)
+head(sim_data)
+```
+
+This synthetic dataset is consistent with the structure encoded in our Tripartite Model, though the parameter values are arbitrary.
+In real research, you might use prior studies or expert knowledge to set more realistic parameter values.
+For this tutorial, we select some ad-hoc values, and assign zero (0), small (.2), or medium (.4) effect sizes to the paths in our DAG:
+
+```{r}
+tripartite_coef <- dagitty('dag {
+O
+PP
+EC
+PC
+CC
+ER
+A
+
+PC -> CC [beta=.4]
+PC -> EC [beta=.2]
+PC -> PP [beta=.2]
+PC -> O [beta=0]
+
+O -> ER [beta=.2]
+PP -> ER [beta=0]
+EC -> ER [beta=.2]
+
+ER -> A [beta=.4]
+
+CC -> ER [beta=.4];
+
+PP -> O [beta=0]
+EC -> O [beta=0]
+PP -> EC  [beta=.2]
+}')
+set.seed(1)
+sim_data <- simulateSEM(tripartite_coef, N = 497)
+```
+
+## Selecting Control Variables
+
+One advantage of a DAG is the ability to identify **which variables should be controlled for** (e.g., to avoid confounding) and which variables should **not** be controlled for (e.g., colliders). In `dagitty`, you can use the function `adjustmentSets()` to find minimal sufficient adjustment sets for estimating specific causal effects.
+
+For instance, let’s say we want to examine the causal effect of Observation on Emotion Regulation. We can run:
+
+```{r adj-sets}
+adjustmentSets(tripartite, exposure="O", outcome="ER")
+```
+
+The DAG-based algorithm identifies which sets of variables are sufficient to block backdoor paths, given some strong assumptions [@pearlCausalDiagramsEmpirical1995].
+The result suggests that it is enough to control for Child Characteristics, Emotional Climate, and Parenting Practices if we wish to obtain an unbiased estimate of the effect of Observation on Emotion Regulation.
+Alternatively, we can control for Parent Characteristics, Emotional Climate, and Parenting Practices.
+
+```{r eval=knitr::is_html_output(), results='asis', echo=FALSE}
+theorytools:::quizz(
+  "When estimating the effect of Observation on Emotion Regulation, It is fine to control for both Child Characteristics and Parent Characteristics." = FALSE,
+  "What is the smallest possible simple adjustment set for the effect of Child Characteristics on Adjustment?" = c(answer = "PC", "EC, O, PP", "EC, PC, PP"))
+```

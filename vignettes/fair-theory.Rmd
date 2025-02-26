@@ -353,6 +353,9 @@ Click the orange `Edit` button, and verify/supply the following information:
 - [ ] Related works: Add the DOIs/identifiers of related (print) works. Use the `Relation` field as appropriate. For example:
     + `Is documented by` a theory paper you wrote, in which you introduce this FAIR theory
     + `Is derived from` an existing theory, which was published in print (paper, book chapter) but not made FAIR
+- [ ] References: Optionally, cite related works in plain text. For example, here we can provide the full citation of De Groot and Spiekerman:
+    
+    > De Groot, A. D., & Spiekerman, J. A. A. (1969). Methodology: Foundations of inference and research in the behavioral sciences. De Gruyter Mouton. https://doi.org/10.1515/9783112313121
 
 To save these changes, click 'Publish'.
 

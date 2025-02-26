@@ -1,0 +1,162 @@
+---
+title: "Using FAIR Theory for Causal Inference"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using FAIR Theory for Causal Inference}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<!-- In this example, we illustrate how to use DAGs for causal inference, including the detection of a violation of the initial model and subsequent adaptation of the DAG. We could use that to illustrate updating FAIR theory: -->
+
+<!-- https://currentprotocols.onlinelibrary.wiley.com/doi/full/10.1002/cpz1.45 -->
+
+<!-- We can find more examples of causal inference with DAGs in these tutorials: -->
+
+<!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ -->
+
+<!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ -->
+
+
+## Introduction
+
+Directed acyclic graphs (DAGs) are a powerful tool for expressing and testing causal assumptions.
+They allow researchers to identify potential confounders or colliders,
+and guide decisions about which variables to control for (or not) in statistical analyses [@cinelliCrashCourseGood2022].
+
+DAGs can be implemented as FAIR theories, or can be derived from FAIR theories.
+
+In this vignette, we'll illustrate how to use DAGs for causal inference in `R`,
+inspired by an example from [@asendorpfBiasDueControlling2012].
+In his commentary, Asendorpf discusses the common practice of controlling for variables that may actually be colliders, leading to biased estimates.
+He illustrates this principle with data from @motti-stefanidiAdaptationWellbeingAdolescent2012.
+The `theorytools` package contains a synthetic dataset based on the summary statistics reported in Motti-Stefanidi and colleagues, `motti-stefanidi2012`.
+
+
+
+## Background: Collider Bias in Research on Immigrant Adaptation
+
+Asendorpf (2012) reflects on the study by Motti-Stefanidi and colleagues, which investigated immigrant students’ adaptation in Greece.
+He argues that **Immigrant Status** and **Self-Efficacy** both influence **Greek Language Skills**. When researchers study the association between **Immigrant Status** and **Self-Efficacy** (as a proxy for adaptation to the host country),
+the results are biased if control for **Greek Language Skills**.
+This occurs because **Greek Language Skills** are a collider, or common effect, of the relationship between **Immigrant Status** and **Self-Efficacy**, not an independent cause of self-efficacy.
+
+In this tutorial, we use this example to:
+
+- [ ] Illustrate how one might specify a DAG as a FAIR theory (i.e., imagine you are the theoretician)
+- [ ] Access that FAIR theory in the data analysis environment (i.e., imagine you are a user of someone else's theory)
+- [ ] Use that FAIR theory to select control variables
+- [ ] Perform causal inference
+
+<!-- Below, we’ll translate this example into a simple DAG, simulate some data, and demonstrate how controlling for the collider can change the observed relationship between Immigrant Status and Self-Efficacy. -->
+
+## Step 1: Install and Load Required Packages
+
+We'll use two popular packages for DAGs:
+
+- **dagitty** (for creating and analyzing DAGs)
+- **tidySEM** (for visualizing DAGs)
+
+```{r install-packages, eval=FALSE}
+install.packages("dagitty")
+# install.packages("ggdag")
+install.packages("tidySEM")
+```
+
+```{r load-libraries}
+library(dagitty)
+library(tidySEM)
+library(dplyr)
+library(ggplot2)
+```
+
+## Step 2: Specify the DAG
+
+We'll encode the causal relationships as described in Asendorpf’s example:
+
+- **Immigrant Status** -> **Greek Language Skills**
+- **Self-Efficacy** -> **Greek Language Skills**
+- Potential direct link between **Immigrant Status** and **Self-Efficacy**.
+
+```{r dag-spec}
+immigration_dag <- dagitty("dag {
+  ImmigrantStatus -> GreekLanguageSkills
+  SelfEfficacy -> GreekLanguageSkills
+  ImmigrantStatus -> SelfEfficacy
+}")
+
+graph_sem(immigration_dag)
+
+dagitty::localTests(immigration_dag, sim_data)
+```
+The DAG shows that **Greek Language Skills** is a collider because it has two parents: **Immigrant Status** and **Self-Efficacy**.
+
+## Step 4: Simulate Some Data
+
+Below, we’ll simulate a small dataset where:
+1. **ImmigrantStatus** is binary (0 = non-immigrant, 1 = immigrant)
+2. **SelfEfficacy** is correlated with ImmigrantStatus (immigrants tend to have slightly lower scores)
+3. **GreekLanguageSkills** depends on both ImmigrantStatus and SelfEfficacy.
+
+```{r simulate-data}
+sim_data <- mottistefanidi2012[, c("IMM1", "SEF1", "GRK1")]
+names(sim_data) <- c("ImmigrantStatus", "SelfEfficacy", "GreekLanguageSkills")
+head(sim_data)
+```
+
+## Step 5: Examine Correlations Before and After Controlling for the Collider
+
+We’ll demonstrate the difference between the **zero-order** correlation (i.e., unadjusted) between **ImmigrantStatus** and **SelfEfficacy** versus the partial correlation when controlling for **GreekLanguageSkills**.
+
+```{r zero-order-corr}
+# Zero-order correlation
+cor_imm_se <- cor(sim_data$ImmigrantStatus, sim_data$SelfEfficacy)
+cat("Zero-order correlation between Immigrant Status and Self-Efficacy:", round(cor_imm_se, 3))
+```
+
+```{r partial-corr}
+# Partial correlation controlling for GreekLanguageSkills
+# We'll compute the partial correlation by a linear model approach.
+model_unadjusted <- lm(SelfEfficacy ~ ImmigrantStatus, data = sim_data)
+model_adjusted   <- lm(SelfEfficacy ~ ImmigrantStatus + GreekLanguageSkills, data = sim_data)
+
+summary(model_unadjusted)
+summary(model_adjusted)
+```
+
+Compare the effect of **ImmigrantStatus** on **SelfEfficacy** before and after adjusting for **GreekLanguageSkills**. In the real-world data described by Asendorpf, adjusting for the collider drastically reduced the relationship to nearly zero.
+
+## Step 6: Interpreting Results
+
+Because **GreekLanguageSkills** is a collider in this scenario, conditioning on it can induce spurious associations or mask real ones. The observed difference in effect sizes (or correlation) for **ImmigrantStatus** on **SelfEfficacy** before and after adjusting highlights the bias that arises when we statistically control for a collider.
+
+## Conclusion
+
+This vignette illustrates how DAGs can help researchers:
+1. Identify colliders and other key variables.
+2. Understand when controlling for certain variables can bias results.
+3. Guide more principled decisions about statistical models.
+
+By embracing DAGs, psychologists and social scientists can align their analyses with explicit causal theories, thus reducing errors and advancing a clearer understanding of complex phenomena. As Asendorpf (2012) and Lee emphasize, **making causal assumptions explicit**—even in purely correlational settings—pushes the field toward more robust and defensible conclusions.
+
+## References
+
+```{r refs, echo=FALSE}
+# Use a standard bibstyle or a set of references. For simplicity:
+cat(
+"Asendorpf, J. B. (2012). Causal interpretations of correlations. *European Journal of Personality, 26*(5), 463-465.\n",
+"Foster, E. M. (2010). Causality and developmental psychology. *Developmental Psychology, 46*(6), 1454-1480.\n",
+"Lee, *Citation details if known*.\n",
+"Motti-Stefanidi, F., Asendorpf, J. B., & Masten, A. S. (in press). Immigrant youth adaptation in Greece. *Journal or Book reference here*.\n"
+)
+```
+
+
