@@ -5,7 +5,8 @@ articles:
   causal-inference: causal-inference.html
   fair-theory: fair-theory.html
   readme: readme.html
-last_built: 2025-02-26T22:49Z
+  simulate_from_theory: simulate_from_theory.html
+last_built: 2025-02-27T15:27Z
 urls:
   reference: https://cjvanlissa.github.io/theorytools/reference
   article: https://cjvanlissa.github.io/theorytools/articles

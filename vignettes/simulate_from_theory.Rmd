@@ -1,0 +1,76 @@
+---
+title: "Simulating Data from a FAIR Theory"
+output: theorytools:::webex_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulating Data from a FAIR Theory}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(theorytools)
+```
+
+```{r eval=knitr::is_html_output(), results='asis', echo=FALSE}
+# This quizz is only shown in HTML output format
+theorytools:::quizz(
+"The answer to this question is true." = TRUE,
+"This multiple choice question has three answers." =
+c("Correct", "Incorrect", "Not sure"),
+"Provide an exact floating point answer of 0.81" = 0.81,
+"Or give some wiggle room" = c(0.81, .1),
+"How many words in this sentence" = 6L
+)
+```
+
+We start with the specification by Van Lissa and colleagues, conducted as part of Fiedler & Glöckner's many-theorists project:
+
+```{r}
+SDT1 <- read.csv("../dev/sdt1.txt")
+knitr::kable(SDT1[, 1:3])
+```
+
+
+Next, we specify these verbal IF/THEN statements into causal links between specific constructs.
+Note that the numbers associated with the statements are retained,
+so that it is clear which causal links are derived from which IF/THEN statements:
+
+```{r}
+getwd()
+SDT2 <- read.csv("../dev/sdt2.txt")
+knitr::kable(SDT2[, 1:3])
+```
+
+This specification reveals redundancies in the original theory.
+Certain points were repeated, once phrased in a positive way, and once phrased in a negative way.
+When the statements are reduced to their implied causal connections, the redundancies become apparent.
+Now, we can simply remove the redundancies as follows:
+
+```{r}
+# Drop statement numbers
+SDT2 <- SDT2[, 2:3]
+# Remove redundant statements
+SDT2 <- SDT2[!duplicated(SDT2), ]
+knitr::kable(SDT2)
+```
+
+We can subsequently translate this table to a DAG:
+
+```{r}
+SDT <- dagitty::dagitty(
+  paste0("dag {",
+         paste0(SDT2$from, " -> ", SDT2$to, collapse = "\n"),
+         "}"))
+```
+
+
+
+
+

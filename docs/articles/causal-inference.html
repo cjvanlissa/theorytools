@@ -37,6 +37,7 @@
 <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/simulate_from_theory.html">Simulating Data from a FAIR Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -68,223 +69,22 @@
 
     
     
-<script>
-<script>
-
-/* update total correct if #webex-total_correct exists */
-update_total_correct = function() {
-  console.log("webex: update total_correct");
-
-  var t = document.getElementsByClassName("webex-total_correct");
-  for (var i = 0; i < t.length; i++) {
-    p = t[i].parentElement;
-    var correct = p.getElementsByClassName("webex-correct").length;
-    var solvemes = p.getElementsByClassName("webex-solveme").length;
-    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
-    var selects = p.getElementsByClassName("webex-select").length;
-
-    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
-  }
-}
-
-/* webex-solution button toggling function */
-b_func = function() {
-  console.log("webex: toggle hide");
-
-  var cl = this.parentElement.classList;
-  if (cl.contains('open')) {
-    cl.remove("open");
-  } else {
-    cl.add("open");
-  }
-}
-
-/* check answers */
-check_func = function() {
-  console.log("webex: check answers");
-
-  var cl = this.parentElement.classList;
-  if (cl.contains('unchecked')) {
-    cl.remove("unchecked");
-    this.innerHTML = "Hide Answers";
-  } else {
-    cl.add("unchecked");
-    this.innerHTML = "Show Answers";
-  }
-}
-
-/* function for checking solveme answers */
-solveme_func = function(e) {
-  console.log("webex: check solveme");
-
-  var real_answers = JSON.parse(this.dataset.answer);
-  var my_answer = this.value;
-  var cl = this.classList;
-  if (cl.contains("ignorecase")) {
-    my_answer = my_answer.toLowerCase();
-  }
-  if (cl.contains("nospaces")) {
-    my_answer = my_answer.replace(/ /g, "")
-  }
-
-  if (my_answer == "") {
-    cl.remove("webex-correct");
-    cl.remove("webex-incorrect");
-  } else if (real_answers.includes(my_answer)) {
-    cl.add("webex-correct");
-    cl.remove("webex-incorrect");
-  } else {
-    cl.add("webex-incorrect");
-    cl.remove("webex-correct");
-  }
-
-  // match numeric answers within a specified tolerance
-  if(this.dataset.tol > 0){
-    var tol = JSON.parse(this.dataset.tol);
-    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
-    if (matches.reduce((a, b) => a + b, 0) > 0) {
-      cl.add("webex-correct");
-    } else {
-      cl.remove("webex-correct");
-    }
-  }
-
-  // added regex bit
-  if (cl.contains("regex")){
-    answer_regex = RegExp(real_answers.join("|"))
-    if (answer_regex.test(my_answer)) {
-      cl.add("webex-correct");
-    }
-  }
-
-  update_total_correct();
-}
-
-/* function for checking select answers */
-select_func = function(e) {
-  console.log("webex: check select");
-
-  var cl = this.classList
-
-  /* add style */
-  cl.remove("webex-incorrect");
-  cl.remove("webex-correct");
-  if (this.value == "answer") {
-    cl.add("webex-correct");
-  } else if (this.value != "blank") {
-    cl.add("webex-incorrect");
-  }
-
-  update_total_correct();
-}
-
-/* function for checking radiogroups answers */
-radiogroups_func = function(e) {
-  console.log("webex: check radiogroups");
-
-  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
-  var cl = checked_button.parentElement.classList;
-  var labels = checked_button.parentElement.parentElement.children;
-
-  /* get rid of styles */
-  for (i = 0; i < labels.length; i++) {
-    labels[i].classList.remove("webex-incorrect");
-    labels[i].classList.remove("webex-correct");
-  }
-
-  /* add style */
-  if (checked_button.value == "answer") {
-    cl.add("webex-correct");
-  } else {
-    cl.add("webex-incorrect");
-  }
-
-  update_total_correct();
-}
-
-window.onload = function() {
-  console.log("webex onload");
-  /* set up solution buttons */
-  var buttons = document.getElementsByTagName("button");
-
-  for (var i = 0; i < buttons.length; i++) {
-    if (buttons[i].parentElement.classList.contains('webex-solution')) {
-      buttons[i].onclick = b_func;
-    }
-  }
-
-  var check_sections = document.getElementsByClassName("webex-check");
-  console.log("check:", check_sections.length);
-  for (var i = 0; i < check_sections.length; i++) {
-    check_sections[i].classList.add("unchecked");
-
-    let btn = document.createElement("button");
-    btn.innerHTML = "Show Answers";
-    btn.classList.add("webex-check-button");
-    btn.onclick = check_func;
-    check_sections[i].appendChild(btn);
-
-    let spn = document.createElement("span");
-    spn.classList.add("webex-total_correct");
-    check_sections[i].appendChild(spn);
-  }
-
-  /* set up webex-solveme inputs */
-  var solveme = document.getElementsByClassName("webex-solveme");
-
-  for (var i = 0; i < solveme.length; i++) {
-    /* make sure input boxes don't auto-anything */
-    solveme[i].setAttribute("autocomplete","off");
-    solveme[i].setAttribute("autocorrect", "off");
-    solveme[i].setAttribute("autocapitalize", "off");
-    solveme[i].setAttribute("spellcheck", "false");
-    solveme[i].value = "";
-
-    /* adjust answer for ignorecase or nospaces */
-    var cl = solveme[i].classList;
-    var real_answer = solveme[i].dataset.answer;
-    if (cl.contains("ignorecase")) {
-      real_answer = real_answer.toLowerCase();
-    }
-    if (cl.contains("nospaces")) {
-      real_answer = real_answer.replace(/ /g, "");
-    }
-    solveme[i].dataset.answer = real_answer;
-
-    /* attach checking function */
-    solveme[i].onkeyup = solveme_func;
-    solveme[i].onchange = solveme_func;
-
-    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
-  }
-
-  /* set up radiogroups */
-  var radiogroups = document.getElementsByClassName("webex-radiogroup");
-  for (var i = 0; i < radiogroups.length; i++) {
-    radiogroups[i].onchange = radiogroups_func;
-  }
-
-  /* set up selects */
-  var selects = document.getElementsByClassName("webex-select");
-  for (var i = 0; i < selects.length; i++) {
-    selects[i].onchange = select_func;
-    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
-  }
-
-  update_total_correct();
-}
-
-</script><!-- In this example, we illustrate how to use DAGs for causal inference, including the detection of a violation of the initial model and subsequent adaptation of the DAG. We could use that to illustrate updating FAIR theory: --><!-- https://currentprotocols.onlinelibrary.wiley.com/doi/full/10.1002/cpz1.45 --><!-- We can find more examples of causal inference with DAGs in these tutorials: --><!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ --><!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ --><div class="section level2">
+<!-- In this example, we illustrate how to use DAGs for causal inference, including the detection of a violation of the initial model and subsequent adaptation of the DAG. We could use that to illustrate updating FAIR theory: -->
+<!-- https://currentprotocols.onlinelibrary.wiley.com/doi/full/10.1002/cpz1.45 -->
+<!-- We can find more examples of causal inference with DAGs in these tutorials: -->
+<!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ -->
+<!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ -->
+<div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Directed acyclic graphs (DAGs) are a powerful tool for expressing and
 testing causal assumptions. They allow researchers to identify potential
 confounders or colliders, and guide decisions about which variables to
-control for (or not) in statistical analyses <span class="citation">[@cinelliCrashCourseGood2022]</span>. DAGs can be
+control for (or not) in statistical analyses <span class="citation">(Cinelli, Forney, and Pearl 2022)</span>. DAGs can be
 implemented as FAIR theories, or can be derived from FAIR theories. In
 this vignette, we’ll illustrate how to use DAGs for causal inference in
 <code>R</code>, inspired by the <em>Tripartite Model</em> of the impact
-of the family on children’s emotion regulation and adjustment <span class="citation">[@morrisRoleFamilyContext2007]</span>.</p>
+of the family on children’s emotion regulation and adjustment <span class="citation">(Morris et al. 2007)</span>.</p>
 <div class="section level3">
 <h3 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
 </h3>
@@ -336,16 +136,12 @@ run this code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/theorytools" class="external-link">theorytools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.dagitty.net" class="external-link">dagitty</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: OpenMx</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tidySEM':</span></span>
-<span><span class="co">#&gt;   method          from  </span></span>
-<span><span class="co">#&gt;   predict.MxModel OpenMx</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'tidySEM'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:dagitty':</span></span>
+<span><span class="co">#&gt; Attaching package: 'dagitty'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:tidySEM':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     edges</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -397,14 +193,15 @@ bidirectional arrows. Reading the text helps us direct some arrows: we
 read that <em>“children <strong>learn</strong> about ER through
 [Observation]”</em>, <em>“parenting practices <strong>affect</strong>
 ER”</em>, and <em>“ER <strong>is affected by</strong> the emotional
-climate”</em>. This is all causal language <span class="citation">[@norouziCapturingCausalClaims2024]</span>. Even though
-we later read that <em>“ER and familial influences are bidirectional
-processes in our model”</em>, and even though some recent publications
-have argued that child effects on parents outweigh parents’ effects on
-children in emotional development <span class="citation">[@vanlissaMothersFathersQuantitative2020]</span>, for
-the purpose of this tutorial, we will assume only parent effects on
-children. It is fine to make strong assumptions when specifying theory;
-if they are inconsistent with the data, we can revise them later.</p>
+climate”</em>. This is all causal language <span class="citation">(Norouzi et al. 2024)</span>. Even though we later read
+that <em>“ER and familial influences are bidirectional processes in our
+model”</em>, and even though some recent publications have argued that
+child effects on parents outweigh parents’ effects on children in
+emotional development <span class="citation">(Van Lissa and Keizer
+2020)</span>, for the purpose of this tutorial, we will assume only
+parent effects on children. It is fine to make strong assumptions when
+specifying theory; if they are inconsistent with the data, we can revise
+them later.</p>
 <p>Third, note that it is not clear if there is a path from Parenting
 Practices to Adjustment. While there are paths from Observation and
 Emotional Climate to Adjustment, we read in the text: <em>“although
@@ -567,7 +364,7 @@ inference.</p>
 package:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">tripartite</span><span class="op">)</span></span></code></pre></div>
-<p><img src="causal-inference_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="causal-inference_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <p>We can optionally specify a layout for the graph, so that it
 resembles the model as visualized by Morris and colleagues:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -579,7 +376,7 @@ resembles the model as visualized by Morris and colleagues:</p>
 <span>  rows <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">tripartite</span>, layout <span class="op">=</span> <span class="va">lo</span><span class="op">)</span></span></code></pre></div>
-<p><img src="causal-inference_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="causal-inference_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>The tidySEM vignette on <a href="https://cjvanlissa.github.io/tidySEM/articles/Plotting_graphs.html" class="external-link">plotting
 structural equation models</a> further explains how to customize this
 figure, which is a <code>ggplot</code> object.</p>
@@ -616,9 +413,8 @@ strangers?
 <p>Simulation studies allow us to explore the implications of model
 assumptions, to plan our analyses before data collection, to conduct
 power analysis and plan our sample size, and to preregister a fully
-reproducible analysis pipeline <span class="citation">[Preregistration-As-Code,
-@peikertReproducibleResearchTutorial2021;
-@vanlissaComplementingPreregisteredConfirmatory2022]</span>.</p>
+reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert, Van Lissa, and
+Brandmaier 2021; Van Lissa 2022)</span>.</p>
 <p>Below is a simplistic code snippet to generate synthetic data using
 the <code><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">dagitty::simulateSEM()</a></code> function. This function
 interprets the DAG as a structural equation model, samples random values
@@ -696,12 +492,12 @@ Observation on Emotion Regulation. We can run:</p>
 <span><span class="co">#&gt; { CC, EC, PP }</span></span>
 <span><span class="co">#&gt; { EC, PC, PP }</span></span></code></pre></div>
 <p>The DAG-based algorithm identifies which sets of variables are
-sufficient to block backdoor paths, given some strong assumptions <span class="citation">[@pearlCausalDiagramsEmpirical1995]</span>. The result
-suggests that it is enough to control for Child Characteristics,
-Emotional Climate, and Parenting Practices if we wish to obtain an
-unbiased estimate of the effect of Observation on Emotion Regulation.
-Alternatively, we can control for Parent Characteristics, Emotional
-Climate, and Parenting Practices.</p>
+sufficient to block backdoor paths, given some strong assumptions <span class="citation">(Pearl 1995)</span>. The result suggests that it is
+enough to control for Child Characteristics, Emotional Climate, and
+Parenting Practices if we wish to obtain an unbiased estimate of the
+effect of Observation on Emotion Regulation. Alternatively, we can
+control for Parent Characteristics, Emotional Climate, and Parenting
+Practices.</p>
 <div class="webex-check webex-box">
 <span>
 <p style="margin-top:1em; text-align:center">
@@ -972,6 +768,50 @@ to your answers in the previous two questions?
 <select class="webex-select"><option value="blank"></option>
 <option value="NA">No</option>
 <option value="answer">Yes</option></select><p></p></span>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-cinelliCrashCourseGood2022" class="csl-entry">
+Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. <span>“A
+<span>Crash Course</span> in <span>Good</span> and <span>Bad
+Controls</span>.”</span> <em>Sociological Methods &amp; Research</em>,
+May, 00491241221099552. <a href="https://doi.org/10.1177/00491241221099552" class="external-link">https://doi.org/10.1177/00491241221099552</a>.
+</div>
+<div id="ref-morrisRoleFamilyContext2007" class="csl-entry">
+Morris, Amanda Sheffield, Jennifer S. Silk, Laurence Steinberg, Sonya S.
+Myers, and Lara Rachel Robinson. 2007. <span>“The Role of the Family
+Context in the Development of Emotion Regulation.”</span> <em>Social
+Development</em> 16 (2): 361–88. <a href="https://doi.org/10.1111/j.1467-9507.2007.00389.x" class="external-link">https://doi.org/10.1111/j.1467-9507.2007.00389.x</a>.
+</div>
+<div id="ref-norouziCapturingCausalClaims2024" class="csl-entry">
+Norouzi, Rasoul, Bennett Kleinberg, Jeroen Vermunt, and Caspar J. Van
+Lissa. 2024. <span>“Capturing <span>Causal Claims</span>: <span>A Fine
+Tuned Text Mining Model</span> for <span>Extracting Causal
+Sentences</span> from <span>Social Science Papers</span>.”</span> <a href="https://osf.io/kwtpm/download" class="external-link">https://osf.io/kwtpm/download</a>.
+</div>
+<div id="ref-pearlCausalDiagramsEmpirical1995" class="csl-entry">
+Pearl, Judea. 1995. <span>“Causal <span>Diagrams</span> for
+<span>Empirical Research</span>.”</span> <em>Biometrika</em> 82 (4):
+669–88. <a href="https://doi.org/10.2307/2337329" class="external-link">https://doi.org/10.2307/2337329</a>.
+</div>
+<div id="ref-peikertReproducibleResearchTutorial2021" class="csl-entry">
+Peikert, Aaron, Caspar J. Van Lissa, and Andreas M. Brandmaier. 2021.
+<span>“Reproducible <span>Research</span> in <span>R</span>: <span>A
+Tutorial</span> on <span>How</span> to <span>Do</span> the <span>Same
+Thing More Than Once</span>.”</span> <em>Psych</em> 3 (4): 836–67. <a href="https://doi.org/10.3390/psych3040053" class="external-link">https://doi.org/10.3390/psych3040053</a>.
+</div>
+<div id="ref-vanlissaComplementingPreregisteredConfirmatory2022" class="csl-entry">
+Van Lissa, Caspar J. 2022. <span>“Complementing Preregistered
+Confirmatory Analyses with Rigorous, Reproducible Exploration Using
+Machine Learning.”</span> <em>Religion, Brain &amp; Behavior</em> 0 (0):
+1–5. <a href="https://doi.org/10.1080/2153599X.2022.2070254" class="external-link">https://doi.org/10.1080/2153599X.2022.2070254</a>.
+</div>
+<div id="ref-vanlissaMothersFathersQuantitative2020" class="csl-entry">
+Van Lissa, Caspar J., and Renske Keizer. 2020. <span>“Mothers’ and
+Fathers’ Quantitative and Qualitative Parenting in Relation to
+Children’s Emotional Adjustment: <span>A</span> Between- and
+Within-Family Investigation.”</span> <em>Developmental Psychology</em>
+56 (9): 1709–22. <a href="https://doi.org/10.1037/dev0001042" class="external-link">https://doi.org/10.1037/dev0001042</a>.
+</div>
 </div>
 </div>
 </div>
