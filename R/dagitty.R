@@ -26,6 +26,7 @@
 #' @rdname select_controls
 #' @export
 #' @importFrom dagitty adjustmentSets
+#' @importFrom stats as.formula model.frame
 select_controls <- function(x, data, exposure = NULL, outcome = NULL, which_set = c("first", "sample", "all"), ...){
   which_set <- which_set[1]
   control_sets <- dagitty::adjustmentSets(x, exposure = exposure, outcome = outcome) #, ...)
@@ -33,12 +34,12 @@ select_controls <- function(x, data, exposure = NULL, outcome = NULL, which_set 
     if(which_set == "first") control_sets <- control_sets[1]
     if(which_set == "sample") control_sets <- control_sets[sample.int(length(control_sets))]
     out <- lapply(control_sets, function(cvs){
-      model.frame(as.formula(
+      stats::model.frame(as.formula(
         paste0(exposure, "~", paste0(c(outcome, cvs), collapse = "+"))), data)
     })
   } else {
     out <- list(
-      model.frame(as.formula(paste0(exposure, "~", outcome)), data)
+      stats::model.frame(stats::as.formula(paste0(exposure, "~", outcome)), data)
     )
   }
   if(!which_set == "all"){
@@ -60,11 +61,11 @@ select_controls <- function(x, data, exposure = NULL, outcome = NULL, which_set 
 #' x1 -> y
 #' x2 -> y}')
 #' df <- data.frame(x1 = rnorm(10), y = rnorm(10))
-#' cis <- impliedConditionalIndependencies(dag)
+#' cis <- dagitty::impliedConditionalIndependencies(dag)
 #' cis <- filter_conditional_independencies(cis, df)
 #' is.null(cis)
 #' @seealso
-#'  \code{\link[dagitty]{filter_conditional_independencies}}
+#'  \code{\link[dagitty]{impliedConditionalIndependencies}}
 #' @rdname filter_conditional_independencies
 #' @export
 filter_conditional_independencies <- function(x, data){

@@ -35,7 +35,8 @@ Imports:
     curl,
     knitr,
     webexercises,
-    dagitty
+    dagitty,
+    yaml
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
@@ -43,7 +44,6 @@ Suggests:
     withr,
     usethis,
     fs,
-    dagitty,
     ggplot2,
     tidySEM
 VignetteBuilder: knitr

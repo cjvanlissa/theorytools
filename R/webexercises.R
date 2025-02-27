@@ -32,23 +32,54 @@
 #'  vector is of type `integer`, the tolerance is set to zero, e.g.:
 #'  `"The answer is 4." = 4L`}
 #' }
+#'
+#' Alternatively, `...` may contain a single atomic character referring to a
+#' text file that contains the questions, see examples.
 #' @examples
-#' quizz(
+#' # Quiz from arguments:
+#' invisible(capture.output(theorytools:::quizz(
 #' "The answer to this question is true." = TRUE,
 #' "This multiple choice question has three answers." =
 #'  c("Correct", "Incorrect", "Not sure"),
-#' "Provide an exact floating point answer of 0.81" = 0.81
-#' )
+#' "Provide an exact floating point answer of 0.81" = 0.81,
+#' render_if = TRUE
+#' )))
+#' # From a file:
+#' quizz_file <- tempfile()
+#' writeLines(
+#' c("The answer is true. = TRUE",
+#' "The answer is correct = c(answer = \"Correct\", \"Incorrect\", \"Not sure\")",
+#' "The answer is exactly .81 = 0.81",
+#' "But here, .8 is also fine = c(0.81, .01)",
+#' "Here, answer exactly 4. = 4L")
+#' , quizz_file)
+#' invisible(capture.output(theorytools:::quizz(quizz_file, render_if = TRUE)))
 #' @seealso
 #'  \code{\link[knitr]{is_latex_output}}
 #'  \code{\link[webexercises]{mcq}}, \code{\link[webexercises]{torf}}, \code{\link[webexercises]{fitb}}
 #' @rdname quizz
-#' @export
+# @export
 #' @importFrom knitr is_html_output
 #' @importFrom webexercises mcq torf fitb
 quizz <- function(..., render_if = knitr::is_html_output(), title = "Quiz", show_box = TRUE, show_check = TRUE){
   if(render_if){
     if(requireNamespace("webexercises", quietly = TRUE)){
+      dots <- list(...)
+      # Check if a file is provided instead of multiple questions
+      if(length(dots) == 1){
+        if(file.exists(dots[[1]])){
+          txt <- readLines(dots[[1]])
+          questionz <- lapply(txt, function(q){
+            spl <- regexpr("=", q)
+            trimws(substring(q, c(1, spl+1), c(spl-1, nchar(q))))
+            })
+          dots <- lapply(questionz, function(q){
+            eval(parse(text = q[2]))
+            })
+          names(dots) <- trimws(sapply(questionz, `[`, 1))
+        }
+      }
+      # Now, prepare the HTML code
       if(show_box | show_check){
         classes <- paste0(' class = "',
                           trimws(paste0(c(c("", "webex-check")[show_check+1L],
@@ -56,7 +87,7 @@ quizz <- function(..., render_if = knitr::is_html_output(), title = "Quiz", show
       }
       intro <- paste0('<div class="webex-check webex-box">\n<span>\n<p style="margin-top:1em; text-align:center">\n<b>', title, '</b></p>\n<p style="margin-left:1em;">\n')
       outro <- '\n</p>\n</span>\n</div>'
-      dots <- list(...)
+
       questions <- sapply(dots, function(q){
         switch(class(q)[1],
                "character" = {

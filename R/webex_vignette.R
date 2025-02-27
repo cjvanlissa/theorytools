@@ -27,7 +27,7 @@
 #' # view the result
 #' browseURL(sub("\\.Rmd$", ".html", my_rmd))
 #' }
-#' @export
+# @export
 webex_vignette <- function (...){
   Args <- list(
     css = system.file("rmarkdown", "templates", "html_vignette",

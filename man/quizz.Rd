@@ -55,14 +55,29 @@ e.g.: \code{"Here, 0.8 will be correct." = c(0.81, 0.01)}. If the
 vector is of type \code{integer}, the tolerance is set to zero, e.g.:
 \code{"The answer is 4." = 4L}}
 }
+
+Alternatively, \code{...} may contain a single atomic character referring to a
+text file that contains the questions, see examples.
 }
 \examples{
-quizz(
+# Quiz from arguments:
+invisible(capture.output(theorytools:::quizz(
 "The answer to this question is true." = TRUE,
 "This multiple choice question has three answers." =
  c("Correct", "Incorrect", "Not sure"),
-"Provide an exact floating point answer of 0.81" = 0.81
-)
+"Provide an exact floating point answer of 0.81" = 0.81,
+render_if = TRUE
+)))
+# From a file:
+quizz_file <- tempfile()
+writeLines(
+c("The answer is true. = TRUE",
+"The answer is correct = c(answer = \"Correct\", \"Incorrect\", \"Not sure\")",
+"The answer is exactly .81 = 0.81",
+"But here, .8 is also fine = c(0.81, .01)",
+"Here, answer exactly 4. = 4L")
+, quizz_file)
+invisible(capture.output(theorytools:::quizz(quizz_file, render_if = TRUE)))
 }
 \seealso{
 \code{\link[knitr]{is_latex_output}}

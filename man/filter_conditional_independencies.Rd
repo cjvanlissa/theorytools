@@ -25,10 +25,10 @@ dag <- dagitty::dagitty('dag {
 x1 -> y
 x2 -> y}')
 df <- data.frame(x1 = rnorm(10), y = rnorm(10))
-cis <- impliedConditionalIndependencies(dag)
+cis <- dagitty::impliedConditionalIndependencies(dag)
 cis <- filter_conditional_independencies(cis, df)
 is.null(cis)
 }
 \seealso{
-\code{\link[dagitty]{filter_conditional_independencies}}
+\code{\link[dagitty]{impliedConditionalIndependencies}}
 }
