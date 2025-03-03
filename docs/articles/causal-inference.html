@@ -34,10 +34,11 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+<li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
+    <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
+    <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
-    <li><a class="dropdown-item" href="../articles/simulate_from_theory.html">Formalizing Self-Determination Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -325,24 +326,26 @@ theory. If our goal is simply to use it in our analysis workflow (as is
 the case in this tutorial), then we can access the static archived
 version on Zenodo by running:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/download_zenodo.html">download_zenodo</a></span><span class="op">(</span></span>
-<span>  doi <span class="op">=</span> <span class="st">"https://doi.org/10.5281/zenodo.14921521"</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/download_theory.html">download_theory</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="st">"https://doi.org/10.5281/zenodo.14921521"</span>,</span>
 <span>  path <span class="op">=</span> <span class="st">"c:/theories/tripartite_downloaded"</span><span class="op">)</span></span></code></pre></div>
 <p>If we want to contribute to further theory development, we might
-instead prefer to <a href="https://github.com/github/docs/blob/main/content/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo.md" class="external-link">fork
-the original GitHub repository</a> to our own GitHub account, and create
-a local clone of our newly forked repository. In R, you can clone a
-repository like so:</p>
+instead prefer to create a local clone of the Git repository. Note that
+it is typically a good idea to first <a href="https://github.com/github/docs/blob/main/content/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo.md" class="external-link">fork
+the original GitHub repository</a> to your own GitHub account, and then
+clone your fork, instead of the original author’s version. Regardless,
+the function <code><a href="../reference/download_theory.html">download_theory()</a></code> takes a Git remote address
+too, in which case it clones the theory:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_fetch.html" class="external-link">git_clone</a></span><span class="op">(</span></span>
-<span>  url <span class="op">=</span> <span class="st">"https://github.com/cjvanlissa/tripartite_model.git"</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/download_theory.html">download_theory</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="st">"https://github.com/cjvanlissa/tripartite_model.git"</span>,</span>
 <span>  path <span class="op">=</span> <span class="st">"c:/theories/tripartite_clone"</span><span class="op">)</span></span></code></pre></div>
 <p>The difference between these two approaches is that the former only
 copies the statically archived files to your device, whereas the latter
 copies the entire Git repository with its history of commits and all
 branches, and continues to version control changes you make.</p>
 <p>For this tutorial, please download my version of the Tripartite Model
-using <code><a href="../reference/download_zenodo.html">download_zenodo()</a></code>.</p>
+using <code>download_zenodo()</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="x-interoperability-in-r">X-Interoperability in R<a class="anchor" aria-label="anchor" href="#x-interoperability-in-r"></a>
@@ -390,21 +393,21 @@ figure, which is a <code>ggplot</code> object.</p>
 <p>Which of the following describes the property of X-interoperability
 of a FAIR theory?
 <select class="webex-select"><option value="blank"></option>
+<option value="answer">It
+can be reused for a specific operation.</option>
 <option value="NA">It
 can be reused for any operation.</option>
-<option value="NA">It is
-licenced to be reused.</option>
-<option value="answer">It can be reused
-for a specific operation.</option>
-<option value="NA">It can be reused by
-any person.</option></select></p>
+<option value="NA">It can be
+reused by any person.</option>
+<option value="NA">It is licenced to be
+reused.</option></select></p>
 If you are contributing to theory development, which platform provides
 infrastructure to coordinate collaborate with known others and
 strangers?
 <select class="webex-select"><option value="blank"></option>
-<option value="NA">RStudio</option>
 <option value="answer">GitHub</option>
-<option value="NA">Zenodo</option></select><p></p></span>
+<option value="NA">Zenodo</option>
+<option value="NA">RStudio</option></select><p></p></span>
 </div>
 </div>
 <div class="section level2">

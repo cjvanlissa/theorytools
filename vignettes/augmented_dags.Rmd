@@ -124,29 +124,27 @@ g <- dagitty('dag {
 # Example: Augmented DAG Specification
 
 Below is a simple, hypothetical DAG showing how to combine these ideas. This DAG posits:
-- `X`: an exposure, normally distributed.
-- `Z`: an exogenous covariate, exponentially distributed.
-- `Y`: an outcome depending on `X` and `Z`, with normally distributed residuals.
+- `X`: Number of study hours, an `exposure`. Values are randomly sampled from 1-20 hours.
+- `Z`: Stress level, an exogenous covariate, exponentially distributed (i.e., right-skewed, most people are not very stressed).
+- `Y`: Exam performance an outcome depending on `X` and `Z`, with normally distributed residuals.s
 
 ```{r augmentedDAG, echo=TRUE, comment=""}
 library(dagitty)
 
-g <- dagitty('
-dag {
-  X [exposure, label="Study Hours", distribution="rnorm()"]
+g <- dagitty('dag {
+  X [exposure, label="Study Hours", distribution="sample.int(n = 20, size = n)"]
   Z [label="Stress Level", distribution="rexp()"]
   Y [outcome, label="Exam Performance", distribution="rnorm()"]
-
   X -> Y [label="direct effect", form="0.5+X"]
   Z -> Y [label="indirect effect", form="2*Z"]
-}
-')
+}')
 ```
 
-When you run this chunk, `g` becomes a `dagitty` object. You’ll see that the DAG includes our augmented properties in the internal representation. For instance, if you inspect `g` via `print(g)` or simply by typing `g`, you’ll see the nodes and edges listed with their attributes.
 
 ## Parsing DAG Properties
 
+Augmented DAGs are interoperable with `dagitty`, but the `dagitty` package is not natively aware of the additional metadata fields used in `theorytools`, like `distribution` or `form`.
+To access the augmented properties of aDAGs, the `theorytools` package uses `tidySEM`.
 The purpose of the `tidySEM` package is to plot graphs (structural equation models and DAGs) as `ggplot` objects,
 which can be further customized using regular `ggplot2` code.
 It contains parsing functions to extract nodes and edges from a variety of objects, including `dagitty` graphs.
@@ -157,79 +155,34 @@ get_nodes(g)
 get_edges(g)
 ```
 
-The `dagitty` package is not natively aware of the additional metadata fields like `distribution` or `form`, but the `tidySEM` and `theorytools` packages are.
-Augmented DAGs remain interoperable with `dagitty`, but using their augmented properties requires the latter two packages.
-
 # Interpreting `distribution` and `form` in Simulation
 
-A primary motivation for these augmented properties is **simulation**. For example, you might simulate data by:
+A primary motivation for these augmented properties is **simulation**.
+For example, you might simulate data by:
 
-1. Generating `X` from `rnorm(n)`.
+1. Generating `X` from `sample.int(n)`.
 2. Generating `Z` from `rexp(n)`.
 3. Generating `Y` using a formula that includes `X` and `Z` plus a residual from `rnorm(n)`.
 
-Below is a small pseudo-code demonstration (you can adapt it to your actual usage):
+Code to simulate data in line with these metadata can be automatically generated:
 
-```{r simulateData, echo=TRUE, eval=FALSE}
-simulate_from_dag <- function(dag_object, n=1000) {
-  
-  # 1) Identify the exogenous variables (no parents).
-  # 2) Generate data from their specified `distribution`.
-  # 3) Then proceed to generate child nodes in topological order,
-  #    applying the formula in each edge’s `form` and combining them in an additive or user-defined manner.
-  
-  # For simplicity, we’ll do a naive approach below:
-  
-  # parse dag text
-  dag_str <- as.character(dag_object)
-  
-  # A robust approach would be to parse the nodes and edges systematically.
-  # But conceptually, you'd:
-  # - find lines like `X [exposure, distribution='rnorm']`
-  # - generate X <- rnorm(n)
-  # - for each child node, combine inputs from the `form=~ ...` attributes plus random noise
-  # ...
-  
-  # Return a data frame or list
-  simulated_data <- data.frame(
-    X = rnorm(n),
-    Z = rexp(n)
-  )
-  
-  # A simplified approach to combine edges:
-  # Y ~ X + 0.5 + 2*Z + rnorm(n)
-  simulated_data$Y <- simulated_data$X + 0.5 + 2 * simulated_data$Z + rnorm(n)
-  
-  return(simulated_data)
-}
-
-# usage:
-# my_data <- simulate_from_dag(g, n=1000)
-# head(my_data)
+```{r simulateData, echo=TRUE, eval=TRUE}
+cat(simulate_data(g, run = FALSE), sep = "\n")
 ```
 
-In practice, you’d want a robust parser that looks for each node’s specified `distribution`, the formula(s) on its incoming edges, and handles them properly. This approach keeps the rules of generation closely tied to the DAG specification, ensuring your simulations match the causal structure you’ve outlined.
+You can use this script, for example, to generate synthetic data and build a reproducible analysis pipeline for a Preregistration-As-Code [@peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
 
-# Additional Notes
+## Additional Notes
 
 1. **Syntax Quoting**: In R, there are rules about using quotes within quotes. The `dagitty` package only recognizes double quotes (`" "`) inside graph specifications. This means you must **wrap the graph specification text in single quotes** (`' '`). Alternatively, you can escape every double quote inside the graph specification, which is not recommended because it is a hassle.
 2. **Multiple Parents**: If a node has multiple parents, you can either specify multiple edges with their own `form` properties or a single edge with a combined formula. They are combined, and unique terms are retained.
 3. **Order of Declaration**: `dagitty` does not mind the order in which nodes are declared, but you’ll need a topological order (no cycles) for valid DAG generation and simulation. 
 4. **Integration with `dagitty` Functions**: The standard `dagitty` functions (e.g., `adjustmentSets()`) only look for recognized tags like `exposure` and `outcome`. They ignore custom properties like `distribution` and `form`, but these do not interfere with normal usage.
 
-# Conclusion
+<!-- # Conclusion -->
 
-By enriching your DAG specifications with the **`label`**, **`distribution`**, **`form`**, and relevant **exposure/outcome** tags, you can keep a single source of truth for both:
-- Causal structure (as recognized by `dagitty`), and
-- Data-generating or modeling assumptions (extra properties for simulation or advanced uses).
+<!-- By enriching your DAG specifications with the **`label`**, **`distribution`**, **`form`**, and relevant **exposure/outcome** tags, you can keep a single source of truth for both: -->
+<!-- - Causal structure (as recognized by `dagitty`), and -->
+<!-- - Data-generating or modeling assumptions (extra properties for simulation or advanced uses). -->
 
-This approach reduces duplication and potential mismatches between your DAG-based causal assumptions and the code used to generate or analyze data. We hope this augmented specification pattern helps you maintain clarity and reproducibility in your causal modeling workflows.
-
----
-
-**References and Further Reading**:
-
-- Textor, J., Hardt, J., & Knüppel, S. (2011). *dagitty*: a graphical tool for analyzing causal diagrams. *Epidemiology*, 22(5), 745.
-- [`dagitty` CRAN page](https://cran.r-project.org/package=dagitty)
-
-*(Note: Hyperlinks may not render in offline documents. Please access CRAN or the `dagitty` GitHub page for more details.)*
+<!-- This approach reduces duplication and potential mismatches between your DAG-based causal assumptions and the code used to generate or analyze data. We hope this augmented specification pattern helps you maintain clarity and reproducibility in your causal modeling workflows. -->

@@ -1,6 +1,4 @@
-url: https://cjvanlissa.github.io/theorytools
-home:
-  title: FAIR Theory Construction
+url: https://cjvanlissa.github.io/theorytools/
 template:
   bootstrap: 5
   include:

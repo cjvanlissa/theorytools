@@ -1,6 +1,6 @@
 ---
 title: "Formalizing Self-Determination Theory"
-output: theorytools:::webex_vignette
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Formalizing Self-Determination Theory}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +10,6 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  echo = FALSE,
   comment = "#>"
 )
 ```
@@ -18,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(theorytools)
 ```
+
 
 ```{r eval=FALSE, results='asis', echo=FALSE}
 # This quizz is only shown in HTML output format
@@ -114,6 +114,7 @@ SDT_operationalizations$Operationalization <- gsub("MIS", "Missing:", SDT_operat
 SDT_operationalizations$Operationalization <- gsub("DER", "Derived from other source:", SDT_operationalizations$Operationalization, fixed = TRUE)
 knitr::kable(SDT_operationalizations, caption = "Operationalizations of constructs in SDT")
 ```
+
 
 
 
