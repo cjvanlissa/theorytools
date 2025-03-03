@@ -1,0 +1,235 @@
+---
+title: "Specifying Augmented Directed Acyclic Graphs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Specifying Augmented Directed Acyclic Graphs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(theorytools)
+```
+
+In this vignette, we introduce a specification for **augmented** Directed Acyclic Graphs (aDAGs).
+We will overload regular DAGs as specified using the **dagitty** package in R.
+While `dagitty` provides standard facilities for declaring nodes, edges, exposures, and outcomes,
+we augment the DAG with additional **metadata fields** to make it more conducive to theory specification.
+These metadata fields do not interfere with regular use of the DAG in `dagitty`.
+
+These metadata fields include:
+
+- **tags** for nodes, like `exposure`, `outcome`, and `unobserved`. This metadata field is used by `dagitty` for identifying nodes of interest in causal inference.
+- **`pos`** for nodes, which define the layout position in the X and Y dimension, e.g., `pos="0,1` is positioned at coordinates X = 0 and Y = 1. This metadata field is used by `dagitty`.
+- **`label`** for nodes or edges: A descriptive label used for visualization and reporting. This is a new metadata field.
+- **`distribution`** for nodes: The assumed distribution-generating function for each node. For exogenous nodes, this constitutes the distribution of the node itself; for endogenous nodes, this constitutes the residual distribution. This is a new metadata field.
+- **`form`** for edges: A function specification (in a form interpretable by `as.formula()`) that can describe how a child node is calculated from its parents. This is a new metadata field.
+
+Throughout the vignette, we will illustrate how to write an augmented DAG, how to parse and inspect it with `dagitty`, `theorytools`, and `tidySEM` (for plotting), and how to leverage these additional properties for further modeling or simulation tasks.
+
+## A Basic DAG
+
+The usual syntax for specifying a DAG in the `dagitty` R-package is something like:
+
+```{r}
+library(dagitty)
+dagitty("dag {
+  X -> Y
+  Z -> X
+  Z -> Y
+}")
+```
+
+There are several tags that can be used in `dagitty`. Note that quotation marks used in tags **must be** double quotes `"`, so it makes sense to wrap the whole DAG syntax in single quotes `'`:
+
+```{r}
+library(dagitty)
+dagitty('dag {
+  X [exposure, pos="0,1"]
+  Y [outcome, pos="1,1"]
+  Z [unobserved, pos="1,0"]
+  X -> Y
+  Z -> X
+  Z -> Y
+}')
+```
+
+## Augmented DAGs (aDAGs)
+
+In our **augmented** specification, we add additional properties as metadata fields.
+
+Below, we detail each new property:
+
+### `label` (Nodes/Edges)
+
+- **Usage**: Provide a descriptive name for the node or edge.
+- **Example**: `X [label="Study hours"]`
+
+The label is used, for example, by `tidySEM` to label nodes and edges:
+
+```{r}
+library(tidySEM)
+g <- dagitty('dag {
+  X [label="Predictor", pos="0,1"]
+  Y [label="Outcome", pos="1,1"]
+  X -> Y [label="effect"]
+}')
+graph_sem(g)
+```
+
+
+## 2. `distribution` (Nodes)
+
+- **Usage**: References a function that generates data for exogenous variables, or that describes the residual distribution for endogenous variables.
+The function can reference the argument `n` to determine sample size, otherwise this is done implicitly.
+
+- **Examples**:
+  - `X [distribution="rnorm"]`: Node `X` is an exogenous variable drawn from a normal distribution with default arguments.
+  - `Y [distribution="rnorm"]`: Node `Y` has residuals assumed to be normally distributed with default arguments.
+  
+```{r}
+g <- dagitty('dag {
+  X [distribution="rbinom(size = 2, prob = .5)"]
+  Y [distribution="rnorm()"]
+  X -> Y [form=".2*X"]
+}')
+```
+
+## 3. `form` (Edges)
+
+- **Usage**: Provides a formula-like specification for how a child node depends on its parent node(s). It should be something that `as.formula()` can parse.
+- **Examples**:
+
+* `X -> Y [form=".2*X"]` indicates that `Y` is a linear function of `.2` times `X`
+* `X -> Y [form="X:Z"]` indicates that `Y` depends on an interaction between `X` and `Z`
+* `X -> Y [form="X^2"]` indicates that `Y` depends on a quadratic function of `X`
+
+```{r}
+g <- dagitty('dag {
+  X [distribution="rbinom(size = 2, prob = .5)"]
+  Y [distribution="rnorm()"]
+  X -> Y [form=".2*X"]
+}')
+```
+
+
+
+# Example: Augmented DAG Specification
+
+Below is a simple, hypothetical DAG showing how to combine these ideas. This DAG posits:
+- `X`: an exposure, normally distributed.
+- `Z`: an exogenous covariate, exponentially distributed.
+- `Y`: an outcome depending on `X` and `Z`, with normally distributed residuals.
+
+```{r augmentedDAG, echo=TRUE, comment=""}
+library(dagitty)
+
+g <- dagitty('
+dag {
+  X [exposure, label="Study Hours", distribution="rnorm()"]
+  Z [label="Stress Level", distribution="rexp()"]
+  Y [outcome, label="Exam Performance", distribution="rnorm()"]
+
+  X -> Y [label="direct effect", form="0.5+X"]
+  Z -> Y [label="indirect effect", form="2*Z"]
+}
+')
+```
+
+When you run this chunk, `g` becomes a `dagitty` object. You’ll see that the DAG includes our augmented properties in the internal representation. For instance, if you inspect `g` via `print(g)` or simply by typing `g`, you’ll see the nodes and edges listed with their attributes.
+
+## Parsing DAG Properties
+
+The purpose of the `tidySEM` package is to plot graphs (structural equation models and DAGs) as `ggplot` objects,
+which can be further customized using regular `ggplot2` code.
+It contains parsing functions to extract nodes and edges from a variety of objects, including `dagitty` graphs.
+The functions `get_nodes()` and `get_edges()` parse the nodes and edges of aDAGs, respectively:
+
+```{r nodeProperties, echo=TRUE}
+get_nodes(g)
+get_edges(g)
+```
+
+The `dagitty` package is not natively aware of the additional metadata fields like `distribution` or `form`, but the `tidySEM` and `theorytools` packages are.
+Augmented DAGs remain interoperable with `dagitty`, but using their augmented properties requires the latter two packages.
+
+# Interpreting `distribution` and `form` in Simulation
+
+A primary motivation for these augmented properties is **simulation**. For example, you might simulate data by:
+
+1. Generating `X` from `rnorm(n)`.
+2. Generating `Z` from `rexp(n)`.
+3. Generating `Y` using a formula that includes `X` and `Z` plus a residual from `rnorm(n)`.
+
+Below is a small pseudo-code demonstration (you can adapt it to your actual usage):
+
+```{r simulateData, echo=TRUE, eval=FALSE}
+simulate_from_dag <- function(dag_object, n=1000) {
+  
+  # 1) Identify the exogenous variables (no parents).
+  # 2) Generate data from their specified `distribution`.
+  # 3) Then proceed to generate child nodes in topological order,
+  #    applying the formula in each edge’s `form` and combining them in an additive or user-defined manner.
+  
+  # For simplicity, we’ll do a naive approach below:
+  
+  # parse dag text
+  dag_str <- as.character(dag_object)
+  
+  # A robust approach would be to parse the nodes and edges systematically.
+  # But conceptually, you'd:
+  # - find lines like `X [exposure, distribution='rnorm']`
+  # - generate X <- rnorm(n)
+  # - for each child node, combine inputs from the `form=~ ...` attributes plus random noise
+  # ...
+  
+  # Return a data frame or list
+  simulated_data <- data.frame(
+    X = rnorm(n),
+    Z = rexp(n)
+  )
+  
+  # A simplified approach to combine edges:
+  # Y ~ X + 0.5 + 2*Z + rnorm(n)
+  simulated_data$Y <- simulated_data$X + 0.5 + 2 * simulated_data$Z + rnorm(n)
+  
+  return(simulated_data)
+}
+
+# usage:
+# my_data <- simulate_from_dag(g, n=1000)
+# head(my_data)
+```
+
+In practice, you’d want a robust parser that looks for each node’s specified `distribution`, the formula(s) on its incoming edges, and handles them properly. This approach keeps the rules of generation closely tied to the DAG specification, ensuring your simulations match the causal structure you’ve outlined.
+
+# Additional Notes
+
+1. **Syntax Quoting**: In R, there are rules about using quotes within quotes. The `dagitty` package only recognizes double quotes (`" "`) inside graph specifications. This means you must **wrap the graph specification text in single quotes** (`' '`). Alternatively, you can escape every double quote inside the graph specification, which is not recommended because it is a hassle.
+2. **Multiple Parents**: If a node has multiple parents, you can either specify multiple edges with their own `form` properties or a single edge with a combined formula. They are combined, and unique terms are retained.
+3. **Order of Declaration**: `dagitty` does not mind the order in which nodes are declared, but you’ll need a topological order (no cycles) for valid DAG generation and simulation. 
+4. **Integration with `dagitty` Functions**: The standard `dagitty` functions (e.g., `adjustmentSets()`) only look for recognized tags like `exposure` and `outcome`. They ignore custom properties like `distribution` and `form`, but these do not interfere with normal usage.
+
+# Conclusion
+
+By enriching your DAG specifications with the **`label`**, **`distribution`**, **`form`**, and relevant **exposure/outcome** tags, you can keep a single source of truth for both:
+- Causal structure (as recognized by `dagitty`), and
+- Data-generating or modeling assumptions (extra properties for simulation or advanced uses).
+
+This approach reduces duplication and potential mismatches between your DAG-based causal assumptions and the code used to generate or analyze data. We hope this augmented specification pattern helps you maintain clarity and reproducibility in your causal modeling workflows.
+
+---
+
+**References and Further Reading**:
+
+- Textor, J., Hardt, J., & Knüppel, S. (2011). *dagitty*: a graphical tool for analyzing causal diagrams. *Epidemiology*, 22(5), 745.
+- [`dagitty` CRAN page](https://cran.r-project.org/package=dagitty)
+
+*(Note: Hyperlinks may not render in offline documents. Please access CRAN or the `dagitty` GitHub page for more details.)*

@@ -230,9 +230,9 @@ PC -> EC
 PC -> PP
 PC -> O
 
-O -> ER
-PP -> ER
-EC -> ER
+O -> ER [form="CC:O"];
+PP -> ER [form="CC:PP"];
+EC -> ER [form="CC:EC"];
 
 ER -> A
 
@@ -240,7 +240,8 @@ CC -> ER [form="CC:O+CC:PP+CC:EC"];
 
 PP -> O
 EC -> O
-PP -> EC}')
+PP -> EC
+}')
 ```
 
 
@@ -303,18 +304,20 @@ If our goal is simply to use it in our analysis workflow (as is the case in this
 then we can access the static archived version on Zenodo by running:
 
 ```{r eval = FALSE}
-download_zenodo(
-  doi = "https://doi.org/10.5281/zenodo.14921521",
+download_theory(
+  id = "https://doi.org/10.5281/zenodo.14921521",
   path = "c:/theories/tripartite_downloaded")
 ```
 
-If we want to contribute to further theory development, we might instead prefer to [fork the original GitHub repository](https://github.com/github/docs/blob/main/content/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo.md) to our own GitHub account,
-and create a local clone of our newly forked repository.
-In R, you can clone a repository like so:
+If we want to contribute to further theory development,
+we might instead prefer to create a local clone of the Git repository.
+Note that it is typically a good idea to first [fork the original GitHub repository](https://github.com/github/docs/blob/main/content/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo.md) to your own GitHub account,
+and then clone your fork, instead of the original author's version.
+Regardless, the function `download_theory()` takes a Git remote address too, in which case it clones the theory:
 
 ```{r eval = FALSE}
-gert::git_clone(
-  url = "https://github.com/cjvanlissa/tripartite_model.git",
+download_theory(
+  id = "https://github.com/cjvanlissa/tripartite_model.git",
   path = "c:/theories/tripartite_clone")
 ```
 
