@@ -1,0 +1,280 @@
+---
+title: "FAIRifying the Dunning-Kruger Effect"
+output: theorytools:::webex_vignette
+bibliography: dunning-kruger.bib
+vignette: >
+  %\VignetteIndexEntry{FAIRifying the Dunning-Kruger Effect}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+In this example, we formalize the Dunning-Kruger (DK) effect according to [@feld2017estimating].
+The paper defines the DK effect as "low performers vastly overestimate their performance while high
+performers more accurately assess their performance".
+It further contains a discussion of the DK effect and then restates it in terms of skill and overconfidence to show that measurement error can cause significant bias in the relationship between performance and overestimation.
+Statistical methods that can be used to correct for this bias are also discussed.
+Since this theory contains definitions of abstract concepts, relationships between the concepts, mathematical derivations as well as commonly used statistical models and experimental paradigms, it serves as a nice illustration on how to FAIRify all these different aspects.^[Note that since we are trying to formalize this theory as close to the paper as possible, many descriptions are (almost) verbatim quotes from the paper.]
+
+### Learning Goals
+
+Once you have completed this tutorial, you will know how to:
+
+- [ ] Implement a theory consisting of multiple aspects that can not all be represented in the same format
+- [ ] Learn how to FAIRify equations / proofs
+
+## Definitions
+
+Let's start with collecting all definitions the theory makes use of:
+
+- **performance** as a test score
+- **performance estimation** as the difference between the expected and
+the actual test score
+- **skill** as the ability to perform well on a given test
+- **overconfidence** as the difference between self-assessed and actual skill
+- **measurement error** as luck on a test
+
+Since these are verbal definitions, we can track them as a markdown file:
+
+```{r}
+definitions <- 
+"
+## Definitions
+
+- **performance** as a test score
+- **performance estimation** as the difference between the expected and
+the actual test score
+- **skill** as the ability to perform well on a given test
+- **overconfidence** as the difference between self-assessed and actual skill
+- **measurement error** as luck on a test
+"
+
+cat(definitions, file="definitions.md")
+```
+
+
+## Relationships
+
+We can visualise the originally proposed relationships between the concepts as a graph:
+
+```{tikz, echo=FALSE, out.width="40%", fig.align = 'center'}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+\begin{tikzpicture}
+        [mynode/.style={rectangle,draw=black!80,semithick,minimum width=1cm,inner sep=4pt,text centered},
+        text height=1.75ex, text depth=.5ex]
+
+\begin{scope}
+
+% nodes
+\node[mynode] at (0,0) (skill) {\texttt{skill}};
+\node[mynode] at (6, 0) (overconfidence) {\texttt{overconfidence}};
+\node[mynode] at (0, -2) (performance) {\texttt{performance}};
+\node[mynode] at (6,-2) (estimate) {\texttt{overestimation}};
+
+% arrows
+\draw[-,>=stealth',semithick] (skill) -- node [fill=white] {$-$} (overconfidence);
+\draw[-,>=stealth',semithick] (performance) -- node [fill=white] {$-$} (estimate);
+\draw[-,>=stealth',semithick] (skill) -- node [fill=white] {$\simeq$} (performance);
+\draw[-,>=stealth',semithick] (overconfidence) -- node [fill=white] {$\simeq$} (estimate);
+
+\end{scope}
+
+\end{tikzpicture}
+```
+
+As well as the reformulation of @feld2017estimating: 
+
+```{tikz, echo=FALSE, out.width="50%", fig.align = 'center'}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+\begin{tikzpicture}
+        [mynode/.style={rectangle,draw=black!80,semithick,minimum width=1cm,inner sep=4pt,text centered},
+        text height=1.75ex, text depth=.5ex]
+
+\begin{scope}
+
+% nodes
+\node[mynode] at (0,0) (skill) {\texttt{skill}};
+\node[mynode] at (6, 0) (overconfidence) {\texttt{overconfidence}};
+\node[mynode] at (0, -2) (performance) {\texttt{performance}};
+\node[mynode] at (6,-2) (estimate) {\texttt{overestimation}};
+\node[mynode] at (0, -6) (skillerror) {\texttt{skill + error}};
+\node[mynode] at (6, -4) (pminusp) {\texttt{expected performance - performance}};
+\node[mynode] at (6, -6) (ocerror) {\texttt{overconfidence - error}};
+
+% arrows
+\draw[-,>=stealth',semithick] (skill) -- node [fill=white] {$-$} (overconfidence);
+\draw[-,>=stealth',semithick] (performance) -- node [fill=white] {$-$} (estimate);
+\draw[-,>=stealth',semithick] (skill) -- node [fill=white] {$\simeq$} (performance);
+\draw[-,>=stealth',semithick] (overconfidence) -- node [fill=white] {$\simeq$} (estimate);
+\draw[-,>=stealth',semithick] (skillerror) -- node [fill=white] {$-$} (ocerror);
+\draw[-,>=stealth',semithick] (performance) -- node [fill=white] {$:=$} (skillerror);
+\draw[-,>=stealth',semithick] (estimate) -- node [fill=white] {$:=$} (pminusp);
+\draw[-,>=stealth',semithick] (pminusp) -- node [fill=white] {$=$ (Theorem 1)} (ocerror);
+
+\end{scope}
+
+\end{tikzpicture}
+```
+
+With $-$ signifying a negative association, $\simeq$ signifying "measured by" and $:=$ signifying "defined as".
+
+To FAIRify this graph, we can use a standardized graph specification language, such as the [DOT language](https://graphviz.org/doc/info/lang.html).
+
+## Mathematical formulation
+
+### Definitions
+We define the random variables
+
+- $s^*$ denoting skill
+- $\varepsilon$ denoting measurement error, with $\mathbb{E}[\varepsilon] = 0$, $\varepsilon$ independent of all other random variables included in the model
+- $s^*_s$ denoting self-assessed skill
+
+And further performance $p$ as
+\begin{equation}
+  (\#eq:p)
+  p = s^* + \epsilon
+\end{equation}
+overconfidence $oc^*$ as
+\begin{equation}
+  (\#eq:oc)
+  oc^* = s^*_s-s^*
+\end{equation}
+expected performance $p_e$ as
+\begin{equation}
+  (\#eq:ep)
+  p_e = s^* + oc^*
+\end{equation}
+Overconfidence $oc^*$ is measured by overestimation $oe$ defined as
+\begin{equation}
+  (\#eq:oc)
+  oe = p_e - p
+\end{equation}
+
+### Theorems
+
+Theorem 1:
+\begin{equation}
+oe = oc^* - \epsilon
+\end{equation}
+
+Proof:
+
+From eq. \@ref(eq:oc) and \@ref(eq:ep) it follows that $p_e = s^*_s$ and further from eq. \@ref(eq:ep) and \@ref(eq:p) we see
+\begin{align}
+  (\#eq:dd)
+  oe &= p_e - p \\
+  &= (s^* + oc^*) - (s^* + \epsilon) \\
+  &= oc^* - \epsilon
+\end{align}
+
+Since there is no accepted standard on how to represent mathematical knowledge as a digital object (see also this [whitepaper](https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf)), there are many possible routes to FAIRify equations.
+Here we opt for a representation as latex code as a widely used and known way of typesetting equations, by saving the following code to a file "equations.tex":
+
+```{verbatim}
+\documentclass[a4paper,11pt]{article}
+
+% load packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+% Statistics
+\newcommand{\Var}{\mathbb{V}}
+\newcommand{\Exp}{\mathbb{E}}
+
+% commands
+\renewcommand*{\epsilon}{\varepsilon}
+
+% operators
+\DeclareMathOperator{\cov}{cov}
+
+\begin{document}
+
+\section{Definitions}
+Define random variables
+\begin{itemize}
+ \item $s^*$ denoting skill
+ \item $\epsilon$ denoting measurement error, with $\Exp[\epsilon] = 0$, $\epsilon$ independent of all other random variables included in the model
+ \item $s^*_s$ denoting self-assessed skill
+\end{itemize}
+
+\noindent Then we define performance $p$ as
+\begin{equation} \label{p}
+  p \coloneq s^* + \epsilon
+\end{equation}
+and overconfidence $oc^*$ as
+\begin{equation} \label{oc}
+  oc^* \coloneq s^*_s-s^*
+\end{equation}
+and expected performance $p_e$ as
+\begin{equation} \label{ep}
+  p_e \coloneq s^* + oc^*
+\end{equation}
+Overconfidence $oc^*$ is measured by overestimation $oe$ defined as
+\begin{equation}
+  oe \coloneq p_e - p
+\end{equation}
+
+\section{Theorems}
+
+Theorem 1:
+
+\begin{equation}
+  oe = oc^* - \epsilon
+\end{equation}
+
+Proof 1:
+\noindent From eq. \ref{oc} and \ref{ep} it follows that $p_e = s^*_s$ and further from eq. \ref{ep} and \ref{p} we see
+\begin{align} \label{dd}
+  oe &= p_e - p \\
+  &= (s^* + oc^*) - (s^* + \epsilon) \\
+  &= oc^* - \epsilon
+\end{align}
+
+\end{document}
+```
+
+## Statistical Models
+Using a linear regression model, the Dunning-Kruger effect can be stated as
+\begin{equation}
+ oc^* = \alpha + \beta_1 s^* + u
+\end{equation}
+with $\beta_1 < 0$.
+Substituting the observable variables and rearranging according to eq. \@ref(eq:p) and \@ref(eq:dd):
+\begin{equation}
+  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
+\end{equation}
+
+### Correction
+There are different ways to correct for the bias introduced by measurement error:
+
+ - Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term
+ - IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\mathrm{cov}(oe, p_2)}{\mathrm{cov}(p, p_2)}$.
+
+## Common Experimental Paradigm
+
+ - participants take a test
+ - participants guess their test performance either before or after the test
+ - bottom quartile performers vastly overestimate their performance, while top quartile performers access their performance more accurately
+
+There are many replications for different populations and different tasks.
+
+## References
