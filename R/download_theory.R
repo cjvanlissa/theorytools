@@ -9,9 +9,9 @@
 #' @importFrom tools md5sum
 #' @export
 #' @examples
-#' download_theory(url = "https://github.com/cjvanlissa/tripartite_model.git",
+#' download_theory(id = "https://github.com/cjvanlissa/tripartite_model.git",
 #' path = file.path(tempdir(), "tripartite_git"))
-#' download_theory(url = "10.5281/zenodo.14921521",
+#' download_theory(id = "10.5281/zenodo.14921521",
 #' path = file.path(tempdir(), "tripartite_zenodo"))
 download_theory <- function(id,
                             path = ".") {
@@ -22,9 +22,8 @@ download_theory <- function(id,
       dir.create(path)
     })
   }
-  with_cli_try("Checking if {.code id} exists.", {
-    record_type <- git_or_zenodo(id)
-  })
+  record_type <- git_or_zenodo(id)
+
   switch(record_type,
          "git" = {
            with_cli_try("Cloning repository from 'Git' remote", {
@@ -34,7 +33,7 @@ download_theory <- function(id,
          },
          "zenodo" = {
            with_cli_try("Accessing record on 'Zenodo'", {
-             record <- jsonlite::fromJSON(rawToChar(curl::curl_fetch_memory(paste0("https://zenodo.org/api/records/", gsub("^.{0,}10.5281/zenodo\\.", "", doi)))$content))
+             record <- jsonlite::fromJSON(rawToChar(curl::curl_fetch_memory(paste0("https://zenodo.org/api/records/", gsub("^.{0,}10.5281/zenodo\\.", "", id)))$content))
              if(!grepl(".zip", url_zip, fixed = TRUE)){
                stop()
              }
@@ -71,11 +70,28 @@ download_theory <- function(id,
 git_or_zenodo <- function(x){
   if(grepl("10.5281/zenodo.", x, fixed = TRUE)){
     return("zenodo")
-  } else {
-    out <- try(gert::git_remote_ls(x, verbose = FALSE), silent = TRUE)
-    if(!inherits(out, "try-error")){
+  }
+  if(git_remote_exists(x)){
       return("git")
-    }
   }
   stop("Not a valid 'Git' or 'Zenodo' archive.")
+}
+
+git_remote_exists <- function(x){
+  out <- try({
+    # Because git_remote_ls needs to be called from an active git repo
+    f <- getwd()
+    in_repo <- tryCatch({
+      gert::git_open(f)
+      TRUE
+    }, error = function(e){FALSE})
+    if(!in_repo){
+      f <- file.path(tempdir(), "deleteme")
+      dir.create(f)
+      on.exit(unlink(f, recursive = TRUE))
+      gert::git_init(path = f, bare = TRUE)
+    }
+    gert::git_remote_ls(x, verbose = FALSE, repo = f)
+  }, silent = TRUE)
+  return(isFALSE(inherits(out, "try-error")))
 }

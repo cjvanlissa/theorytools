@@ -34,14 +34,15 @@ Imports:
     jsonlite,
     curl,
     knitr,
-    webexercises,
     dagitty,
     yaml,
-    tidySEM (>= 0.2.8)
+    tidySEM (>= 0.2.8),
+    methods
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     pkgdown,
+    webexercises,
     withr,
     usethis,
     fs,

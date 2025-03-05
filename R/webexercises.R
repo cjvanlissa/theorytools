@@ -40,7 +40,7 @@
 #' invisible(capture.output(theorytools:::quizz(
 #' "The answer to this question is true." = TRUE,
 #' "This multiple choice question has three answers." =
-#'  c("Correct", "Incorrect", "Not sure"),
+#'  c(answer = "Correct", "Incorrect", "Not sure"),
 #' "Provide an exact floating point answer of 0.81" = 0.81,
 #' render_if = TRUE
 #' )))
@@ -51,6 +51,7 @@
 #' "The answer is correct = c(answer = \"Correct\", \"Incorrect\", \"Not sure\")",
 #' "The answer is exactly .81 = 0.81",
 #' "But here, .8 is also fine = c(0.81, .01)",
+#' "Write the word 'true' = c('true', 'TRUE')",
 #' "Here, answer exactly 4. = 4L")
 #' , quizz_file)
 #' invisible(capture.output(theorytools:::quizz(quizz_file, render_if = TRUE)))
@@ -60,7 +61,6 @@
 #' @rdname quizz
 # @export
 #' @importFrom knitr is_html_output
-#' @importFrom webexercises mcq torf fitb
 quizz <- function(..., render_if = knitr::is_html_output(), title = "Quiz", show_box = TRUE, show_check = TRUE){
   if(render_if){
     if(requireNamespace("webexercises", quietly = TRUE)){
@@ -92,8 +92,11 @@ quizz <- function(..., render_if = knitr::is_html_output(), title = "Quiz", show
         switch(class(q)[1],
                "character" = {
                  opts <- q
-                 names(opts)[1] <- "answer"
-                 webexercises::mcq(sample(opts))
+                 if(any(names(opts) == "answer")){
+                   webexercises::mcq(sample(opts))
+                 } else {
+                   webexercises::fitb(answer = opts, num = FALSE)
+                 }
                },
                "logical" = {
                  webexercises::torf(q)

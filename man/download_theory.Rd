@@ -16,8 +16,8 @@ theory.}
 Downloads a FAIR theory archive from a 'Git' remote repository or 'Zenodo'.
 }
 \examples{
-download_theory(url = "https://github.com/cjvanlissa/tripartite_model.git",
+download_theory(id = "https://github.com/cjvanlissa/tripartite_model.git",
 path = file.path(tempdir(), "tripartite_git"))
-download_theory(url = "10.5281/zenodo.14921521",
+download_theory(id = "10.5281/zenodo.14921521",
 path = file.path(tempdir(), "tripartite_zenodo"))
 }

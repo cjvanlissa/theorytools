@@ -33,7 +33,7 @@ in the DAG. For this function, the \code{form} attribute must be an additive
 function as also accepted by \code{\link[stats]{formula}}.
 }
 \examples{
-x <- dagitty('dag {
+x <- dagitty::dagitty('dag {
 C
 O
 X

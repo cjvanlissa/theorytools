@@ -64,7 +64,7 @@ text file that contains the questions, see examples.
 invisible(capture.output(theorytools:::quizz(
 "The answer to this question is true." = TRUE,
 "This multiple choice question has three answers." =
- c("Correct", "Incorrect", "Not sure"),
+ c(answer = "Correct", "Incorrect", "Not sure"),
 "Provide an exact floating point answer of 0.81" = 0.81,
 render_if = TRUE
 )))
@@ -75,6 +75,7 @@ c("The answer is true. = TRUE",
 "The answer is correct = c(answer = \"Correct\", \"Incorrect\", \"Not sure\")",
 "The answer is exactly .81 = 0.81",
 "But here, .8 is also fine = c(0.81, .01)",
+"Write the word 'true' = c('true', 'TRUE')",
 "Here, answer exactly 4. = 4L")
 , quizz_file)
 invisible(capture.output(theorytools:::quizz(quizz_file, render_if = TRUE)))

@@ -41,6 +41,7 @@
 #' @export
 #' @importFrom tidySEM get_nodes get_edges
 #' @importFrom dagitty exogenousVariables
+#' @importFrom stats runif
 simulate_data <- function (x,
                            beta_default = runif(1, min = -0.6, max = 0.6),
                            n = 500,
@@ -103,6 +104,7 @@ simulate_data <- function (x,
   }
 }
 
+#' @importFrom methods formalArgs
 sim_fun_txt <- function(simfn){
 
   if(is.na(simfn)) stop()

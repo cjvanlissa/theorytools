@@ -23,19 +23,6 @@ Call this function as the \code{output_format} argument
 for the \code{\link[rmarkdown]{render}} function when compiling
 HTML documents from RMarkdown source.
 }
-\examples{
-# copy the webexercises 'R Markdown' template to a temporary file
-\dontrun{
-my_rmd <- tempfile(fileext = ".Rmd")
-rmarkdown::draft(my_rmd, "webexercises", "webexercises")
-
-# compile it
-rmarkdown::render(my_rmd, webexercises::webex_vignette())
-
-# view the result
-browseURL(sub("\\\\.Rmd$", ".html", my_rmd))
-}
-}
 \seealso{
 \code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{html_document}}
 }

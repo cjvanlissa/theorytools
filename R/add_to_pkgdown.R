@@ -9,57 +9,62 @@
 #' @importFrom yaml read_yaml write_yaml
 #' @export
 add_to_pkgdown <- function(pkgdown_dir = "."){
-  usethis::with_project(pkgdown_dir, {
-    css <- system.file("reports/default/webex.css", package = "webexercises")
-    css_lines <- readLines(css)
-    js <- system.file("reports/default/webex.js", package = "webexercises")
-    js_lines <- readLines(js)
-    js_lines <- js_lines[-grep("</?script>", js_lines)]
-    include_dir <- "pkgdown"
-    if(!dir.exists(file.path(include_dir))){
-      dir.create(file.path(include_dir))
-    }
-    # Write extra.css
-    if(file.exists(file.path(include_dir, "extra.css"))){
-      css_existing <- readLines(file.path(include_dir, "extra.css"))
-      if(!any(grepl("webex-check", css_existing, fixed = TRUE))){
-        writeLines(c(css_existing, css_lines), file.path(include_dir, "extra.css"))
+  if(requireNamespace("webexercises", quietly = TRUE) & requireNamespace("pkgdown", quietly = TRUE)){
+    usethis::with_project(pkgdown_dir, {
+      css <- system.file("reports/default/webex.css", package = "webexercises")
+      css_lines <- readLines(css)
+      js <- system.file("reports/default/webex.js", package = "webexercises")
+      js_lines <- readLines(js)
+      js_lines <- js_lines[-grep("</?script>", js_lines)]
+      include_dir <- "pkgdown"
+      if(!dir.exists(file.path(include_dir))){
+        dir.create(file.path(include_dir))
       }
-    } else {
-      writeLines(css_lines, file.path(include_dir, "extra.css"))
-    }
-    # Write extra.js
-    if(file.exists(file.path(include_dir, "extra.js"))){
-      js_existing <- readLines(file.path(include_dir, "extra.js"))
-      if(!any(grepl("webex-solution", js_existing, fixed = TRUE))){
-        writeLines(c(js_existing, js_lines), file.path(include_dir, "extra.js"))
+      # Write extra.css
+      if(file.exists(file.path(include_dir, "extra.css"))){
+        css_existing <- readLines(file.path(include_dir, "extra.css"))
+        if(!any(grepl("webex-check", css_existing, fixed = TRUE))){
+          writeLines(c(css_existing, css_lines), file.path(include_dir, "extra.css"))
+        }
+      } else {
+        writeLines(css_lines, file.path(include_dir, "extra.css"))
       }
-    } else {
-      writeLines(js_lines, file.path(include_dir, "extra.js"))
-    }
+      # Write extra.js
+      if(file.exists(file.path(include_dir, "extra.js"))){
+        js_existing <- readLines(file.path(include_dir, "extra.js"))
+        if(!any(grepl("webex-solution", js_existing, fixed = TRUE))){
+          writeLines(c(js_existing, js_lines), file.path(include_dir, "extra.js"))
+        }
+      } else {
+        writeLines(js_lines, file.path(include_dir, "extra.js"))
+      }
 
-    # Write extra.js
-    if(file.exists(file.path("_pkgdown.yml"))){
-      pkgdown_location <- file.path("_pkgdown.yml")
-    } else {
-      if(file.exists(file.path(include_dir, "_pkgdown.yml"))){
+      # Write extra.js
+      if(file.exists(file.path("_pkgdown.yml"))){
         pkgdown_location <- file.path("_pkgdown.yml")
       } else {
-        stop("No _pkgdown.yml found.")
+        if(file.exists(file.path(include_dir, "_pkgdown.yml"))){
+          pkgdown_location <- file.path("_pkgdown.yml")
+        } else {
+          stop("No _pkgdown.yml found.")
+        }
       }
-    }
-    yml_existing <- yaml::read_yaml(pkgdown_location)
-    if(!is.null(yml_existing[["template"]][["include"]][["after_body"]])){
-      if(!grepl("extra.js", yml_existing[["template"]][["include"]][["after_body"]])){
-        yml_existing[["template"]][["include"]][["after_body"]] <- paste0(yml_existing[["template"]][["include"]][["after_body"]], '<script scr="extra.js"></script>')
+      yml_existing <- yaml::read_yaml(pkgdown_location)
+      if(!is.null(yml_existing[["template"]][["include"]][["after_body"]])){
+        if(!grepl("extra.js", yml_existing[["template"]][["include"]][["after_body"]])){
+          yml_existing[["template"]][["include"]][["after_body"]] <- paste0(yml_existing[["template"]][["include"]][["after_body"]], '<script scr="extra.js"></script>')
+        }
+      } else {
+        yml_existing[["template"]][["include"]][["after_body"]] <- '<script scr="extra.js"></script>'
       }
-    } else {
-      yml_existing[["template"]][["include"]][["after_body"]] <- '<script scr="extra.js"></script>'
-    }
-    yaml::write_yaml(yml_existing, pkgdown_location)
-    pkgdown::init_site()
-  })
-
+      yaml::write_yaml(yml_existing, pkgdown_location)
+      if(requireNamespace("pkgdown", quietly = TRUE)){
+        pkgdown::init_site()
+      }
+    })
+  } else {
+    cli_msg("i" = "Please run `install.packages('pkgdown'); install.packages('webexercises')`.")
+  }
   invisible(NULL)
 }
 

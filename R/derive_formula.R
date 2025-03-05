@@ -14,7 +14,7 @@
 #' in the DAG. For this function, the `form` attribute must be an additive
 #' function as also accepted by \code{\link[stats]{formula}}.
 #' @examples
-#' x <- dagitty('dag {
+#' x <- dagitty::dagitty('dag {
 #' C
 #' O
 #' X
@@ -56,28 +56,28 @@ derive_formula <- function (x, exposure, outcome, data = NULL, ...){
 
 
 
-derive_sim_formula <- function(edg, outcome, beta_default = runif(1, min = -0.6, max = 0.6), ...){
-  browser()
-  beta_default <- substitute(beta_default)
-
-  edg <- edg[edg$to == outcome, , drop = FALSE]
-  # if(any(is.na(edg_thisn$form))){
-  #   edg_thisn$form[is.na(edg_thisn$form)] <- sapply(edg_thisn$from[is.na(edg_thisn$form)], function(fromthis){ paste0(eval(beta_default), "*", fromthis)})
-  # }
-  out <- lapply(adj_sets, function(cvars){
-    all_x <- exposure
-    if(length(cvars) > 0) all_x <- c(all_x, cvars)
-    fforms <- edg[edg$from %in% all_x & edg$to == outcome & edg$e == "->", , drop = FALSE]
-    if(nrow(fforms) > 0){
-      x_form <- fforms$form
-      x_form <- unlist(lapply(x_form, function(i)trimws(strsplit(i, split = "+", fixed = TRUE)[[1]])))
-      all_x <- unique(c(all_x, x_form))
-    }
-    forml <- stats::as.formula(paste0(outcome, "~", paste(all_x, collapse = "+")), env = data)
-    forml
-  })
-  return(out)
-}
+# derive_sim_formula <- function(edg, outcome, beta_default = runif(1, min = -0.6, max = 0.6), ...){
+#   browser()
+#   beta_default <- substitute(beta_default)
+#
+#   edg <- edg[edg$to == outcome, , drop = FALSE]
+#   # if(any(is.na(edg_thisn$form))){
+#   #   edg_thisn$form[is.na(edg_thisn$form)] <- sapply(edg_thisn$from[is.na(edg_thisn$form)], function(fromthis){ paste0(eval(beta_default), "*", fromthis)})
+#   # }
+#   out <- lapply(adj_sets, function(cvars){
+#     all_x <- exposure
+#     if(length(cvars) > 0) all_x <- c(all_x, cvars)
+#     fforms <- edg[edg$from %in% all_x & edg$to == outcome & edg$e == "->", , drop = FALSE]
+#     if(nrow(fforms) > 0){
+#       x_form <- fforms$form
+#       x_form <- unlist(lapply(x_form, function(i)trimws(strsplit(i, split = "+", fixed = TRUE)[[1]])))
+#       all_x <- unique(c(all_x, x_form))
+#     }
+#     forml <- stats::as.formula(paste0(outcome, "~", paste(all_x, collapse = "+")), env = data)
+#     forml
+#   })
+#   return(out)
+# }
 
 
 merge_formulas <- function(edg, beta_default)
