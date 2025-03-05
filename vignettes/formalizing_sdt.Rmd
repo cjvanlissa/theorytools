@@ -18,7 +18,6 @@ knitr::opts_chunk$set(
 library(theorytools)
 ```
 
-
 ```{r eval=FALSE, results='asis', echo=FALSE}
 # This quizz is only shown in HTML output format
 theorytools:::quizz(

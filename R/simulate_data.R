@@ -78,7 +78,7 @@ simulate_data <- function (x,
     if(all(!endo_deps_exist)){
       stop(paste0("Could not synthesize data; the dependencies for ", paste0(names(endo_deps_exist[!endo_deps_exist]), collapse = ", "), " do not exist."))
     }
-    thisn <- sample(names(endo_deps_exist)[endo_deps_exist], 1)
+    thisn <- names(endo_deps_exist)[endo_deps_exist][1]
     edg_thisn <- edg[edg$to == thisn, , drop = FALSE]
     frm <- merge_formulas(edg_thisn, beta_default = beta_default)
     resid <- try(sim_fun_txt(nod$distribution[which(nod$name == thisn)]), silent = TRUE)

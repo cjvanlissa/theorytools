@@ -14,12 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(theorytools)
-```
 
 In this vignette, we introduce a specification for **augmented** Directed Acyclic Graphs (aDAGs).
-We will overload regular DAGs as specified using the **dagitty** package in R.
+We will overload regular DAGs as specified using the `dagitty` R-package.
 While `dagitty` provides standard facilities for declaring nodes, edges, exposures, and outcomes,
 we augment the DAG with additional **metadata fields** to make it more conducive to theory specification.
 These metadata fields do not interfere with regular use of the DAG in `dagitty`.
@@ -34,11 +31,17 @@ These metadata fields include:
 
 Throughout the vignette, we will illustrate how to write an augmented DAG, how to parse and inspect it with `dagitty`, `theorytools`, and `tidySEM` (for plotting), and how to leverage these additional properties for further modeling or simulation tasks.
 
+```{r setup}
+library(theorytools)
+library(dagitty)
+library(tidySEM)
+```
+
 ## A Basic DAG
 
 The usual syntax for specifying a DAG in the `dagitty` R-package is something like:
 
-```{r}
+```{r, eval = FALSE}
 library(dagitty)
 dagitty("dag {
   X -> Y
@@ -49,7 +52,7 @@ dagitty("dag {
 
 There are several tags that can be used in `dagitty`. Note that quotation marks used in tags **must be** double quotes `"`, so it makes sense to wrap the whole DAG syntax in single quotes `'`:
 
-```{r}
+```{r eval = FALSE}
 library(dagitty)
 dagitty('dag {
   X [exposure, pos="0,1"]
@@ -74,25 +77,41 @@ Below, we detail each new property:
 
 The label is used, for example, by `tidySEM` to label nodes and edges:
 
-```{r}
+```{r eval = FALSE}
 library(tidySEM)
 g <- dagitty('dag {
-  X [label="Predictor", pos="0,1"]
-  Y [label="Outcome", pos="1,1"]
+  X [label="Predictor", pos="0,0"]
+  Y [label="Outcome", pos="1,0"]
   X -> Y [label="effect"]
 }')
-graph_sem(g)
+graph_sem(g, text_size = 2)
+```
+
+```{r eval = knitr::is_html_output(), echo = FALSE, out.width="30%"}
+library(tidySEM)
+library(ggplot2)
+g <- dagitty('dag {
+  X [label="Predictor", pos="0,0"]
+  Y [label="Outcome", pos="1,0"]
+  X -> Y [label="effect"]
+}')
+p <- graph_sem(g, text_size = 2)
+ggsave("dag_basic.png", p, device = "png", width = 4, height = 1)
+knitr::include_graphics("dag_basic.png")
 ```
 
 
 ## 2. `distribution` (Nodes)
 
 - **Usage**: References a function that generates data for exogenous variables, or that describes the residual distribution for endogenous variables.
-The function can reference the argument `n` to determine sample size, otherwise this is done implicitly.
+The function can reference the argument `n` to determine sample size.
+For example, to specify a node comprising five groups with total sample size `n`,
+one could use `sample.int(n = 5, size = n)`.
+If the argument `n` is not explicitly provided, `theorytools` checks if `n` is a formal argument of the function, and assigns it.
 
 - **Examples**:
-  - `X [distribution="rnorm"]`: Node `X` is an exogenous variable drawn from a normal distribution with default arguments.
-  - `Y [distribution="rnorm"]`: Node `Y` has residuals assumed to be normally distributed with default arguments.
+  - `X [distribution="rnorm()"]`: Node `X` is an exogenous variable drawn from a normal distribution with default arguments.
+  - `Y [distribution="rnorm()"]`: Node `Y` has residuals assumed to be normally distributed with default arguments.
   
 ```{r}
 g <- dagitty('dag {
@@ -124,20 +143,49 @@ g <- dagitty('dag {
 # Example: Augmented DAG Specification
 
 Below is a simple, hypothetical DAG showing how to combine these ideas. This DAG posits:
+
 - `X`: Number of study hours, an `exposure`. Values are randomly sampled from 1-20 hours.
 - `Z`: Stress level, an exogenous covariate, exponentially distributed (i.e., right-skewed, most people are not very stressed).
 - `Y`: Exam performance an outcome depending on `X` and `Z`, with normally distributed residuals.s
 
-```{r augmentedDAG, echo=TRUE, comment=""}
-library(dagitty)
-
+```{r augmentedDAG, echo=TRUE, eval = FALSE}
 g <- dagitty('dag {
-  X [exposure, label="Study Hours", distribution="sample.int(n = 20, size = n)"]
-  Z [label="Stress Level", distribution="rexp()"]
-  Y [outcome, label="Exam Performance", distribution="rnorm()"]
-  X -> Y [label="direct effect", form="0.5+X"]
-  Z -> Y [label="indirect effect", form="2*Z"]
+  X [exposure,
+     pos="0,0",
+     label="Study Hours",
+     distribution="sample.int(n = 20, size = n)"]
+  Z [label="Stress Level",
+     pos=".5,1",
+     distribution="rexp()"]
+  Y [outcome,
+     pos="1,.2",
+     label="Exam Performance", distribution="rnorm()"]
+  X -> Y [label="direct", form="0.5+X"]
+  X -> Z
+  Z -> Y [label="indirect", form="2*Z"]
 }')
+graph_sem(g, text_size = 3)
+```
+
+```{r eval = knitr::is_html_output(), echo = FALSE, out.width="30%"}
+g <- dagitty('dag {
+  X [exposure,
+     pos="0,0",
+     label="Study Hours",
+     distribution="sample.int(n = 20, size = n)"]
+  Z [label="Stress Level",
+     pos=".5,1",
+     distribution="rexp()"]
+  Y [outcome,
+     pos="1,.2",
+     label="Exam Performance", distribution="rnorm()"]
+  X -> Y [label="direct", form="0.5+X"]
+  X -> Z
+  Z -> Y [label="indirect", form="2*Z"]
+}')
+graph_sem(g, text_size = 2) -> p
+ggsave("dag_three.png", p, device = "png", width = 5, height = 5)
+knitr::include_graphics("dag_three.png")
 ```
 
 

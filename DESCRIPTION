@@ -36,7 +36,8 @@ Imports:
     knitr,
     webexercises,
     dagitty,
-    yaml
+    yaml,
+    tidySEM (>= 0.2.8)
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
@@ -45,8 +46,6 @@ Suggests:
     usethis,
     fs,
     ggplot2
-Remotes:
-    cjvanlissa/tidySEM
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 
