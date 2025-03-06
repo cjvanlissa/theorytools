@@ -66,12 +66,28 @@ theory.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">download_theory</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://github.com/cjvanlissa/tripartite_model.git"</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">download_theory</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"https://github.com/cjvanlissa/tripartite_model.git"</span>,</span></span>
 <span class="r-in"><span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tripartite_git"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download_theory(url = "https://github.com/cjvanlissa/tripartite_model.git",     path = file.path(tempdir(), "tripartite_git")):</span> unused argument (url = "https://github.com/cjvanlissa/tripartite_model.git")</span>
-<span class="r-in"><span><span class="fu">download_theory</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"10.5281/zenodo.14921521"</span>,</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating theory repository at <span style="color: #0000BB;">"/tmp/RtmpyvS9x3/tripartite_git"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Creating theory repository at <span style="color: #0000BB;">"/tmp/RtmpyvS9x3/tripartite_git"</span> ... done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Cloning repository from 'Git' remote</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cloning repository from 'Git' remote ... done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">download_theory</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"10.5281/zenodo.14921521"</span>,</span></span>
 <span class="r-in"><span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tripartite_zenodo"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download_theory(url = "10.5281/zenodo.14921521", path = file.path(tempdir(),     "tripartite_zenodo")):</span> unused argument (url = "10.5281/zenodo.14921521")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating theory repository at <span style="color: #0000BB;">"/tmp/RtmpyvS9x3/tripartite_zenodo"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Creating theory repository at <span style="color: #0000BB;">"/tmp/RtmpyvS9x3/tripartite_zenodo"</span> ... done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Accessing record on 'Zenodo'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Accessing record on 'Zenodo' ... failed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Download ZIP archive</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Download ZIP archive ... failed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Create local FAIR theory repository</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Create local FAIR theory repository ... failed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
