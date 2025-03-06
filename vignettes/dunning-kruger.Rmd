@@ -184,30 +184,9 @@ From eq. \@ref(eq:oc) and \@ref(eq:ep) it follows that $p_e = s^*_s$ and further
 \end{align}
 
 Since there is no accepted standard on how to represent mathematical knowledge as a digital object (see also this [whitepaper](https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf)), there are many possible routes to FAIRify equations.
-Here we opt for a representation as latex code as a widely used and known way of typesetting equations, by saving the following code to a file "equations.tex":
-
+Here we opt for a representation as latex code as a widely used and known way of typesetting equations.
+First, we create a file "equations.tex" containing the actual derivations:
 ```{verbatim}
-\documentclass[a4paper,11pt]{article}
-
-% load packages
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
-\usepackage{parskip}
-
-% Statistics
-\newcommand{\Var}{\mathbb{V}}
-\newcommand{\Exp}{\mathbb{E}}
-
-% commands
-\renewcommand*{\epsilon}{\varepsilon}
-
-% operators
-\DeclareMathOperator{\cov}{cov}
-
-\begin{document}
-
 \section{Definitions}
 Define random variables
 \begin{itemize}
@@ -248,9 +227,39 @@ Proof 1:
   &= (s^* + oc^*) - (s^* + \epsilon) \\
   &= oc^* - \epsilon
 \end{align}
+```
+
+Then, we create a file "render.tex" containing the necessary information (document format, packages, commands) that can be used to render the equations:
+
+```{verbatim}
+\documentclass[a4paper,11pt]{article}
+
+% load packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+% Statistics
+\newcommand{\Var}{\mathbb{V}}
+\newcommand{\Exp}{\mathbb{E}}
+
+% commands
+\renewcommand*{\epsilon}{\varepsilon}
+
+% operators
+\DeclareMathOperator{\cov}{cov}
+
+\begin{document}
+
+\input{equations.tex}
 
 \end{document}
 ```
+
+As you can see, we use `\input{equations.tex}` to insert the equations into the document.
+This workflow can be used to split up more complex mathematical theories to keep them organized.
 
 ## Statistical Models
 Using a linear regression model, the Dunning-Kruger effect can be stated as
@@ -269,12 +278,38 @@ There are different ways to correct for the bias introduced by measurement error
  - Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term
  - IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\mathrm{cov}(oe, p_2)}{\mathrm{cov}(p, p_2)}$.
 
-## Common Experimental Paradigm
+Let's add this model again as latex code by adding a new file "linear_model.tex":
 
- - participants take a test
- - participants guess their test performance either before or after the test
- - bottom quartile performers vastly overestimate their performance, while top quartile performers access their performance more accurately
+```{verbatim}
+\subsection{Linear Model}
+Using a linear regression model, the Dunning-Kruger effect can be stated as
+\begin{equation}
+ oc^* = \alpha + \beta_1 s^* + u
+\end{equation}
+with $\beta_1 < 0$.
+Substituting the observable variables and rearranging according to eq. \ref{p} and \ref{dd}:
+\begin{equation}
+  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
+\end{equation}
 
-There are many replications for different populations and different tasks.
+\subsubsection{Correction}
+There are different ways to correct for the bias introduced by measurement error:
+\begin{itemize}
+ \item Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term
+ \item IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\cov(oe, p_2)}{\cov(p, p_2)}$.
+\end{itemize}
+```
+
+and adding to `render.tex`:
+```{verbatim}
+...
+\section{Statistical Models}
+\input{linear_model.tex}
+...
+```
+
+If we know render `render.tex`, the resulting document looks like this:
+
+![Rendered Document](./render.pdf){width=90%}
 
 ## References
