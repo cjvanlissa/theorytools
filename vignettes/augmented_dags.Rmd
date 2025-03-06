@@ -218,6 +218,12 @@ Code to simulate data in line with these metadata can be automatically generated
 ```{r simulateData, echo=TRUE, eval=TRUE}
 cat(simulate_data(g, run = FALSE), sep = "\n")
 ```
+To illustrate, we show a scatter plot of data simulated using this code:
+
+```{r}
+df <- simulate_data(g, run = TRUE)
+ggplot2::ggplot(df, aes(x=Y,y=Z,color=X))+geom_point()
+```
 
 You can use this script, for example, to generate synthetic data and build a reproducible analysis pipeline for a Preregistration-As-Code [@peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
 
