@@ -5,7 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Specifying Augmented Directed Acyclic Graphs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: vignettes.bib
+bibliography: causalinference.bib
 ---
 
 ```{r, include = FALSE}
