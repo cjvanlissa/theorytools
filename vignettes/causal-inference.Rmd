@@ -484,9 +484,9 @@ Let's access the data:
 head(lsac)
 ```
 
-### Mapping Measured Variables onto Theoretical Constructs
+### Mapping Theoretical Constructs onto Measured Variables
 
-Here, we are using real data to operationalize the theoretical constructs in our DAG.
+Using real data, we need to find operationalizations of the theoretical constructs in our DAG, that is, we need to map the theoretical constructs onto measured variables.
 If we inspect the documentation of the data, we can conclude that the most likely mapping of constructs to variables is:
 
 ```{r}
