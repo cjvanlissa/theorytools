@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Specifying Augmented Directed Acyclic Graphs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: vignettes.bib
 ---
 
 ```{r, include = FALSE}
@@ -17,17 +18,17 @@ knitr::opts_chunk$set(
 
 In this vignette, we introduce a specification for **augmented** Directed Acyclic Graphs (aDAGs).
 We will overload regular DAGs as specified using the `dagitty` R-package.
-While `dagitty` provides standard facilities for declaring nodes, edges, exposures, and outcomes,
+While `dagitty` provides standard facilities for declaring nodes, edges, exposures, and outcomes in causal frameworks,
 we augment the DAG with additional **metadata fields** to make it more conducive to theory specification.
 These metadata fields do not interfere with regular use of the DAG in `dagitty`.
 
-These metadata fields include:
+The metadata fields in an aDAG include:
 
-- **tags** for nodes, like `exposure`, `outcome`, and `unobserved`. This metadata field is used by `dagitty` for identifying nodes of interest in causal inference.
-- **`pos`** for nodes, which define the layout position in the X and Y dimension, e.g., `pos="0,1` is positioned at coordinates X = 0 and Y = 1. This metadata field is used by `dagitty`.
+- **`tags`** for identifying nodes of interest in causal inference. This field can take on values like `exposure`, `outcome`, and `unobserved`. 
+- **`pos`** for nodes, which defines the layout position in the X and Y dimension, e.g., `pos="0,1` is positioned at coordinates X = 0 and Y = 1. This metadata field is used by `dagitty`.
 - **`label`** for nodes or edges: A descriptive label used for visualization and reporting. This is a new metadata field.
-- **`distribution`** for nodes: The assumed distribution-generating function for each node. For exogenous nodes, this constitutes the distribution of the node itself; for endogenous nodes, this constitutes the residual distribution. This is a new metadata field.
-- **`form`** for edges: A function specification (in a form interpretable by `as.formula()`) that can describe how a child node is calculated from its parents. This is a new metadata field.
+- **`distribution`** for nodes: The assumed distribution-generating function for the variable associated with a node. For exogenous nodes, this constitutes the distribution of the variable associated with the node itself; for endogenous nodes, this constitutes the residual distribution of the associated variable. This is a new metadata field.
+- **`form`** for edges: A function specification (in a form interpretable by `as.formula()`) that describes how the variable associated with a child node is calculated from its parents. This is a new metadata field.
 
 Throughout the vignette, we will illustrate how to write an augmented DAG, how to parse and inspect it with `dagitty`, `theorytools`, and `tidySEM` (for plotting), and how to leverage these additional properties for further modeling or simulation tasks.
 
@@ -87,7 +88,7 @@ g <- dagitty('dag {
 graph_sem(g, text_size = 2)
 ```
 
-```{r eval = knitr::is_html_output(), echo = FALSE, out.width="30%"}
+```{r eval = knitr::is_html_output(), echo = FALSE, out.width="60%"}
 library(tidySEM)
 library(ggplot2)
 g <- dagitty('dag {
@@ -95,7 +96,7 @@ g <- dagitty('dag {
   Y [label="Outcome", pos="1,0"]
   X -> Y [label="effect"]
 }')
-p <- graph_sem(g, text_size = 2)
+p <- graph_sem(g, text_size = 4)
 ggsave("dag_basic.png", p, device = "png", width = 4, height = 1)
 knitr::include_graphics("dag_basic.png")
 ```
@@ -106,7 +107,7 @@ knitr::include_graphics("dag_basic.png")
 - **Usage**: References a function that generates data for exogenous variables, or that describes the residual distribution for endogenous variables.
 The function can reference the argument `n` to determine sample size.
 For example, to specify a node comprising five groups with total sample size `n`,
-one could use `sample.int(n = 5, size = n)`.
+one could use `sample.int(n = 5, size = n, replace=TRUE)`.
 If the argument `n` is not explicitly provided, `theorytools` checks if `n` is a formal argument of the function, and assigns it.
 
 - **Examples**:
@@ -153,7 +154,7 @@ g <- dagitty('dag {
   X [exposure,
      pos="0,0",
      label="Study Hours",
-     distribution="sample.int(n = 20, size = n)"]
+     distribution="sample.int(n = 20, size = n, replace = TRUE)"]
   Z [label="Stress Level",
      pos=".5,1",
      distribution="rexp()"]
@@ -167,12 +168,12 @@ g <- dagitty('dag {
 graph_sem(g, text_size = 3)
 ```
 
-```{r eval = knitr::is_html_output(), echo = FALSE, out.width="30%"}
+```{r eval = knitr::is_html_output(), echo = FALSE, out.width="60%"}
 g <- dagitty('dag {
   X [exposure,
      pos="0,0",
      label="Study Hours",
-     distribution="sample.int(n = 20, size = n)"]
+     distribution="sample.int(n = 20, size = n, replace = TRUE)"]
   Z [label="Stress Level",
      pos=".5,1",
      distribution="rexp()"]
@@ -183,8 +184,8 @@ g <- dagitty('dag {
   X -> Z
   Z -> Y [label="indirect", form="2*Z"]
 }')
-graph_sem(g, text_size = 2) -> p
-ggsave("dag_three.png", p, device = "png", width = 5, height = 5)
+graph_sem(g, text_size = 4) -> p
+ggsave("dag_three.png", p, device = "png", width = 6, height = 3)
 knitr::include_graphics("dag_three.png")
 ```
 
@@ -234,3 +235,6 @@ You can use this script, for example, to generate synthetic data and build a rep
 <!-- - Data-generating or modeling assumptions (extra properties for simulation or advanced uses). -->
 
 <!-- This approach reduces duplication and potential mismatches between your DAG-based causal assumptions and the code used to generate or analyze data. We hope this augmented specification pattern helps you maintain clarity and reproducibility in your causal modeling workflows. -->
+
+## References
+
