@@ -132,12 +132,12 @@ ggsave("morris.png", g, device = "png", width = 6, height = 4)
 knitr::include_graphics("morris.png")
 ```
 
-This figure, loosely based on the visual representation of the theory in the paper by Morris and colleagues,
-is relatively formalized compared to the standard for developmental psychological theories.
+This figure, loosely based on the visual representation of the theory in the paper by @morrisRoleFamilyContext2007 (see their Figure 1, p.362).
+is relatively well formalized compared to the standard for developmental psychological theories.
 Before we can FAIRify this theory, however, we have to clarify a few things, and make some decisions. 
 
 First, notice that the model does not explicitly follow any graphing convention.
-It resembles a structural equation model - but notice that there is an unconnected bold double-headed arrow near CC (Child Characteristics). The written description of the text clarifies the meaning of the bold arrow: the authors argue that Child Characteristics *"moderate relations between family context [and] ER"* (Morris et al., 2007, p. 364).
+It resembles a path diagram, as used to visualize a structural equation model - but notice that there is an unconnected bold double-headed arrow near CC (Child Characteristics). The written description of the text clarifies the meaning of the bold arrow: the authors argue that Child Characteristics *"moderate relations between family context [and] ER"* (Morris et al., 2007, p. 364).
 
 Second, note that most arrows are bidirectional.
 This would be fine if we wished to specify the model as a structural equation model where associations can be undirected.
@@ -377,7 +377,7 @@ to plan our analyses before data collection,
 to conduct power analysis and plan our sample size,
 and to preregister a fully reproducible analysis pipeline [Preregistration-As-Code, @peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
 
-Below is a simplistic code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
+Below is a simple code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
 This function interprets the DAG as a structural equation model,
 samples random values for the path coefficients (unless specific values are provided),
 and assumes normal residual variances.
