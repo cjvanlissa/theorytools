@@ -387,6 +387,7 @@ and some may be better suited to particular use cases.
 ```{r simulate-data}
 set.seed(1)
 df_sim <- simulateSEM(tripartite, N = 497)
+df_sim <- simulate_data(tripartite)
 head(df_sim)
 ```
 

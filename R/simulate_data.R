@@ -43,7 +43,7 @@
 #' @importFrom dagitty exogenousVariables
 #' @importFrom stats runif
 simulate_data <- function (x,
-                           beta_default = round(runif(1, min = -0.6, max = 0.6),3),
+                           beta_default = round(runif(1, min = -0.6, max = 0.6), 2),
                            n = 500,
                            run = TRUE){
   beta_default <- substitute(beta_default)
@@ -81,11 +81,12 @@ simulate_data <- function (x,
     }
     thisn <- names(endo_deps_exist)[endo_deps_exist][1]
     edg_thisn <- edg[edg$to == thisn, , drop = FALSE]
-    frm <- merge_formulas(edg_thisn, beta_default = beta_default)
+    frm <- edges_to_simfun(edg_thisn, beta_default = beta_default)
+
     resid <- try(sim_fun_txt(nod$distribution[which(nod$name == thisn)]), silent = TRUE)
     if(inherits(resid, "try-error")){
       cli_msg("!" = "No valid distribution for {.val {thisn}}, used `rnorm()` instead.")
-      simfn <- "rnorm(n)"
+      simfn <- "rnorm(n = n)"
     }
     script <- c(script, paste0(thisn, " <- ", frm, " + ", resid))
     nodes_existing <- c(nodes_existing, thisn)
@@ -106,16 +107,20 @@ simulate_data <- function (x,
 
 #' @importFrom methods formalArgs
 sim_fun_txt <- function(simfn){
-
-  if(is.na(simfn)) stop()
-  simfn <- str2lang(s = simfn)
-  if(is.null(simfn[["n"]])){
-    Args <- formalArgs(eval(simfn[[1]]))
-    if("n" %in% Args){
-      simfn[["n"]] <- quote(n)
+  tryCatch({
+    if(!inherits(simfn, "character")) simfn <- "rnorm()"
+    simfn <- str2lang(s = simfn)
+    if(is.null(simfn[["n"]])){
+      Args <- formalArgs(eval(simfn[[1]]))
+      if("n" %in% Args){
+        simfn[["n"]] <- quote(n)
+      }
     }
-  }
-  return(deparse(substitute(simfn)))
+    return(deparse(substitute(simfn)))
+  }, error = function(e){
+    cli_msg("!" = "No valid distribution for data, used rnorm() instead.")
+    return("rnorm(n = n)")
+  })
 }
 
 # simulate_data <- function (x, beta_default = runif(1, min = -0.6, max = 0.6),
@@ -174,3 +179,4 @@ sim_fun_txt <- function(simfn){
 #     return(rnorm(n))
 #   })
 # }
+

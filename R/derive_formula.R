@@ -18,11 +18,13 @@
 #' C
 #' O
 #' X
-#' O <- X [form="X^2"]
+#' Y
+#' O <- X [form="I(X^2)"]
 #' C -> X
-#' Y -> O
+#' Y -> O [form="Y*X"]
 #' }')
-#' derive_formula(x, outcome = "O", exposure = "X")
+#' f1 <- derive_formula(x, outcome = "O", exposure = "X")
+#' f2 <- derive_formula(x, outcome = "O", exposure = "Y")
 #' @seealso
 #'  \code{\link[methods]{hasArg}}
 #'  \code{\link[tidySEM]{get_edges}}
@@ -36,59 +38,116 @@ derive_formula <- function (x, exposure, outcome, data = NULL, ...){
   if(!(methods::hasArg(exposure) & methods::hasArg(outcome))){
     stop("Function derive_formula() requires a single explicit exposure and outcome argument.")
   }
-  functional_form <- tidySEM::get_edges(x)
+  edg <- tidySEM::get_edges(x)
 
   adj_sets <- unclass(dagitty::adjustmentSets(x, exposure = exposure, outcome = outcome, ...)  )
   out <- lapply(adj_sets, function(cvars){
     all_x <- exposure
     if(length(cvars) > 0) all_x <- c(all_x, cvars)
-    fforms <- functional_form[functional_form$from %in% all_x & functional_form$to == outcome & functional_form$e == "->", , drop = FALSE]
-    if(nrow(fforms) > 0){
-      x_form <- fforms$form
-      x_form <- unlist(lapply(x_form, function(i)trimws(strsplit(i, split = "+", fixed = TRUE)[[1]])))
-      all_x <- unique(c(all_x, x_form))
-    }
-    forml <- stats::as.formula(paste0(outcome, "~", paste(all_x, collapse = "+")), env = data)
-    forml
+    fforms <- edg[edg$from %in% all_x & edg$to == outcome & edg$e == "->", , drop = FALSE]
+    edges_to_analysisfun(fforms)
   })
   return(out)
 }
 
 
 
-# derive_sim_formula <- function(edg, outcome, beta_default = runif(1, min = -0.6, max = 0.6), ...){
-#   browser()
-#   beta_default <- substitute(beta_default)
-#
-#   edg <- edg[edg$to == outcome, , drop = FALSE]
-#   # if(any(is.na(edg_thisn$form))){
-#   #   edg_thisn$form[is.na(edg_thisn$form)] <- sapply(edg_thisn$from[is.na(edg_thisn$form)], function(fromthis){ paste0(eval(beta_default), "*", fromthis)})
-#   # }
-#   out <- lapply(adj_sets, function(cvars){
-#     all_x <- exposure
-#     if(length(cvars) > 0) all_x <- c(all_x, cvars)
-#     fforms <- edg[edg$from %in% all_x & edg$to == outcome & edg$e == "->", , drop = FALSE]
-#     if(nrow(fforms) > 0){
-#       x_form <- fforms$form
-#       x_form <- unlist(lapply(x_form, function(i)trimws(strsplit(i, split = "+", fixed = TRUE)[[1]])))
-#       all_x <- unique(c(all_x, x_form))
-#     }
-#     forml <- stats::as.formula(paste0(outcome, "~", paste(all_x, collapse = "+")), env = data)
-#     forml
-#   })
-#   return(out)
-# }
-
-
-merge_formulas <- function(edg, beta_default)
-{
-  if(any(is.na(edg$form))){
-      edg$form[is.na(edg$form)] <- sapply(edg$from[is.na(edg$form)], function(fromthis){ paste0(eval(beta_default), "*", fromthis)})
+formula_to_simfunction <- function(x, beta_default){
+  trms <- terms(formula(paste0("~", x)))
+  trms <- attr(trms, "term.labels")
+  is_mult <- grepl(":", trms, fixed = TRUE)
+  if(any(is_mult)){
+    trms[is_mult] <- gsub(":", "*", trms[is_mult], fixed = TRUE)
   }
-  rhs <- as.list(edg$form)
+  trms <- sapply(trms, function(i){ paste0(eval(beta_default), "*", i) })
+  simfunction <- paste0(trms, collapse = " + ")
+  return(simfunction)
+}
+
+formula_to_simfunction <- function(x, beta_default){
+  trms <- terms(formula(paste0("~", x)))
+  trms <- attr(trms, "term.labels")
+  is_mult <- grepl(":", trms, fixed = TRUE)
+  if(any(is_mult)){
+    trms[is_mult] <- gsub(":", "*", trms[is_mult], fixed = TRUE)
+  }
+  trms <- sapply(trms, function(i){ paste0(eval(beta_default), "*", i) })
+  simfunction <- paste0(trms, collapse = " + ")
+  return(simfunction)
+}
+
+merge_formulas <- function(...){
+  rhs <- list(...)
   rhs <- rhs[sapply(rhs, `!=`, "0")] # drop "0"
   rhs <- do.call(paste, c(rhs, sep = " + "))
-  if(length(rhs) < 1) # use "0" if rhs is empty
-    rhs <- "0"
+  # use "0" if rhs is empty
+  if(length(rhs) < 1) rhs <- "0"
+  # Remove redundant terms
+  trms <- terms(formula(paste0("~", rhs)))
+  rhs <- paste0(attr(trms, "term.labels"), collapse = "+")
   return(rhs)
+}
+
+expand_formula <- function(f){
+  as.character(reformulate(labels(terms(as.formula(paste0("~", f)))))[2])
+}
+
+edges_to_formulas <- function(edg){
+  frmls <- edg$form
+  if(any(is.na(frmls))){
+    frmls[is.na(frmls)] <- edg$from[is.na(edg$form)]
+  }
+  frmls <- unname(unlist(lapply(frmls, expand_formula)))
+  return(frmls)
+}
+
+edges_to_simfun <- function(edg, beta_default){
+  frmls <- sapply(edg$form, theorytools:::form_to_formula)
+
+  frmls <- edges_to_formulas(edg)
+  frm <- do.call(merge_formulas, as.list(frmls))
+  frm <- as.formula(paste0("~", frm))
+  frm <- formula_to_simfunction(frm, beta_default = beta_default)
+  return(frm)
+}
+
+edges_to_analysisfun <- function(edg){
+  edg$form <- sapply(edg$form, form_to_formula)
+  frmls <- edges_to_formulas(edg)
+  frm <- do.call(merge_formulas, as.list(frmls))
+  return(as.formula(paste0("~", frm)))
+}
+
+formula_clean <- function(f){
+  gsub("[ \\s\\t\\n]", "", f, perl = TRUE)
+}
+
+form_to_formula <- function(f){
+  f <- formula_clean(f)
+  parts <- strsplit(f, split = "+", fixed = TRUE)[[1]]
+
+  is_const <- !grepl("(`[^`]+`|(?:[A-Za-z]|\\.(?!\\d))[A-Za-z0-9._]*)", parts, perl = TRUE)
+  const <- paste0(parts[is_const], collapse = "+")
+  intrcpt <- eval(parse(text = const))
+
+  trms <- parts[!is_const]
+  has_beta <- grepl("\\d\\*", trms)
+  betas <- rep(NA, length(trms))
+  if(any(has_beta)){
+
+    find_betas <- regexpr("([+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?=\\s*\\*\\s*[A-Za-z(])", trms, perl=TRUE)
+    betas[which(attr(find_betas, "match.length") > 0)] <- regmatches(trms, find_betas)
+    trms <- gsub(
+      "([+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))\\s*\\*\\s*",
+      "",
+      trms,
+      perl = TRUE
+    )
+  }
+  if(intrcpt == -1) trms <- c("-1", trms)
+  frml <- paste0(trms, collapse = "+")
+  attr(frml, "intercept") <- intrcpt
+  attr(frml, "betas") <- betas
+  class(frml) <- c("functional_form", class(frml))
+  return(frml)
 }
