@@ -102,8 +102,7 @@ edges_to_formulas <- function(edg){
 }
 
 edges_to_simfun <- function(edg, beta_default){
-  frmls <- sapply(edg$form, theorytools:::form_to_formula)
-
+  #frmls <- sapply(edg$form, theorytools:::form_to_formula)
   frmls <- edges_to_formulas(edg)
   frm <- do.call(merge_formulas, as.list(frmls))
   frm <- as.formula(paste0("~", frm))
@@ -112,7 +111,7 @@ edges_to_simfun <- function(edg, beta_default){
 }
 
 edges_to_analysisfun <- function(edg){
-  edg$form <- sapply(edg$form, form_to_formula)
+  #edg$form <- sapply(edg$form, form_to_formula)
   frmls <- edges_to_formulas(edg)
   frm <- do.call(merge_formulas, as.list(frmls))
   return(as.formula(paste0("~", frm)))
