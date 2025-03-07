@@ -40,10 +40,10 @@ inspired by the *Tripartite Model* of the impact of the family on children’s e
 
 ### Learning Goals
 
-Once you have completed this tutorial, you will know how to:
+By the end of this tutorial, you will be able to:
 
-- [ ] Implement a theory represented as a diagram as a FAIR theory
-- [ ] Access that FAIR theory in the data analysis environment (i.e., theory reuse)
+- [ ] Transform a theory represented as a diagram to a FAIR theory
+- [ ] Access and reuse that FAIR theory within a data analysis environment 
 - [ ] Generate synthetic data from a FAIR theory
 - [ ] Select control variables using a FAIR theory
 - [ ] Perform basic causal inference based on a FAIR theory
@@ -69,7 +69,7 @@ We'll use the following packages:
 - `dagitty` for interacting with Directed Acyclic Graphs (DAGs)
 - `tidySEM` for visualizing DAGs
 
-If you already have these packages installed, it is not necessary to run this code:
+Only run this code if you haven't already installed these packages:
 
 ```{r install-packages, eval=FALSE}
 install.packages("theorytools")
@@ -86,7 +86,7 @@ library(ggplot2)
 
 ## The Tripartite Model
 
-The tripartite model identifies three major familial influences on children's ER:
+The tripartite model identifies three major familial influences on children's emotion regulation (ER):
 
 1. **Observation (O)**, e.g., modeling parents' behavior
 2. **Parenting practices (PP)**, e.g., emotion coaching
@@ -132,12 +132,12 @@ ggsave("morris.png", g, device = "png", width = 6, height = 4)
 knitr::include_graphics("morris.png")
 ```
 
-This figure, loosely based on the visual representation of the theory in the paper by Morris and colleagues,
-is relatively formalized compared to the standard for developmental psychological theories.
+This figure, loosely based on the visual representation of the theory in the paper by @morrisRoleFamilyContext2007 (see their Figure 1, p.362).
+is relatively well formalized compared to the standard for developmental psychological theories.
 Before we can FAIRify this theory, however, we have to clarify a few things, and make some decisions. 
 
 First, notice that the model does not explicitly follow any graphing convention.
-It resembles a structural equation model - but notice that there is an unconnected bold double-headed arrow near CC (Child Characteristics). The written description of the text clarifies the meaning of the bold arrow: the authors argue that Child Characteristics *"moderate relations between family context [and] ER"* (Morris et al., 2007, p. 364).
+It resembles a path diagram, as used to visualize a structural equation model - but notice that there is an unconnected bold double-headed arrow near CC (Child Characteristics). The written description of the text clarifies the meaning of the bold arrow: the authors argue that Child Characteristics *"moderate relations between family context [and] ER"* (Morris et al., 2007, p. 364).
 
 Second, note that most arrows are bidirectional.
 This would be fine if we wished to specify the model as a structural equation model where associations can be undirected.
@@ -200,6 +200,8 @@ We can annotate the graph in such a way that it is clear which variables are inv
 CC -> ER [form="CC:O+CC:PP+CC:EC"];
 ```
 
+Note that we use R's formula syntax, which you may already know from linear regression models. 
+Here, we specified three interaction terms, which are specified using the interaction operator `:` and which are connected by the `+` operator, which means that the interaction effects form a weighted sum.
 Finally, we have to make a decision about the interrelations between the predictors of emotion regulation.
 We could omit them, or delve further into the literature to direct them.
 For now, I made the following assumptions:
@@ -210,9 +212,11 @@ For now, I made the following assumptions:
 ```
 PP -> O
 EC -> O
-PP -> EC}')
+PP -> EC
+}')
 ```
 
+Note that the final line closes our DAG specification, which is stored in a variable called `tripartite`.
 Now, we have a complete DAG!
 
 ```{r, include=FALSE}
@@ -373,7 +377,7 @@ to plan our analyses before data collection,
 to conduct power analysis and plan our sample size,
 and to preregister a fully reproducible analysis pipeline [Preregistration-As-Code, @peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
 
-Below is a simplistic code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
+Below is a simple code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
 This function interprets the DAG as a structural equation model,
 samples random values for the path coefficients (unless specific values are provided),
 and assumes normal residual variances.
@@ -480,9 +484,9 @@ Let's access the data:
 head(lsac)
 ```
 
-### Mapping Measured Variables onto Theoretical Constructs
+### Mapping Theoretical Constructs onto Measured Variables
 
-Here, we are using real data to operationalize the theoretical constructs in our DAG.
+Using real data, we need to find operationalizations of the theoretical constructs in our DAG, that is, we need to map the theoretical constructs onto measured variables.
 If we inspect the documentation of the data, we can conclude that the most likely mapping of constructs to variables is:
 
 ```{r}

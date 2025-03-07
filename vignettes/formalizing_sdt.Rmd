@@ -39,7 +39,7 @@ The definition of SDT is taken from this book chapter, but it seems to be consis
 
 
 ```{r}
-SDT1 <- read.csv("../dev/sdt1.txt")
+SDT1 <- read.csv(system.file("sdt1.txt",package="theorytools"))
 names(SDT1) <- c("N", "IF", "THEN", "Original")
 knitr::kable(SDT1[, 1:4], caption = "SDT translated into IF/THEN statements")
 ```
@@ -50,7 +50,7 @@ Note that the numbers associated with the statements are retained,
 so that it is clear which causal links are derived from which IF/THEN statements:
 
 ```{r}
-SDT2 <- read.csv("../dev/sdt2.txt")
+SDT2 <- read.csv(system.file("sdt2.txt",package="theorytools"))
 names(SDT2) <- c("N", "from", "to", "form")
 knitr::kable(SDT2[, 1:3], caption = "IF/THEN statements translated into causal connections")
 ```
