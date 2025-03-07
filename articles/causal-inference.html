@@ -75,9 +75,9 @@
 <!-- We can find more examples of causal inference with DAGs in these tutorials: -->
 <!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ -->
 <!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ -->
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>Directed acyclic graphs (DAGs) are a powerful tool for expressing and
 testing causal assumptions. They allow researchers to identify potential
 confounders or colliders, and guide decisions about which variables to
@@ -86,9 +86,9 @@ implemented as FAIR theories, or can be derived from FAIR theories. In
 this vignette, we’ll illustrate how to use DAGs for causal inference in
 <code>R</code>, inspired by the <em>Tripartite Model</em> of the impact
 of the family on children’s emotion regulation and adjustment <span class="citation">(Morris et al. 2007)</span>.</p>
-<div class="section level3">
-<h3 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
-</h3>
+<div class="section level4">
+<h4 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
 <p>Once you have completed this tutorial, you will know how to:</p>
 <ul class="task-list">
 <li><label><input type="checkbox">Implement a theory represented as a
@@ -104,9 +104,9 @@ on a FAIR theory</label></li>
 </ul>
 <!-- Below, we’ll translate this example into a simple DAG, simulate some data, and demonstrate how controlling for the collider can change the observed relationship between Immigrant Status and Self-Efficacy. -->
 </div>
-<div class="section level3">
-<h3 id="optional-video-lecture">Optional: Video Lecture<a class="anchor" aria-label="anchor" href="#optional-video-lecture"></a>
-</h3>
+<div class="section level4">
+<h4 id="optional-video-lecture">Optional: Video Lecture<a class="anchor" aria-label="anchor" href="#optional-video-lecture"></a>
+</h4>
 <p><a href="https://www.youtube.com/watch?v=wBB4sed9ku0" class="external-link">This video
 lecture</a> gives an introduction to causal inference, with a focus on
 DAGs comprising three variables, including the distinction between
@@ -114,9 +114,9 @@ confounders and colliders.</p>
 <!-- <iframe width="560" height="315" src="http://www.youtube.com/embed/wBB4sed9ku0?rel=0" frameborder="0" allowfullscreen></iframe> -->
 </div>
 </div>
-<div class="section level2">
-<h2 id="install-and-load-required-packages">Install and Load Required Packages<a class="anchor" aria-label="anchor" href="#install-and-load-required-packages"></a>
-</h2>
+<div class="section level3">
+<h3 id="install-and-load-required-packages">Install and Load Required Packages<a class="anchor" aria-label="anchor" href="#install-and-load-required-packages"></a>
+</h3>
 <p>We’ll use the following packages:</p>
 <ul>
 <li>
@@ -145,9 +145,9 @@ run this code:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="the-tripartite-model">The Tripartite Model<a class="anchor" aria-label="anchor" href="#the-tripartite-model"></a>
-</h2>
+<div class="section level3">
+<h3 id="the-tripartite-model">The Tripartite Model<a class="anchor" aria-label="anchor" href="#the-tripartite-model"></a>
+</h3>
 <p>The tripartite model identifies three major familial influences on
 children’s ER:</p>
 <ol style="list-style-type: decimal">
@@ -212,9 +212,9 @@ there are direct effects of the family context on children’s adjustment
 EC). We can thus either include all three direct effects, or omit them
 and assume full mediation. Since the latter option results in a much
 simpler DAG, we opt for full mediation.</p>
-<div class="section level3">
-<h3 id="implementing-the-tripartite-model-as-a-dag">Implementing the Tripartite Model as a DAG<a class="anchor" aria-label="anchor" href="#implementing-the-tripartite-model-as-a-dag"></a>
-</h3>
+<div class="section level4">
+<h4 id="implementing-the-tripartite-model-as-a-dag">Implementing the Tripartite Model as a DAG<a class="anchor" aria-label="anchor" href="#implementing-the-tripartite-model-as-a-dag"></a>
+</h4>
 <p>We can implement the model as a DAG using the <code>dagitty</code>
 package. We start with an “ontology”, or simply, by stating which
 constructs exist in our DAG:</p>
@@ -286,9 +286,9 @@ Information about functional form, like
 </div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="from-dag-to-fair-theory">From DAG to FAIR Theory<a class="anchor" aria-label="anchor" href="#from-dag-to-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="from-dag-to-fair-theory">From DAG to FAIR Theory<a class="anchor" aria-label="anchor" href="#from-dag-to-fair-theory"></a>
+</h3>
 <p>A DAG is not yet a FAIR theory. We can FAIRify the DAG we specified
 above by following the steps outlined in the <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html">Making
 a Theory FAIR vignette</a>. We briefly go over the steps here. First,
@@ -318,9 +318,9 @@ on archiving for this GitHub repository</a>. Once this is done, run:</p>
 the metadata</a> for the archived version on Zenodo.</p>
 <p>The following DOI shows my version of the FAIR Tripartite Model: <a href="https://doi.org/10.5281/zenodo.14921521" class="external-link uri">https://doi.org/10.5281/zenodo.14921521</a></p>
 </div>
-<div class="section level2">
-<h2 id="accessing-an-existing-fair-theory">Accessing an Existing FAIR Theory<a class="anchor" aria-label="anchor" href="#accessing-an-existing-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="accessing-an-existing-fair-theory">Accessing an Existing FAIR Theory<a class="anchor" aria-label="anchor" href="#accessing-an-existing-fair-theory"></a>
+</h3>
 <p>There are several ways in which we can access an existing FAIR
 theory. If our goal is simply to use it in our analysis workflow (as is
 the case in this tutorial), then we can access the static archived
@@ -347,9 +347,9 @@ branches, and continues to version control changes you make.</p>
 <p>For this tutorial, please download my version of the Tripartite Model
 using <code>download_zenodo()</code>.</p>
 </div>
-<div class="section level2">
-<h2 id="x-interoperability-in-r">X-Interoperability in R<a class="anchor" aria-label="anchor" href="#x-interoperability-in-r"></a>
-</h2>
+<div class="section level3">
+<h3 id="x-interoperability-in-r">X-Interoperability in R<a class="anchor" aria-label="anchor" href="#x-interoperability-in-r"></a>
+</h3>
 <p>Interoperability pertains to the ability to use a theory in
 scientific workflows. X-interoperability refers to the ability to use a
 theory for <em>specific operations</em> in scientific workflows. When we
@@ -392,16 +392,27 @@ figure, which is a <code>ggplot</code> object.</p>
 </p>
 <p>Which of the following describes the property of X-interoperability
 of a FAIR theory?
-<input class="webex-solveme nospaces" size="42" data-answer='["It can be reused for a specific operation.","It can be reused by any person.","It can be reused for any operation.","It is licenced to be reused."]'></p>
+<select class="webex-select"><option value="blank"></option>
+<option value="answer">It
+can be reused for a specific operation.</option>
+<option value="">It can
+be reused for any operation.</option>
+<option value="">It can be reused
+by any person.</option>
+<option value="">It is licenced to be
+reused.</option></select></p>
 If you are contributing to theory development, which platform provides
 infrastructure to coordinate collaborate with known others and
 strangers?
-<input class="webex-solveme nospaces" size="7" data-answer='["GitHub","Zenodo","RStudio"]'><p></p></span>
+<select class="webex-select"><option value="blank"></option>
+<option value="answer">GitHub</option>
+<option value="">Zenodo</option>
+<option value="">RStudio</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="simulating-data-from-the-fair-theory">Simulating Data from the FAIR Theory<a class="anchor" aria-label="anchor" href="#simulating-data-from-the-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="simulating-data-from-the-fair-theory">Simulating Data from the FAIR Theory<a class="anchor" aria-label="anchor" href="#simulating-data-from-the-fair-theory"></a>
+</h3>
 <p>Simulation studies allow us to explore the implications of model
 assumptions, to plan our analyses before data collection, to conduct
 power analysis and plan our sample size, and to preregister a fully
@@ -468,9 +479,9 @@ the paths in our DAG:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">51</span><span class="op">)</span></span>
 <span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">simulateSEM</a></span><span class="op">(</span><span class="va">tripartite_coef</span>, N <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="selecting-control-variables">Selecting Control Variables<a class="anchor" aria-label="anchor" href="#selecting-control-variables"></a>
-</h2>
+<div class="section level3">
+<h3 id="selecting-control-variables">Selecting Control Variables<a class="anchor" aria-label="anchor" href="#selecting-control-variables"></a>
+</h3>
 <p>One advantage of a DAG is the ability to identify <strong>which
 variables should be controlled for</strong> (e.g., to avoid confounding)
 and which variables should <strong>not</strong> be controlled for (e.g.,
@@ -513,9 +524,9 @@ PP</option>
 <option value="answer">PC</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="basic-causal-inference">Basic Causal Inference<a class="anchor" aria-label="anchor" href="#basic-causal-inference"></a>
-</h2>
+<div class="section level3">
+<h3 id="basic-causal-inference">Basic Causal Inference<a class="anchor" aria-label="anchor" href="#basic-causal-inference"></a>
+</h3>
 <p>Once we know which variables to control for, we can use standard
 regression to estimate the causal effect. Using regression assumes that
 all causal effects are linear and additive, with normally distributed
@@ -591,9 +602,9 @@ unbiased estimate of the effect of Observation on Emotion Regulation.
 <option value="answer">FALSE</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="using-real-data">Using Real Data<a class="anchor" aria-label="anchor" href="#using-real-data"></a>
-</h2>
+<div class="section level3">
+<h3 id="using-real-data">Using Real Data<a class="anchor" aria-label="anchor" href="#using-real-data"></a>
+</h3>
 <p>When working with real data, causal inference quickly becomes more
 complicated. Therefore, we provide a “real data” example here, to
 practice the relevant skills. The <code>theorytools</code> package
@@ -618,9 +629,9 @@ the data:</p>
 <span><span class="co">#&gt; 4                1.2      3</span></span>
 <span><span class="co">#&gt; 5                1.2      4</span></span>
 <span><span class="co">#&gt; 6                2.6      1</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="mapping-measured-variables-onto-theoretical-constructs">Mapping Measured Variables onto Theoretical Constructs<a class="anchor" aria-label="anchor" href="#mapping-measured-variables-onto-theoretical-constructs"></a>
-</h3>
+<div class="section level4">
+<h4 id="mapping-measured-variables-onto-theoretical-constructs">Mapping Measured Variables onto Theoretical Constructs<a class="anchor" aria-label="anchor" href="#mapping-measured-variables-onto-theoretical-constructs"></a>
+</h4>
 <p>Here, we are using real data to operationalize the theoretical
 constructs in our DAG. If we inspect the documentation of the data, we
 can conclude that the most likely mapping of constructs to variables
@@ -737,11 +748,19 @@ set.
 <option value="answer">TRUE</option>
 <option value="">FALSE</option></select></p>
 <p>Which of these causal effects can we estimate using these data?
-<input class="webex-solveme nospaces" size="13" data-answer='["All of these ","PP -&gt;
-A”,“ER -&gt; PC”,“CC -&gt; A”]’/&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;ci_tests&lt;/code&gt; give us reasons to doubt that
-&lt;code&gt;df_sim&lt;/code&gt; is consistent with the DAG.
-&lt;select class=' webex-select><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></p>
+<select class="webex-select"><option value="blank"></option>
+<option value="">CC
+-&gt; A</option>
+<option value="">ER -&gt; PC</option>
+<option value="">PP
+-&gt; A</option>
+<option value="answer">All of these
+</option></select></p>
+<p>The <code>ci_tests</code> give us reasons to doubt that
+<code>df_sim</code> is consistent with the DAG.
+<select class="webex-select"><option value="blank"></option>
+<option value="">TRUE</option>
+<option value="answer">FALSE</option></select></p>
 <p>The <code>ci_tests</code> give us reasons to doubt that
 <code>df_real</code> is consistent with the DAG.
 <select class="webex-select"><option value="blank"></option>
@@ -749,8 +768,15 @@ A”,“ER -&gt; PC”,“CC -&gt; A”]’/&gt;&lt;/p&gt;
 <option value="">FALSE</option></select></p>
 Consider the sample size of <code>df_real</code>. Could this be related
 to your answers in the previous two questions?
-<input class="webex-solveme nospaces" size="3" data-answer='["Yes","No"]'><p></p></span>
+<select class="webex-select"><option value="blank"></option>
+<option value="">No</option>
+<option value="answer">Yes</option></select><p></p></span>
 </div>
+</div>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-cinelliCrashCourseGood2022" class="csl-entry">
 Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. <span>“A
@@ -793,7 +819,6 @@ Fathers’ Quantitative and Qualitative Parenting in Relation to
 Children’s Emotional Adjustment: <span>A</span> Between- and
 Within-Family Investigation.”</span> <em>Developmental Psychology</em>
 56 (9): 1709–22. <a href="https://doi.org/10.1037/dev0001042" class="external-link">https://doi.org/10.1037/dev0001042</a>.
-</div>
 </div>
 </div>
 </div>
