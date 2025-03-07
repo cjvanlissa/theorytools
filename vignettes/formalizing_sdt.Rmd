@@ -23,7 +23,7 @@ library(theorytools)
 theorytools:::quizz(
 "The answer to this question is true." = TRUE,
 "This multiple choice question has three answers." =
-c("Correct", "Incorrect", "Not sure"),
+c(answer = "Correct", "Incorrect", "Not sure"),
 "Provide an exact floating point answer of 0.81" = 0.81,
 "Or give some wiggle room" = c(0.81, .1),
 "How many words in this sentence" = 6L
