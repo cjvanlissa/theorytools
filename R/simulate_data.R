@@ -43,7 +43,7 @@
 #' @importFrom dagitty exogenousVariables
 #' @importFrom stats runif
 simulate_data <- function (x,
-                           beta_default = runif(1, min = -0.6, max = 0.6),
+                           beta_default = round(runif(1, min = -0.6, max = 0.6),3),
                            n = 500,
                            run = TRUE){
   beta_default <- substitute(beta_default)

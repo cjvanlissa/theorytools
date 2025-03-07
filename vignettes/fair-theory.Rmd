@@ -38,17 +38,17 @@ Estimated time to complete: 45-60 minutes.
 
 ### Learning Goals
 
-- [ ] Creating a project folder for your theory
-- [ ] Version controlling this folder with 'Git'
-- [ ] Connecting the local repository to a remote ('GitHub') repository
-- [ ] Adding a shareable theory file to the repository
-- [ ] Adding a LICENSE file to the repository (we recommend CC0)
-- [ ] Adding a README file to the repository
-- [ ] Adding a 'Zenodo' metadata to the repository
-- [ ] Pushing these changes to the remote repository
-- [ ] Turning on 'Zenodo' archiving for the remote repository
-- [ ] Publishing a release of your theory
-- [ ] Verifying that 'Zenodo' mints a DOI for your theory and its latest release
+- [ ] Create a project folder for your theory
+- [ ] Put this folder under version control with 'Git'
+- [ ] Connect the local repository to a remote ('GitHub') repository
+- [ ] Add a shareable theory file to the repository
+- [ ] Add a LICENSE file to the repository (we recommend CC0)
+- [ ] Add a README file to the repository
+- [ ] Add a 'Zenodo' metadata to the repository
+- [ ] Push these changes to the remote repository
+- [ ] Turn on 'Zenodo' archiving for the remote repository
+- [ ] Publish a release of your theory
+- [ ] Verify that 'Zenodo' mints a DOI for your theory and its latest release
 
 <!-- fig.width=600, fig.height=861,  -->
 
@@ -363,7 +363,7 @@ To save these changes, click 'Publish'.
 
 After publishing a release, 'Zenodo' will archive the repository and mint a DOI. Verify this by checking the 'Zenodo' entry for your repository, where the DOI will be displayed. Include this DOI in any citations or references to your theory to enhance its discoverability and reusability.
 
-The 'GitHub'/'Zenodo' integration will assign one "mother-DOI" to the project, as well as a unique DOI to each version/release of the FAIR theory. This enables users to refer to and cite specific versions of the theory. The list of authors for the citation is automatically determined by the 'GitHub' user account names used by the repository - this can be edited on 'Zenodo', as explained above. DOIs used in 'Zenodo' are registered through the [DataCite](https://www.datacite.org/) service.
+The 'GitHub'/'Zenodo' integration will assign one "mother-DOI" to the project, which will always resolve to the latest version, as well as a unique DOI to each version/release of the FAIR theory. This enables users to refer to and cite either the theory in general or specific versions of the theory. The list of authors for the citation is automatically determined by the 'GitHub' user account names used by the repository - this can be edited on 'Zenodo', as explained above. DOIs used in 'Zenodo' are registered through the [DataCite](https://www.datacite.org/) service.
 
 > **Pro-tip**: Check the `Citation` field on the 'Zenodo' page, and copy-paste it into the README file of your 'GitHub' repo to make cross-linking even easier (or refer users to the 'Zenodo' page to find the citation, which obviates the need to manually update this information). Click the DOI badge in the `Details` field to get instructions on how to add a clear highlighted DOI badge to your 'GitHub' repository, for users to see and make use of your DOI:
 
