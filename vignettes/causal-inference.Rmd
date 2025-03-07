@@ -362,8 +362,8 @@ The tidySEM vignette on [plotting structural equation models](https://cjvanlissa
 
 ```{r eval=knitr::is_html_output(), results='asis', echo=FALSE}
 theorytools:::quizz(
-  "Which of the following describes the property of X-interoperability of a FAIR theory?" = c("It can be reused for a specific operation.", "It can be reused by any person.", "It can be reused for any operation.", "It is licenced to be reused."),
-  "If you are contributing to theory development, which platform provides infrastructure to coordinate collaborate with known others and strangers?" = c("GitHub", "Zenodo", "RStudio"))
+  "Which of the following describes the property of X-interoperability of a FAIR theory?" = c(answer = "It can be reused for a specific operation.", "It can be reused by any person.", "It can be reused for any operation.", "It is licenced to be reused."),
+  "If you are contributing to theory development, which platform provides infrastructure to coordinate collaborate with known others and strangers?" = c(answer = "GitHub", "Zenodo", "RStudio"))
 ```
 
 ## Simulating Data from the FAIR Theory
@@ -562,10 +562,11 @@ add_significance(ci_tests)
 ```{r results='asis', echo=FALSE}
 theorytools:::quizz(
   "We can use Parenting Practices because O is not in its adjustment set." = TRUE,
-  "Which of these causal effects can we estimate using these data?" = c("All of these ", "PP -> A", "ER  -> PC", "CC -> A"),
+  "Which of these causal effects can we estimate using these data?" = c(answer = "All of these ", "PP -> A", "ER  -> PC", "CC -> A"),
   "The `ci_tests` give us reasons to doubt that `df_sim` is consistent with the DAG." = FALSE,
   "The `ci_tests` give us reasons to doubt that `df_real` is consistent with the DAG." = TRUE,
-  "Consider the sample size of `df_real`. Could this be related to your answers in the previous two questions?" = c("Yes", "No")
+  "Consider the sample size of `df_real`. Could this be related to your answers in the previous two questions?" = c(answer = "Yes", "No")
 )
 ```
 
+# References
