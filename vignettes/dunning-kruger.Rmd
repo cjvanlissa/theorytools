@@ -134,7 +134,54 @@ As well as the reformulation of @feld2017estimating:
 
 With $-$ signifying a negative association, $\simeq$ signifying "measured by" and $:=$ signifying "defined as".
 
-To FAIRify this graph, we can use a standardized graph specification language, such as the [DOT language](https://graphviz.org/doc/info/lang.html).
+To FAIRify this graph, we can use a graph specification library such as igraph [@igraph]:
+
+```{r, results='hide'}
+library(igraph, warn.conflicts=FALSE)
+
+g <- graph_from_literal(
+    skill -- overconfidence,
+    skill -- performance,
+    overconfidence -- overestimation,
+    performance -- overestimation,
+    "skill + error" -- "overconfidence - error",
+    "skill + error" -- performance,
+    "expected performance - performance" -- overestimation,
+    "expected performance - performance" -- "overconfidence - error"
+)
+
+E(g)$relationship <- c(
+ "negative association",
+ "≃",
+ "≃",
+ "negative association",
+ ":=",
+ ":=",
+ "negative association",
+ "= (Theorem 1)"
+)
+```
+
+We can visualize this graph with
+
+```{r}
+plot(
+  g,
+  vertex.size = 20,
+  vertex.color = "white",
+  edge.label = E(g)$relationship,
+)
+```
+
+Finally, we save the graph in a standardized format such as [GraphML](http://graphml.graphdrawing.org/): 
+
+```{r}
+write_graph(
+  g,
+  "relationship_graph.txt",
+  format = "graphml"
+)
+```
 
 ## Mathematical formulation
 
