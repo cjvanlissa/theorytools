@@ -37,7 +37,8 @@ Imports:
     dagitty,
     yaml,
     tidySEM (>= 0.2.8),
-    methods
+    methods,
+    Deriv
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),

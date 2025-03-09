@@ -9,12 +9,24 @@
 #' and residuals, this information is used. If this information is absent, nodes
 #' and residuals are assumed to be normally distributed, and edges are assumed
 #' to be linear, with coefficients samples based on `beta_default`.
+#'
+#' The argument `duplicated` controls how multiplicative terms are merged across
+#' edges pointing to the same outcome node. The default `duplicated = "unique"`
+#' removes terms that are duplicated across edges (i.e.,
+#' if two edges point to node `"O"`, and both edges specify `.5*E`, the resulting
+#' function will say `.5*E`. However, if one edge specifies `.2*E` and the other
+#' specifies `.3*E`, they are not duplicated and will be added.
+#' Alternatively, `duplicated = "add"` just sums terms across all edges pointing
+#' into the same outcome node.
 #' @param x An object of class `dagitty`.
 #' @param beta_default Function used to specify missing edge coefficients.
 #' Default: `runif(1, min = -0.6, max = 0.6)`
 #' @param n Atomic integer defining the sample size, default: `500`
 #' @param run Logical, indicating whether or not to run the simulation. Default:
 #' `TRUE`.
+#' @param duplicated Atomic character, indicating how to resolve duplicate terms
+#' from multiple edges pointing to the same node. Default: `"unique"`. See
+#' Details.
 #' @return If `run` is `TRUE`, this function returns a `data.frame` with
 #' an additional attribute called `attr( , which = "script")` that contains the
 #' script for simulating data. If `run` is `FALSE`, this function returns the
@@ -45,8 +57,13 @@
 simulate_data <- function (x,
                            beta_default = round(runif(1, min = -0.6, max = 0.6), 2),
                            n = 500,
-                           run = TRUE){
+                           run = TRUE,
+                           duplicated = "unique"){
   beta_default <- substitute(beta_default)
+  duplicated <- duplicated[1]
+  if(!isTRUE(duplicated %in% c("unique", "add"))){
+    stop("Argument `duplicated` must be one of 'unique' or 'add'.")
+  }
   nod <- tidySEM::get_nodes(x)
   edg <- tidySEM::get_edges(x)
   nodes_exo <- dagitty::exogenousVariables(x)
@@ -81,7 +98,8 @@ simulate_data <- function (x,
     }
     thisn <- names(endo_deps_exist)[endo_deps_exist][1]
     edg_thisn <- edg[edg$to == thisn, , drop = FALSE]
-    frm <- edges_to_simfun(edg_thisn, beta_default = beta_default)
+
+    frm <- edges_to_simfun(edg_thisn, beta_default = beta_default, duplicated = duplicated)
 
     resid <- try(sim_fun_txt(nod$distribution[which(nod$name == thisn)]), silent = TRUE)
     if(inherits(resid, "try-error")){

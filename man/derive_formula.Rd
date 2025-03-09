@@ -30,18 +30,28 @@ construct formulae for the relationship between \code{exposure} and \code{outcom
 The \code{form} attribute of an augmented DAG of class \code{dagitty} should
 contain information about the functional form for the relationships specified
 in the DAG. For this function, the \code{form} attribute must be an additive
-function as also accepted by \code{\link[stats]{formula}}.
+function as also accepted by \code{\link[stats]{formula}}. The \code{form}
+attribute may contain a leading intercept and constant slopes, which will be
+parsed out. If the \code{form} attribute does not meet these requirements, the
+resulting \code{formula} may be invalid. For example:
+\itemize{
+\item \code{form=".5+x1"} would return \code{~x1}.
+\item \code{form="2*x1*x2"} would return \code{~x1+x2+x1:x2}.
+\item \code{form="-.2-.2*I(x3^2)"} would return \code{~I(x3^2)}.
+}
 }
 \examples{
 x <- dagitty::dagitty('dag {
 C
 O
 X
-O <- X [form="X^2"]
+Y
+O <- X [form="I(X^2)"]
 C -> X
-Y -> O
+Y -> O [form="Y*X"]
 }')
-derive_formula(x, outcome = "O", exposure = "X")
+f1 <- derive_formula(x, outcome = "O", exposure = "X")
+f2 <- derive_formula(x, outcome = "O", exposure = "Y")
 }
 \seealso{
 \code{\link[methods]{hasArg}}

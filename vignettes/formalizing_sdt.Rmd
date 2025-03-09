@@ -1,6 +1,7 @@
 ---
 title: "Formalizing Self-Determination Theory"
 output: rmarkdown::html_vignette
+bibliography: vignettes.bib
 vignette: >
   %\VignetteIndexEntry{Formalizing Self-Determination Theory}
   %\VignetteEngine{knitr::rmarkdown}

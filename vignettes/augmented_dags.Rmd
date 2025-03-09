@@ -1,11 +1,11 @@
 ---
 title: "Specifying Augmented Directed Acyclic Graphs"
 output: rmarkdown::html_vignette
+bibliography: vignettes.bib
 vignette: >
   %\VignetteIndexEntry{Specifying Augmented Directed Acyclic Graphs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: causalinference.bib
 ---
 
 ```{r, include = FALSE}
@@ -180,7 +180,7 @@ g <- dagitty('dag {
   Y [outcome,
      pos="1,.2",
      label="Exam Performance", distribution="rnorm()"]
-  X -> Y [label="direct", form="0.5+X"]
+  X -> Y [label="direct", form="-X^2+4*X"]
   X -> Z
   Z -> Y [label="indirect", form="2*Z"]
 }')
@@ -216,13 +216,14 @@ For example, you might simulate data by:
 Code to simulate data in line with these metadata can be automatically generated:
 
 ```{r simulateData, echo=TRUE, eval=TRUE}
+set.seed(1)
 cat(simulate_data(g, run = FALSE), sep = "\n")
 ```
 To illustrate, we show a scatter plot of data simulated using this code:
 
 ```{r}
 df <- simulate_data(g, run = TRUE)
-ggplot2::ggplot(df, aes(x=Y,y=Z,color=X))+geom_point()
+ggplot2::ggplot(df, aes(x=X,y=Y,color=Z))+geom_point()
 ```
 
 You can use this script, for example, to generate synthetic data and build a reproducible analysis pipeline for a Preregistration-As-Code [@peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].

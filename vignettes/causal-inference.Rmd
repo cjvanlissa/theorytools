@@ -1,7 +1,7 @@
 ---
 title: "Using FAIR Theory for Causal Inference"
 output: theorytools:::webex_vignette
-bibliography: causalinference.bib
+bibliography: vignettes.bib
 vignette: >
   %\VignetteIndexEntry{Using FAIR Theory for Causal Inference}
   %\VignetteEngine{knitr::rmarkdown}
@@ -386,8 +386,7 @@ and some may be better suited to particular use cases.
 
 ```{r simulate-data}
 set.seed(1)
-df_sim <- simulateSEM(tripartite, N = 497)
-df_sim <- simulate_data(tripartite)
+df_sim <- simulate_data(tripartite, n = 497)
 head(df_sim)
 ```
 

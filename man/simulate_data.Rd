@@ -6,9 +6,10 @@
 \usage{
 simulate_data(
   x,
-  beta_default = runif(1, min = -0.6, max = 0.6),
+  beta_default = round(runif(1, min = -0.6, max = 0.6), 2),
   n = 500,
-  run = TRUE
+  run = TRUE,
+  duplicated = "unique"
 )
 }
 \arguments{
@@ -21,6 +22,10 @@ Default: \code{runif(1, min = -0.6, max = 0.6)}}
 
 \item{run}{Logical, indicating whether or not to run the simulation. Default:
 \code{TRUE}.}
+
+\item{duplicated}{Atomic character, indicating how to resolve duplicate terms
+from multiple edges pointing to the same node. Default: \code{"unique"}. See
+Details.}
 }
 \value{
 If \code{run} is \code{TRUE}, this function returns a \code{data.frame} with
@@ -41,6 +46,15 @@ the functional \code{form} of relationships and \code{distribution} of exogenous
 and residuals, this information is used. If this information is absent, nodes
 and residuals are assumed to be normally distributed, and edges are assumed
 to be linear, with coefficients samples based on \code{beta_default}.
+
+The argument \code{duplicated} controls how multiplicative terms are merged across
+edges pointing to the same outcome node. The default \code{duplicated = "unique"}
+removes terms that are duplicated across edges (i.e.,
+if two edges point to node \code{"O"}, and both edges specify \code{.5*E}, the resulting
+function will say \code{.5*E}. However, if one edge specifies \code{.2*E} and the other
+specifies \code{.3*E}, they are not duplicated and will be added.
+Alternatively, \code{duplicated = "add"} just sums terms across all edges pointing
+into the same outcome node.
 }
 \examples{
 x <- dagitty::dagitty('
