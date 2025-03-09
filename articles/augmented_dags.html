@@ -74,20 +74,20 @@
 <strong>augmented</strong> Directed Acyclic Graphs (aDAGs). We will
 overload regular DAGs as specified using the <code>dagitty</code>
 R-package. While <code>dagitty</code> provides standard facilities for
-declaring nodes, edges, exposures, and outcomes, we augment the DAG with
-additional <strong>metadata fields</strong> to make it more conducive to
-theory specification. These metadata fields do not interfere with
-regular use of the DAG in <code>dagitty</code>.</p>
-<p>These metadata fields include:</p>
+declaring nodes, edges, exposures, and outcomes in causal frameworks, we
+augment the DAG with additional <strong>metadata fields</strong> to make
+it more conducive to theory specification. These metadata fields do not
+interfere with regular use of the DAG in <code>dagitty</code>.</p>
+<p>The metadata fields in an aDAG include:</p>
 <ul>
 <li>
-<strong>tags</strong> for nodes, like <code>exposure</code>,
-<code>outcome</code>, and <code>unobserved</code>. This metadata field
-is used by <code>dagitty</code> for identifying nodes of interest in
-causal inference.</li>
+<strong><code>tags</code></strong> for identifying nodes of interest
+in causal inference. This field can take on values like
+<code>exposure</code>, <code>outcome</code>, and
+<code>unobserved</code>.</li>
 <li>
-<strong><code>pos</code></strong> for nodes, which define the layout
-position in the X and Y dimension, e.g., <code>pos="0,1</code> is
+<strong><code>pos</code></strong> for nodes, which defines the
+layout position in the X and Y dimension, e.g., <code>pos="0,1</code> is
 positioned at coordinates X = 0 and Y = 1. This metadata field is used
 by <code>dagitty</code>.</li>
 <li>
@@ -96,15 +96,16 @@ descriptive label used for visualization and reporting. This is a new
 metadata field.</li>
 <li>
 <strong><code>distribution</code></strong> for nodes: The assumed
-distribution-generating function for each node. For exogenous nodes,
-this constitutes the distribution of the node itself; for endogenous
-nodes, this constitutes the residual distribution. This is a new
-metadata field.</li>
+distribution-generating function for the variable associated with a
+node. For exogenous nodes, this constitutes the distribution of the
+variable associated with the node itself; for endogenous nodes, this
+constitutes the residual distribution of the associated variable. This
+is a new metadata field.</li>
 <li>
 <strong><code>form</code></strong> for edges: A function
 specification (in a form interpretable by <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula()</a></code>)
-that can describe how a child node is calculated from its parents. This
-is a new metadata field.</li>
+that describes how the variable associated with a child node is
+calculated from its parents. This is a new metadata field.</li>
 </ul>
 <p>Throughout the vignette, we will illustrate how to write an augmented
 DAG, how to parse and inspect it with <code>dagitty</code>,
@@ -175,7 +176,7 @@ nodes and edges:</p>
 <span><span class="st">  X -&gt; Y [label="effect"]</span></span>
 <span><span class="st">}'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">g</span>, text_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="dag_basic.png" width="30%"></p>
+<p><img src="dag_basic.png" width="60%"></p>
 </div>
 </div>
 <div class="section level3">
@@ -187,10 +188,10 @@ for exogenous variables, or that describes the residual distribution for
 endogenous variables. The function can reference the argument
 <code>n</code> to determine sample size. For example, to specify a node
 comprising five groups with total sample size <code>n</code>, one could
-use <code>sample.int(n = 5, size = n)</code>. If the argument
-<code>n</code> is not explicitly provided, <code>theorytools</code>
-checks if <code>n</code> is a formal argument of the function, and
-assigns it.</p></li>
+use <code>sample.int(n = 5, size = n, replace=TRUE)</code>. If the
+argument <code>n</code> is not explicitly provided,
+<code>theorytools</code> checks if <code>n</code> is a formal argument
+of the function, and assigns it.</p></li>
 <li>
 <p><strong>Examples</strong>:</p>
 <ul>
@@ -259,7 +260,7 @@ residuals.s</li>
 <span><span class="st">  X [exposure,</span></span>
 <span><span class="st">     pos="0,0",</span></span>
 <span><span class="st">     label="Study Hours",</span></span>
-<span><span class="st">     distribution="sample.int(n = 20, size = n)"]</span></span>
+<span><span class="st">     distribution="sample.int(n = 20, size = n, replace = TRUE)"]</span></span>
 <span><span class="st">  Z [label="Stress Level",</span></span>
 <span><span class="st">     pos=".5,1",</span></span>
 <span><span class="st">     distribution="rexp()"]</span></span>
@@ -271,7 +272,7 @@ residuals.s</li>
 <span><span class="st">  Z -&gt; Y [label="indirect", form="2*Z"]</span></span>
 <span><span class="st">}'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">g</span>, text_size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="dag_three.png" width="30%"></p>
+<p><img src="dag_three.png" width="60%"></p>
 <div class="section level3">
 <h3 id="parsing-dag-properties">Parsing DAG Properties<a class="anchor" aria-label="anchor" href="#parsing-dag-properties"></a>
 </h3>
@@ -290,19 +291,19 @@ extract nodes and edges from a variety of objects, including
 respectively:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/get_nodes.html" class="external-link">get_nodes</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   name exposure   x   y            label                 distribution outcome</span></span>
-<span><span class="co">#&gt; 1    X     TRUE 0.0 0.0      Study Hours sample.int(n = 20, size = n)      NA</span></span>
-<span><span class="co">#&gt; 2    Y       NA 1.0 0.2 Exam Performance                      rnorm()    TRUE</span></span>
-<span><span class="co">#&gt; 3    Z       NA 0.5 1.0     Stress Level                       rexp()      NA</span></span>
-<span><span class="co">#&gt;   shape</span></span>
-<span><span class="co">#&gt; 1  none</span></span>
-<span><span class="co">#&gt; 2  none</span></span>
-<span><span class="co">#&gt; 3  none</span></span>
+<span><span class="co">#&gt;   name exposure   x   y            label</span></span>
+<span><span class="co">#&gt; 1    X     TRUE 0.0 0.0      Study Hours</span></span>
+<span><span class="co">#&gt; 2    Y       NA 1.0 0.2 Exam Performance</span></span>
+<span><span class="co">#&gt; 3    Z       NA 0.5 1.0     Stress Level</span></span>
+<span><span class="co">#&gt;                                   distribution outcome shape</span></span>
+<span><span class="co">#&gt; 1 sample.int(n = 20, size = n, replace = TRUE)      NA  none</span></span>
+<span><span class="co">#&gt; 2                                      rnorm()    TRUE  none</span></span>
+<span><span class="co">#&gt; 3                                       rexp()      NA  none</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/get_edges.html" class="external-link">get_edges</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   from to  e    label  form arrow  color</span></span>
-<span><span class="co">#&gt; 1    X  Y -&gt;   direct 0.5+X  last gray80</span></span>
-<span><span class="co">#&gt; 2    X  Z -&gt;     &lt;NA&gt;  &lt;NA&gt;  last gray80</span></span>
-<span><span class="co">#&gt; 3    Z  Y -&gt; indirect   2*Z  last gray80</span></span></code></pre></div>
+<span><span class="co">#&gt;   from to  e    label     form arrow  color</span></span>
+<span><span class="co">#&gt; 1    X  Y -&gt;   direct -X^2+4*X  last gray80</span></span>
+<span><span class="co">#&gt; 2    X  Z -&gt;     &lt;NA&gt;     &lt;NA&gt;  last gray80</span></span>
+<span><span class="co">#&gt; 3    Z  Y -&gt; indirect      2*Z  last gray80</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -322,25 +323,32 @@ by:</p>
 <p>Code to simulate data in line with these metadata can be
 automatically generated:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">g</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">g</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Set random seed</span></span>
-<span><span class="co">#&gt; set.seed(346871191)</span></span>
+<span><span class="co">#&gt; set.seed(1140350788)</span></span>
 <span><span class="co">#&gt; # Set simulation parameters</span></span>
 <span><span class="co">#&gt; n &lt;- 500</span></span>
 <span><span class="co">#&gt; # Simulate exogenous nodes</span></span>
-<span><span class="co">#&gt; X &lt;- sample.int(n = 20, size = n)</span></span>
+<span><span class="co">#&gt; X &lt;- sample.int(n = 20, size = n, replace = TRUE)</span></span>
 <span><span class="co">#&gt; # Simulate endogenous nodes</span></span>
-<span><span class="co">#&gt; Z &lt;- 0.120913063455373*X + rexp(n = n)</span></span>
-<span><span class="co">#&gt; Y &lt;- 0.5+X + 2*Z + rnorm(n = n)</span></span>
+<span><span class="co">#&gt; Z &lt;- 0.09 * X + rexp(n = n)</span></span>
+<span><span class="co">#&gt; Y &lt;- 2 * Z + X * (4 - 0.49 * X) + rnorm(n = n)</span></span>
 <span><span class="co">#&gt; df &lt;- data.frame(</span></span>
 <span><span class="co">#&gt; X = X,</span></span>
 <span><span class="co">#&gt; Y = Y,</span></span>
 <span><span class="co">#&gt; Z = Z</span></span>
 <span><span class="co">#&gt; )</span></span></code></pre></div>
+<p>To illustrate, we show a scatter plot of data simulated using this
+code:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">g</span>, run <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">X</span>,y<span class="op">=</span><span class="va">Y</span>,color<span class="op">=</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="augmented_dags_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p>You can use this script, for example, to generate synthetic data and
 build a reproducible analysis pipeline for a Preregistration-As-Code
-<span class="citation">[@peikertReproducibleResearchTutorial2021;
-@vanlissaComplementingPreregisteredConfirmatory2022]</span>.</p>
+<span class="citation">(Peikert, Van Lissa, and Brandmaier 2021; Van
+Lissa 2022)</span>.</p>
 <div class="section level3">
 <h3 id="additional-notes">Additional Notes<a class="anchor" aria-label="anchor" href="#additional-notes"></a>
 </h3>
@@ -372,6 +380,24 @@ properties like <code>distribution</code> and <code>form</code>, but
 these do not interfere with normal usage.</li>
 </ol>
 <!-- # Conclusion --><!-- By enriching your DAG specifications with the **`label`**, **`distribution`**, **`form`**, and relevant **exposure/outcome** tags, you can keep a single source of truth for both: --><!-- - Causal structure (as recognized by `dagitty`), and --><!-- - Data-generating or modeling assumptions (extra properties for simulation or advanced uses). --><!-- This approach reduces duplication and potential mismatches between your DAG-based causal assumptions and the code used to generate or analyze data. We hope this augmented specification pattern helps you maintain clarity and reproducibility in your causal modeling workflows. -->
+</div>
+<div class="section level3">
+<h3 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-peikertReproducibleResearchTutorial2021" class="csl-entry">
+Peikert, Aaron, Caspar J. Van Lissa, and Andreas M. Brandmaier. 2021.
+<span>“Reproducible <span>Research</span> in <span>R</span>: <span>A
+Tutorial</span> on <span>How</span> to <span>Do</span> the <span>Same
+Thing More Than Once</span>.”</span> <em>Psych</em> 3 (4): 836–67. <a href="https://doi.org/10.3390/psych3040053" class="external-link">https://doi.org/10.3390/psych3040053</a>.
+</div>
+<div id="ref-vanlissaComplementingPreregisteredConfirmatory2022" class="csl-entry">
+Van Lissa, Caspar J. 2022. <span>“Complementing Preregistered
+Confirmatory Analyses with Rigorous, Reproducible Exploration Using
+Machine Learning.”</span> <em>Religion, Brain &amp; Behavior</em> 0 (0):
+1–5. <a href="https://doi.org/10.1080/2153599X.2022.2070254" class="external-link">https://doi.org/10.1080/2153599X.2022.2070254</a>.
+</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
