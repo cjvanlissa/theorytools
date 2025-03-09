@@ -65,7 +65,7 @@ cat(definitions, file="definitions.md")
 
 We can visualise the originally proposed relationships between the concepts as a graph:
 
-```{tikz, echo=FALSE, out.width="40%", fig.align = 'center'}
+```{tikz, echo=FALSE, out.width="40%", fig.align = 'center', eval = FALSE}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes}
@@ -96,7 +96,7 @@ We can visualise the originally proposed relationships between the concepts as a
 
 As well as the reformulation of @feld2017estimating: 
 
-```{tikz, echo=FALSE, out.width="50%", fig.align = 'center'}
+```{tikz, echo=FALSE, out.width="50%", fig.align = 'center', eval = FALSE}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes}
@@ -306,9 +306,12 @@ Then, we create a file "render.tex" containing the necessary information (docume
 ```
 
 As you can see, we use `\input{equations.tex}` to insert the equations into the document.
-This workflow can be used to split up more complex mathematical theories to keep them organized.
+This way, the mathematical theory is version controlled separately from the LaTex code required to render it.
+This way, it is clear when changes are made to the theory (i.e., `equations.tex` is edited),
+and when changes are made to the formatting of the theory (i.e., `render.tex` is edited).
 
 ## Statistical Models
+
 Using a linear regression model, the Dunning-Kruger effect can be stated as
 \begin{equation}
  oc^* = \alpha + \beta_1 s^* + u
@@ -320,6 +323,7 @@ Substituting the observable variables and rearranging according to eq. \@ref(eq:
 \end{equation}
 
 ### Correction
+
 There are different ways to correct for the bias introduced by measurement error:
 
  - Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term
@@ -348,6 +352,7 @@ There are different ways to correct for the bias introduced by measurement error
 ```
 
 and adding to `render.tex`:
+
 ```{verbatim}
 ...
 \section{Statistical Models}
@@ -355,7 +360,7 @@ and adding to `render.tex`:
 ...
 ```
 
-If we know render `render.tex`, the resulting document looks like this:
+If we now render `render.tex`, the resulting document looks like this:
 
 ![Rendered Document](./render.pdf){width=90%}
 
