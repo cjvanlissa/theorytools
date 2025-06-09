@@ -1,6 +1,10 @@
 ---
 title: "FAIRifying the Dunning-Kruger Effect"
-output: theorytools:::webex_vignette
+output: 
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+pkgdown:
+  as_is: true
 bibliography: dunning-kruger.bib
 vignette: >
   %\VignetteIndexEntry{FAIRifying the Dunning-Kruger Effect}
@@ -17,12 +21,12 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-In this example, we formalize the Dunning-Kruger (DK) effect according to [@feld2017estimating].
-The paper defines the DK effect as "low performers vastly overestimate their performance while high
+In this example, we implement the Dunning-Kruger (DK) effect, following the formalization by @feld2017estimating.
+The DK effect is defined as follows: "low performers vastly overestimate their performance while high
 performers more accurately assess their performance".
-It further contains a discussion of the DK effect and then restates it in terms of skill and overconfidence to show that measurement error can cause significant bias in the relationship between performance and overestimation.
+The paper by Feld and colleagues restates the DK effect in terms of skill and overconfidence to show that measurement error can cause significant bias in the relationship between performance and overestimation.
 Statistical methods that can be used to correct for this bias are also discussed.
-Since this theory contains definitions of abstract concepts, relationships between the concepts, mathematical derivations as well as commonly used statistical models and experimental paradigms, it serves as a nice illustration on how to FAIRify all these different aspects.^[Note that since we are trying to formalize this theory as close to the paper as possible, many descriptions are (almost) verbatim quotes from the paper.]
+Since this theory contains definitions of abstract concepts, relationships between the concepts, mathematical derivations as well as commonly used statistical models and experimental paradigms, it serves as a nice illustration on how to formalize and then FAIRify all these different aspects.^[Note that since we are trying to formalize this theory as close to the paper as possible, many descriptions are (almost) verbatim quotes from the paper.]
 
 ### Learning Goals
 
@@ -30,6 +34,18 @@ Once you have completed this tutorial, you will know how to:
 
 - [ ] Implement a theory consisting of multiple aspects that can not all be represented in the same format
 - [ ] Learn how to FAIRify equations / proofs
+
+# 1. Implement the Theory
+
+Begin by creating an empty folder to hold all files associated with the theory - this folder will become the theory archive.
+For example, create a folder:
+
+```{r eval = FALSE}
+dir.create("dunning_kruger")
+setwd("dunning_kruger")
+```
+
+We begin by implementing the theory; by far the greatest challenge of this tutorial.
 
 ## Definitions
 
@@ -186,6 +202,7 @@ write_graph(
 ## Mathematical formulation
 
 ### Definitions
+
 We define the random variables
 
 - $s^*$ denoting skill
@@ -233,6 +250,7 @@ From eq. \@ref(eq:oc) and \@ref(eq:ep) it follows that $p_e = s^*_s$ and further
 Since there is no accepted standard on how to represent mathematical knowledge as a digital object (see also this [whitepaper](https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf)), there are many possible routes to FAIRify equations.
 Here we opt for a representation as latex code as a widely used and known way of typesetting equations.
 First, we create a file "equations.tex" containing the actual derivations:
+
 ```{verbatim}
 \section{Definitions}
 Define random variables
@@ -313,6 +331,7 @@ and when changes are made to the formatting of the theory (i.e., `render.tex` is
 ## Statistical Models
 
 Using a linear regression model, the Dunning-Kruger effect can be stated as
+
 \begin{equation}
  oc^* = \alpha + \beta_1 s^* + u
 \end{equation}
@@ -363,5 +382,113 @@ and adding to `render.tex`:
 If we now render `render.tex`, the resulting document looks like this:
 
 ![Rendered Document](./render.pdf){width=90%}
+
+## Overview
+
+You should now have a folder containing the following files:
+
+* `definitions.md`
+* `relationship_graph.txt`
+* `render.tex`
+* `equations.tex`
+* `linear_model.tex`
+* (Optionally:) `render.pdf`
+
+# 2. Document the Theory
+
+## Documenting Reusability with a LICENSE
+
+We will add a CC0 (Creative Commons Zero) license to the repository, to waive all copryright protection
+
+```{r}
+worcs::add_license_file(path = ".", license = "cc0")
+```
+
+## Documenting Interoperability with a README File
+
+We will add a README file describes the repository's contents and purpose, making it easier for others to understand the theory's potential for interoperability and reuse.
+First, we include a draft README file using:
+
+```{r}
+theorytools::add_readme_fair_theory(title = "Dunning-Kruger Effect",
+                                    path = ".")
+```
+
+We encourage users to edit the resulting `README.md` file, in particular, to add relevant information about X-interoperability.
+For guidance on writing a README file for theory, see [this vignette](https://cjvanlissa.github.io/theorytools/articles/readme.html).
+
+## Add Zenodo Metadata
+
+Create a `.zenodo.json` file with metadata about the theory, to allow it to be indexed automatically when we archive it on Zenodo:
+
+```{r}
+add_zenodo_json_theory(
+  path = ".",
+  title = "Dunning-Kruger Effect",
+  keywords = c("Dunning–Kruger", "Overconfidence", "Judgment error", "Measurement error")
+)
+```
+
+
+# 3. Version Control the Theory
+
+## Using Git for Version Control
+
+We use 'Git' to version control the project folder.
+If you have not yet set up Git and GitHub integration on your computer,
+reference the basic [FAIR theory tutorial](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html).
+
+Initialize version control in your project repository by running:
+
+```{r}
+gert::git_init(path = ".")
+```
+
+## Connecting to a Remote ('GitHub') Repository
+
+To make your FAIR theory accessible to collaborators and discoverable by the wider community, you must connect your local 'Git' repository to a remote repository on a platform like 'GitHub':
+
+```{r eval = FALSE}
+worcs::git_remote_create("dunning_kruger", private = FALSE)
+```
+
+This command will create a new public repository on 'GitHub' and link it to your local repository. The `private = FALSE` argument ensures the repository is public by default.
+
+Connect this repository to your FAIR theory folder as follows:
+
+```{r eval = FALSE}
+worcs::git_remote_connect(".", remote_repo = "dunning_kruger")
+```
+
+Finally, push the local files to the remote repository:
+
+```{r}
+worcs::git_update("First commit of my theory", repo = ".")
+```
+
+# 4. Archive the Theory on 'Zenodo'
+
+Head over to [zenodo.org](https://zenodo.org).
+Uuthorize Zenodo to connect to your 'GitHub' account in the '[Using 'GitHub'](https://zenodo.org/account/settings/github/)' section. Here, 'Zenodo' will redirect you to 'GitHub' to ask for permissions to use '[webhooks](https://developer.github.com/webhooks/)' on your repositories. You want to authorize 'Zenodo' here with the permissions it needs to form those links.
+
+Navigate to the ['GitHub' repository listing page](https://zenodo.org/account/settings/github/) and "flip the switch" next to your repository.
+If your repository **does not show up** in the list, you may need to press the 'Syncronize now' button.
+At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
+If so, take a break or come back to this last step tomorrow!
+
+# 5. Entering Meta-Data
+
+We can further document our 'Zenodo' archive as a FAIR theory by adding some extra information on 'Zenodo'.
+On 'Zenodo' click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
+
+Some metadata are pre-populated by the `.zenodo.json` file.
+We will additionally add several related works.
+
+For example:
+    + `Is documented by` a theory paper you wrote, in which you introduce this FAIR theory
+    + `Is derived from` an existing theory, which was published in print (paper, book chapter) but not made FAIR
+- [ ] References: Optionally, cite related works in plain text. For example, here we can provide the full citation of De Groot and Spiekerman:
+    
+    > De Groot, A. D., & Spiekerman, J. A. A. (1969). Methodology: Foundations of inference and research in the behavioral sciences. De Gruyter Mouton. https://doi.org/10.1515/9783112313121
 
 ## References
