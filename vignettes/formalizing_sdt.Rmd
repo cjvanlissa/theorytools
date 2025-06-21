@@ -13,11 +13,18 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(knitr.kable.NA = '')
 ```
 
-```{r setup}
+```{r setup, echo = FALSE}
 library(theorytools)
+SDT1 <- read.csv(system.file("sdt1.txt",package="theorytools"))
+names(SDT1) <- c("N", "IF", "THEN", "Original")
+SDT <- read.csv(system.file("sdt.txt",package="theorytools"))
+definitions <- read.csv(system.file("sdt_definitions.csv",package="theorytools"))
+#knitr::kable(SDT[, 1:3], caption = "IF/THEN statements translated into causal connections")
 ```
+
 
 ```{r eval=FALSE, results='asis', echo=FALSE}
 # This quizz is only shown in HTML output format
@@ -31,42 +38,124 @@ c(answer = "Correct", "Incorrect", "Not sure"),
 )
 ```
 
-We start with the specification by Van Lissa and colleagues, conducted as part of Fiedler & Glöckner's many-theorists project.
-The definition of SDT is taken from this book chapter, but it seems to be consistent with the description on <https://selfdeterminationtheory.org/the-theory/>:
+This vignette is based on work conducted as part of the "Proposition Based Theory Specification" (PBTS) project by Andreas Glöckner, Susann Fiedler, Jennifer Biehl, & Jasper Siol (in preparation).
+In this "many-theorists project", groups of scholars were each assigned a chapter of the "Handbook of Theories of Social Psychology" [@vanlangeHandbookTheoriesSocial2012],
+and asked to specify it and document the process.
 
-> Lange, P. A. M. V., W.Kruglanski, A., ToryHiggins, E., Deci, E. L., & Ryan, R. M. (2012). Self-Determination Theory. In Handbook of Theories of Social Psychology: Volume 1 (pp. 416–437). SAGE Publications Ltd. https://doi.org/10.4135/9781446249215
+Van Lissa, Li, and Weber set out to formalize Deci and Ryan's *Self-Determination Theory*,
+documented in Chapter 20 of the book [@deciSelfDeterminationTheory2012].
+The definition of SDT used for the theory specification exercise was taken from this book chapter,
+but seems to be fully consistent with the description on <https://selfdeterminationtheory.org/the-theory/>.
+
+### Time to Complete
+
+Estimated time to complete: 45-60 minutes.
+
+### Learning Goals
+
+- [ ] Translate a theory described in prose to a series of IF-THEN propositions
+- [ ] Document construct definitions and operationalizations of a theory
+- [ ] Translate IF-THEN proposions to a Directed Acyclic Graph
+- [ ] Publish the resulting theory as a FAIR Theory on Zenodo
+
+
+# Step 1: Select Relevant Sources
+
+In the first step of the PBTS procedure, we were asked to select sources for the theory specification and agree on these sources with fellow raters; to detect relevant text snippets within these sources that contain descriptions of the definitions, causal relations, et cetera as proposed by the theory; and to agree with the fellow coders on these snippets.
+We decided to use only the book chapter as a source.
+As an example, the first snippet we selected was:
+
+> `r SDT1[1, 4, drop = TRUE]`
+
+Expand the section below to see all selected snippets:
+
+<details>
+  <summary>See all snippets</summary>
+  
+```{r, echo=FALSE, eval=TRUE, results='asis'}
+cat(paste0("> ", paste0(paste0(paste0("**Snippet ", 1:length(unique(SDT1[, 4, drop = TRUE])), ":** ", unique(SDT1[, 4, drop = TRUE])), collapse = "\n\n> "))))
+```
+
+</details> 
 
 
 
+# Step 2: Extract IF-THEN Propositions
 
-```{r}
-SDT1 <- read.csv(system.file("sdt1.txt",package="theorytools"))
-names(SDT1) <- c("N", "IF", "THEN", "Original")
+Each individual coder then set out to extract a set of IF-THEN propositions from the selected snippets that, together, describe the theory. 
+
+Let's examine the first snippet, and code it for implied causality.
+The causes are coded in green, and outcomes in blue:
+
+> "For these natural, active <font color="green">**processes of intrinsic motivation and integration**</font> to operate effectively toward <font color="blue">**healthy development and psychological well-being**</font>, human beings need particular <font color = "green">**nutriments**</font> – both biological and psychological (Ryan, 1995). In the relative absence of such <font color = "green">**nutriments**</font>, these natural <font color = "blue">**processes**</font> will be impaired, resulting in <font color = "blue">**experiences, development, and behaviors**</font> that are less than optimal" (Lange et al., 2012, p. 417)
+
+The text is a bit ambiguous, and possibly redundant. We see that **processes**, in the first sentence, refers to intrinsic motivation and integration.
+This invites the question of the relationship between intrinsic motivation and integration - do they go hand in hand (i.e., just two examples of processes set in motion by nutriments)? Are they distinct but similarly related to other constructs? It's not clear. 
+Furthermore, in the second sentence, we find the word **processes** again, but this time without explicit reference to intrinsic motivation and integration. For now, we will assume that intrinsic motivation and integration are distinct but have similar relationships to other constructs, and that the word is used consistently across both sentences.
+
+**Nutriments** is defined elsewhere in the text - it appears to refer to refer to the three basic needs, as well as biological necessities.
+
+**Experiences, development, and behaviors** is not well-defined, but we might assume it refers back to **healthy development and psychological well-being**.
+
+We could reconstruct implied propositions as follows:
+
+1. Processes (intrinsic motivation AND integration) -> healthy development AND psychological well-being (*processes of intrinsic motivation and integration [operate effectively toward] healthy development and psychological well-being*)
+1. Nutriments -> Processes (*human beings [need] nutriments [...] for these processes to operate etc.*)
+1. Nutriments -> Processes (*In the [absence of] nutriments [...] processes will be impaired*)
+1. Processes -> Healthy development AND psychological well-being (*processes will be impaired, resulting in experiences, development, and behaviors*)
+
+Assuming that our interpretations are correct, we see that the snippet redundantly states the same two relationships twice; once phrased in the positive and once in the negative.
+
+Let's apply the same coding procedure to all snippets:
+
+```{r, echo = FALSE}
 knitr::kable(SDT1[, 1:4], caption = "SDT translated into IF/THEN statements")
 ```
 
+## From IF-THEN Propositions to Causal Model
 
-Next, we specify these verbal IF/THEN statements into causal links between specific constructs.
+The IF-THEN specification prescribed by the PBTS framework has some limitations here;
+for example, it is not so well-suited to describe a difference in degrees (people are affected a little bit), or a probabilistic effect (some people are affected, but not all).
+Except proposition #3, which explicitly states that people are universally affected, none of the original statements appear to be binary.
+However, the direction of causality is relatively clear.
+Thus, a better fit might be a Directed Acyclic Graph (DAG),
+which incurs the additional advantage of being X-interoperable with covariate selection and data generation (see [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html)).
+
+We can translate these IF-THEN statements into causal links between specific constructs.
+The result is contained in a file included in the `theorytools` package, which we load below.
 Note that the numbers associated with the statements are retained,
 so that it is clear which causal links are derived from which IF/THEN statements:
 
 ```{r}
-SDT2 <- read.csv(system.file("sdt2.txt",package="theorytools"))
-names(SDT2) <- c("N", "from", "to", "form")
-knitr::kable(SDT2[, 1:3], caption = "IF/THEN statements translated into causal connections")
+SDT <- read.csv(system.file("sdt.txt", package="theorytools"))
+knitr::kable(SDT[, 1:3], caption = "IF/THEN statements translated into causal connections")
 ```
 
-This specification reveals redundancies in the original theory.
-Certain points were repeated, once phrased in a positive way, and once phrased in a negative way.
-When the statements are reduced to their implied causal connections, the redundancies become apparent.
-Now, we can simply remove the redundancies as follows:
+This translation reveals some further ambiguities; for example, in proposition #4, we see "rewards" are related to intrinsic motivation.
+However, in the remainder of the text, rewards are mentioned as just one example of "external events".
+We assumed that "rewards" is used as an example of the broader class of external events.
+
+Another ambiguity: we read that "If [an external event] were expected to thwart [basic needs], it [prompts] an external perceived locus of causality".
+Since the theory otherwise does not explain how people might "expect" that external events will affect them,
+and this seems to be more of a question for cognitive than social psychology - we made a simplifying assumption:
+external events affect needs,
+and also perceived locus of causality.
+
+This specification also reveals redundancies in the original theory.
+Many propositions are repeated, once phrased in a positive way, and once phrased in a negative way.
+This can be confusing, especially if the two phrasings differ slightly;
+for example, in snippet #1, the positive phrasing refers to "healthy development and psychological well-being" as ultimate outcome of need satisfaction, and the negative phrasing refers to "experiences, development, and behaviors" as ultimate outcomes of need frustration.
+While it seems safe to assume that both sentences have the same meaning,
+there is ambiguity here.
+When the statements are reduced to their implied causal connections, the redundancies become readily apparent.
+We can simply remove the redundancies as follows:
 
 ```{r}
 # Drop statement numbers
-SDT2 <- SDT2[, 2:3]
+SDT <- SDT[, 2:3]
 # Remove redundant statements
-SDT2 <- SDT2[!duplicated(SDT2), ]
-knitr::kable(SDT2, caption = "Unique causal connections")
+SDT <- SDT[!duplicated(SDT), ]
+knitr::kable(SDT, caption = "Unique causal connections")
 ```
 
 We can translate this table to a DAG:
@@ -74,48 +163,192 @@ We can translate this table to a DAG:
 ```{r}
 SDT <- dagitty::dagitty(
   paste0("dag {",
-         paste0(SDT2$from, " -> ", SDT2$to, collapse = "\n"),
-         "}"))
+  paste0(SDT$from, " -> ", SDT$to, collapse = "\n"),
+  "}")
+)
 ```
 
 We can plot the DAG as follows:
 
-```{r echo = FALSE, out.width="70%", fig.cap="Causal diagram implied by SDT"}
+```{r echo = TRUE, eval = FALSE}
 library(tidySEM)
 library(ggplot2)
+# Specify plot layout
 lo <- get_layout(
 "EE", "",   "IN", "WB",
 "",   "LC", "",   "",
 "NE", "",   "IM", "HD",
   rows = 3
 )
+# Rename nodes
 renam <- c(EE = "external_event", NE = "needs", IN = "integration", WB = "wellbeing", 
            LC = "locus_of_causality", HD = "healthy_development", IM = "intrinsic_motivation")
-
 lo[match(names(renam), lo)] <- renam
+# Prepare the graph
 p <- prepare_graph(SDT, layout = lo, angle = 179, text_size = 3, rect_width = 1.5, spacing_x = 2.5)
 
+# Change node shape
+p$nodes$shape <- "rect"
+# Change node labels
 renam <- c(external_event = "external\nevent", needs = "needs", integration = "integration", wellbeing = "wellbeing", 
            locus_of_causality = "locus of\ncausality", healthy_development = "healthy\ndev.", intrinsic_motivation = "intrinsic\nmotivation")
-
-p$nodes$shape <- "rect"
 p$nodes$label <- renam[p$nodes$name]
+# Plot the graph
+plot(p)
+```
+
+```{r echo = FALSE, out.width="70%", fig.cap="Causal diagram implied by SDT"}
+library(tidySEM)
+library(ggplot2)
+# Specify plot layout
+lo <- get_layout(
+"EE", "",   "IN", "WB",
+"",   "LC", "",   "",
+"NE", "",   "IM", "HD",
+  rows = 3
+)
+# Rename nodes
+renam <- c(EE = "external_event", NE = "needs", IN = "integration", WB = "wellbeing", 
+           LC = "locus_of_causality", HD = "healthy_development", IM = "intrinsic_motivation")
+lo[match(names(renam), lo)] <- renam
+# Prepare the graph
+p <- prepare_graph(SDT, layout = lo, angle = 179, text_size = 3, rect_width = 1.5, spacing_x = 2.5)
+
+# Change node shape
+p$nodes$shape <- "rect"
+# Change node labels
+renam <- c(external_event = "external\nevent", needs = "needs", integration = "integration", wellbeing = "wellbeing", 
+           locus_of_causality = "locus of\ncausality", healthy_development = "healthy\ndev.", intrinsic_motivation = "intrinsic\nmotivation")
+p$nodes$label <- renam[p$nodes$name]
+# Plot the graph
 g <- plot(p)
 ggsave("sdt.png", g, device = "png", width = 6, height = 4)
 knitr::include_graphics("sdt.png")
 ```
 
 
-Now, let's look at the operationalizations of the constructs in the DAG.
+# Step 3. Define and Operationalize Concepts
 
-```{r}
-SDT_operationalizations <- read.csv("../dev/sdt_op.txt", sep = "\t")
-SDT_operationalizations$Operationalization <- gsub("MIS", "Missing:", SDT_operationalizations$Operationalization, fixed = TRUE)
-SDT_operationalizations$Operationalization <- gsub("DER", "Derived from other source:", SDT_operationalizations$Operationalization, fixed = TRUE)
-knitr::kable(SDT_operationalizations, caption = "Operationalizations of constructs in SDT")
+In this step, we were asked to add definitions for each concept referred to by the author of the theory.
+In principle, we were asked to refer to text snippets from the sources determined in Step 1.
+However, in case definitions were not provided by the author (which was the case for all constructs in this theory),
+we were allowed to derive them from the scientific literature.
+When operationalizations could not be derived from any relevant sources, they were coded as missing.
+The resulting definitions are stored inside the `theorytools` package and we can load them as follows:
+
+```{r echo = TRUE, eval = FALSE}
+definitions <- read.csv(system.file("sdt_definitions.csv",package="theorytools"))
+definitions
 ```
 
+```{r echo = FALSE, results='asis'}
+definitions <- read.csv(system.file("sdt_definitions.csv",package="theorytools"))
+# definitions$Operationalization <- gsub("MIS", "Missing:", definitions$Operationalization, fixed = TRUE)
+# definitions$Operationalization <- gsub("DER", "Derived from other source:", definitions$Operationalization, fixed = TRUE)
+out <- knitr::kable(definitions[-1, ], caption = "Operationalizations of constructs in SDT")
+cat(gsub('\\bNA\\b', '  ', out), sep='\n')
+```
 
+As can be seen fom this overview - none of the definitions were given in the theory chapter.
+We were able to trace some definitions to empirical papers cited in the chapter,
+but these definitions appeared to fall short of proper "theoretical definitions".
+For example, **intrinsic motivation** was defined as "number of seconds spent working on a puzzle".
+This is a purely behaviorist definition of an internal state.
 
+In other words: While the theory is relatively explicit about causal links between constructs (with just a few ambiguities),
+it appears that important work remains to be done in terms of defining the constructs involved in the theory.
+While it is possible and likely that domain experts would be able to easily resolve some of these ambiguities and definitions,
+this is the best we could do.
+We will now create a FAIR theory archive, and invite others to further develop this theory.
 
+# Archiving SDT as FAIR Theory
 
+We will automate most steps of FAIR theory creation; to go through the process manually, see [this vignette](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html)).
+Let's create two files for our theory: a DAG to specify the causal relations,
+and a spreadsheet containing the definitions.
+
+```{r}
+writeLines(SDT, "sdt.txt")
+write.csv(definitions, "definitions.csv", row.names = FALSE)
+```
+
+Next, we can create the FAIR theory as follows:
+
+```{r eval = FALSE}
+project_path <- file.path("c:/theories", "self_determination_theory")
+create_fair_theory(
+  path = project_path,
+  title = "Self-Determination Theory",
+  theory_file = c("sdt.txt", "definitions.csv"),
+  remote_repo = "self_determination_theory",
+  add_license = "cc0")
+```
+
+We will manually complete the following steps:
+
+- [ ] Update README file
+- [ ] Connect GitHub to Zenodo
+- [ ] Push local updates to GitHub
+- [ ] Publish a release on GitHub, which triggers a release on Zenodo
+
+## Documenting Interoperability with a README File
+
+We customized the README by adding these sections:
+
+> **Description** This is a FAIR theory (Van Lissa et al., 2025) specification of Deci and Ryan's *Self-Determination Theory* (Deci & Ryan, 2012).
+The definition of SDT used for the theory specification exercise was taken from this book chapter,
+but seems to be fully consistent with the description on <https://selfdeterminationtheory.org/the-theory/>.  
+The theory was first specified by Van Lissa, Li, and Weber as part of the "Proposition Based Theory Specification" (PBTS) project by Andreas Glöckner, Susann Fiedler, Jennifer Biehl, & Jasper Siol (in preparation).
+In this "many-theorists project", groups of scholars were each assigned a chapter of the "Handbook of Theories of Social Psychology" [@vanlangeHandbookTheoriesSocial2012],
+and asked to specify it and document the process.  
+Van Lissa further adapted the theory specification, as documented in [this vignette](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html).
+
+> **Interoperability**  
+`sdt.txt`	This file contains the main theory, specified as a DAG. It is interoperable for causal inference and data simulaiton in R, as explained in [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html).  
+`definitions.csv`	This file contains definitions of the constructs in `sdt.txt`, inasfar as we could find them. At present, this file is not very interoperable. We urgently invite domain experts to propose more concrete definitions of the constructs (as our attempt to identify the intended definitions likely fell short), or to propose new and better definitions.
+
+> **Related works**
+
+> Deci, E. L., & Ryan, R. M. (2012). Self-Determination Theory. In P. A. M. V. Lange, A. W.Kruglanski, & E. ToryHiggins (Eds.), Handbook of Theories of Social Psychology: Volume 1 (pp. 416–437). SAGE Publications Ltd. https://doi.org/10.4135/9781446249215
+
+## Authorize 'GitHub' to connect with 'Zenodo'
+
+On the 'Zenodo' website navigate to the ['GitHub' repository listing page](https://zenodo.org/account/settings/github/) and simply "flip the switch" next to your repository.
+If your repository **does not show up** in the list, you may need to press the 'Syncronize now' button.
+At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
+If so, take a break or come back to this last step tomorrow!
+
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Enable individual 'GitHub' repositories to be archived in 'Zenodo'"}
+knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true")
+```
+Flip the switch to set up a new webhook between 'Zenodo' and your repository. 
+
+## Create a New Release
+
+To archive a  repository on 'Zenodo', you must create a new release. 
+Since we changed the README file, first, add, commit, and push these changes to the remote repository using `git_update()`.
+Then, publish the release using `git_release_publish()`:
+
+```{r eval = FALSE}
+worcs::git_update(repo = project_path)
+worcs::git_release_publish(repo = project_path)
+```
+
+## Updating Zenodo Meta-Data
+
+We can further document our 'Zenodo' archive as a FAIR theory by adding some extra information on 'Zenodo'.
+Note that, if you created a `.zenodo.json` file in a previous step, some of these metadata will be populated automatically.
+On 'Zenodo' click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
+
+```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
+knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true")
+```
+
+Click the orange `Edit` button, and verify/supply the following information:
+
+**Keywords**: Following a paper by Deci & Ryan (2008), we added the keywords `self-determination theory`, `autonomous motivation`, and `personality development`.
+**Related works**: We added the DOI of the book chapter by Deci & Ryan (2012), with the relation `Is derived from`, as well as the DOIs of the papers referenced in `definitions.csv`, with relation type `References`. While citing these DOIs inside the file renders them Accessible and Interoperable for sentient readers, additionally documenting them in the DataCite metadata makes them Accessible and Interoperable for library systems and other scholarly analytics software.
+
+To save these changes, click 'Publish'.
+
+View the final result, FAIR Self-Determination Theory, at <https://doi.org/10.5281/zenodo.15648655>.

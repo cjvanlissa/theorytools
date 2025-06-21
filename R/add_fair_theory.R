@@ -11,7 +11,7 @@ git_connect_or_create <- utils::getFromNamespace("git_connect_or_create", "worcs
 #' @param path Character, indicating the directory in which to create the FAIR
 #' theory.
 #' @param title Character, indicating the theory title. Default: `NULL`
-#' @param theory_file Character, referring to an existing theory file to be
+#' @param theory_file Character, referring to existing theory file(s) to be
 #' copied, or a new theory file to be created. Default `NULL` does nothing.
 #' @param remote_repo Name of a 'GitHub' repository that exists or should be
 #' created on the current authenticated user's account, see
@@ -210,6 +210,10 @@ add_readme_fair_theory <- function(path, title, ...){
 #' @rdname add_theory_file
 #' @export
 add_theory_file <- function(path, theory_file = "theory.txt"){
+  if(length(theory_file) > 1){
+    out <- sapply(theory_file, function(x){ add_theory_file(path = path, theory_file = x) })
+    return(invisible(all(out)))
+  }
   if(!dir.exists(path)) stop("Path does not exist.")
   existing_theory_file <- file.exists(theory_file)
   if (existing_theory_file) {

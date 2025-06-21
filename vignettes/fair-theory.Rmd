@@ -80,7 +80,7 @@ In the spirit of modular publishing, this tutorial assumes that you're creating 
 While it is possible for a theory to be implemented in a programming language like R,
 it often is not - the empirical cycle described above is implemented in plain text.
 Therefore, we will not create an R project (with an `.Rproj` file et cetera), but just a regular nondescript project.
-This starts with creating an empty project folder.
+This starts with creating an empty project folder, which will become the theory archive.
 If we want to create a new folder called `empirical_cycle` in the existing folder `c:/theories/`, we can call:
 
 ```{r eval = FALSE}
@@ -90,6 +90,109 @@ dir.create(project_path)
 ```{r echo = FALSE}
 project_path <- file.path(tempdir(), "empirical_cycle")
 dir.create(project_path)
+```
+
+## Adding a Shareable Theory File to the Repository
+
+Your theory should be represented as a digital artifact, such as a structured plain-text document or a machine-readable file (e.g., 'DOT', 'JSON', 'YAML', 'R' code).
+At this point, we offer two alternatives.
+
+### Theory as Plain Text
+
+You could simply copy De Groot's implementation of the empirical cycle into a plain text file, like so:
+
+```{r}
+writeLines(
+  c("*Phase 1:* 'Observation': collection and grouping of empirical materials;
+    (tentative) formation of hypotheses.",
+    "*Phase 2:* 'Induction': formulation of hypotheses.", 
+    "*Phase 3:* 'Deduction': derivation of specific consequences
+    from the hypotheses, in the form of testable predictions.",
+    "*Phase 4:* 'Testing': of the hypotheses against new empirical materials,
+    by way of checking whether or not the predictions are fulfilled.",
+    "*Phase 5:* 'Evaluation': of the outcome of the testing procedure
+    with respect to the hypotheses or theories stated, as well as
+    with a view to subsequent, continued or related, investigations."
+), file.path(project_path, "theory.txt"))
+```
+
+### Implementing the Theory in a Formal Language
+
+If we compare it to the levels of theory formalization [@guestHowComputationalModeling2021],
+De Groot's theory is either at the "theory" or "specification" level.
+It consists of a series of natural language statements.
+We can increase the level of formalization, and present an "implementation" in the human- and machine-readable DOT language, thereby meeting criterion I1 of the FAIR principles (*"using a formal language for knowledge representation"*):
+
+```{r}
+theory <- 
+"digraph {
+
+  observation;
+  induction;
+  deduction;
+  test;
+  evaluation;
+  
+  observation -> induction;
+  induction -> deduction;
+  deduction -> test;
+  test -> evaluation;
+  evaluation -> observation;
+  
+}"
+```
+
+This language describes the model as a directed graph.
+Note that the code has been organized so that the first half describes an ontology of the entities the theory postulates,
+and the second half describes their proposed interrelations.
+This follows the first two properties of good theory according to Meehl [@meehlAppraisingAmendingTheories1990].
+Because Git tracks changes on a line-by-line basis,
+separating the ontology and structural parts of the theory facilitates tracking changes to either of them.
+We can now write this implementation of the empirical cycle to a text file, say `empirical_cycle.dot`.
+
+```{r}
+cat(theory, file = file.path(project_path, "empirical_cycle.dot"), sep = "\n")
+```
+
+## Documenting Reusability with a LICENSE
+
+A license ensures that others know how they can legally reuse your work.
+We recommend a CC0 (Creative Commons Zero) license for FAIR theory, which waives all copryright protection and places your work in the public domain.
+This recommendation is based on the fact that copyright protection does not cover ideas,
+and the assumption that FAIR theory is created to maximize reuse.
+Other licenses are available, see [https://choosealicense.com](https://choosealicense.com/non-software/).
+You can add a license file to your repository like so:
+
+```{r}
+worcs::add_license_file(path = project_path, license = "cc0")
+```
+
+
+## Documenting Interoperability with a README File
+
+A README file describes the repository's contents and purpose, making it easier for others to understand your theory's potential for interoperability and reuse.
+The `theorytools` package contains a function to generate a README file with appropriate sections for FAIR theory, which can be used like so:
+
+```{r}
+theorytools::add_readme_fair_theory(title = "The Empirical Cycle",
+                                    path = project_path)
+```
+
+We encourage users to edit the resulting `README.md` file, in particular, to add relevant information about X-interoperability.
+For guidance on writing a README file for theory, see [this vignette](https://cjvanlissa.github.io/theorytools/articles/readme.html).
+
+## Adding 'Zenodo' Metadata to the Repository
+
+In a later step, we will archive the theory on 'Zenodo'. 
+Creating a `.zenodo.json` file with metadata about your theory allows the project to be indexed automatically.
+This can be done by running:
+
+```{r}
+add_zenodo_json_theory(
+  path = project_path,
+  title = "The Empirical Cycle",
+  keywords = c("philosophy of science", "methodology")
+)
 ```
 
 ## Version Controlling The Project Folder
@@ -138,102 +241,6 @@ Either way, assuming the name of that repository is `empirical_cycle`, you can c
 ```{r eval = FALSE}
 worcs::git_remote_connect(project_path, remote_repo = "empirical_cycle")
 ```
-
-
-## Adding a Shareable Theory File to the Repository
-
-Your theory should be represented as a digital artifact, such as a structured plain-text document or a machine-readable file (e.g., 'DOT', 'JSON', 'YAML', 'R' code).
-At this point, we offer two alternatives.
-
-### Creating a Plain-Text Theory
-
-You could simply copy De Groot's implementation of the empirical cycle into a plain text file, like so:
-
-```{r}
-writeLines(
-  c("*Phase 1:* 'Observation': collection and grouping of empirical materials;
-    (tentative) formation of hypotheses.",
-    "*Phase 2:* 'Induction': formulation of hypotheses.", 
-    "*Phase 3:* 'Deduction': derivation of specific consequences
-    from the hypotheses, in the form of testable predictions.",
-    "*Phase 4:* 'Testing': of the hypotheses against new empirical materials,
-    by way of checking whether or not the predictions are fulfilled.",
-    "*Phase 5:* 'Evaluation': of the outcome of the testing procedure
-    with respect to the hypotheses or theories stated, as well as
-    with a view to subsequent, continued or related, investigations."
-), file.path(project_path, "theory.txt"))
-```
-
-### Further Formalizing the Empirical Cycle
-
-If we compare it to the levels of theory formalization [@guestHowComputationalModeling2021],
-De Groot's theory is either at the "theory" or "specification" level.
-It consists of a series of natural language statements.
-We can increase the level of formalization, and present an "implementation" in the human- and machine-readable DOT language:
-
-```{r}
-theory <- 
-"digraph {
-
-  observation;
-  induction;
-  deduction;
-  test;
-  evaluation;
-  
-  observation -> induction;
-  induction -> deduction;
-  deduction -> test;
-  test -> evaluation;
-  evaluation -> observation;
-  
-}"
-```
-
-This language describes the model as a directed graph.
-Note that the code has been organized so that the first half describes an ontology of the entities the theory postulates,
-and the second half describes their proposed interrelations.
-This follows the first two properties of good theory according to Meehl [@meehlAppraisingAmendingTheories1990].
-
-We can now write this implementation of the empirical cycle to a text file, say `empirical_cycle.dot`.
-
-```{r}
-cat(theory, file = file.path(project_path, "empirical_cycle.dot"), sep = "\n")
-```
-
-## Adding a LICENSE File to the Repository
-
-A license ensures that others know how they can legally reuse your work. For FAIR theory, we recommend using the CC0 (Creative Commons Zero) license, which places your work in the public domain. Add a license file to your repository:
-
-```{r}
-worcs::add_license_file(path = project_path, license = "cc0")
-```
-
-
-## Adding a README File to the Repository
-
-A README file describes the repository's contents and purpose, making it easier for others to understand and reuse your theory.
-The `theorytools` package contains a function to generate a README file with appropriate sections for FAIR theory, which can be used like so:
-
-```{r}
-theorytools::add_readme_fair_theory(title = "The Empirical Cycle",
-                                    path = project_path)
-```
-
-We encourage users to edit the resulting `README.md` file, in particular, to add relevant information about X-interoperability.
-
-## Adding 'Zenodo' Metadata to the Repository
-
-'Zenodo' uses metadata files to archive and index repositories. Create a `.zenodo.json` file with metadata about your theory so that it is indexed appropriately:
-
-```{r}
-add_zenodo_json_theory(
-  path = project_path,
-  title = "The Empirical Cycle",
-  keywords = c("philosophy of science", "methodology")
-)
-```
-
 
 ## Pushing These Changes to the Remote Repository
 
@@ -336,9 +343,10 @@ you need to visit the [Uploads](https://zenodo.org/deposit) tab.
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true")
 ```
 
-## Entering Meta-Data
+## Updating Meta-Data
 
 We can further document our 'Zenodo' archive as a FAIR theory by adding some extra information on 'Zenodo'.
+Note that, if you created a `.zenodo.json` file in a previous step, some of these metadata will be populated automatically.
 On 'Zenodo' click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
 
 ```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
@@ -386,7 +394,7 @@ So now you have a sustainably archived 'GitHub' repository in 'Zenodo' that is r
 - [ ] 'Zenodo' and 'GitHub' integrated setup works nicely. For example have all the author names, and correct project title come across to 'Zenodo'. If not, or if authors just have nicknames you can edit these details in 'Zenodo'.
 - [ ] Project has a first release, with a DOI. You should have a DOI displayed on your projects 'Zenodo' page. This first DOI is called the 'concept DOI' and is the master DOI linking to all subsequent release DOIs. Copy this DOI link and embed it in your 'GitHub' projects README page. You're done!
 
-# *Optional:* Everything in One Step
+# Automating FAIR Theory Creation
 
 The function `theorytools::create_fair_theory()` automates most of the preceding steps, up to step 2.8.
 Assuming you have already created a shareable theory file called `theory.txt` which resides in the currently active directory (`getwd()`),

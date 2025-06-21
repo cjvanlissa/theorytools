@@ -1,0 +1,92 @@
+---
+title: "Updating a Theory"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{updating_theory}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(theorytools)
+```
+
+FAIR theories are designed to be living documents - open to updates, refinements, and community contributions.
+In this vignette, we describe how to update a FAIR theory by creating a local copy, editing it, and sharing the updated theory either as a new theory with metadata linking to its predecessor, or as a contribution to the original project.
+
+## Step 1: Accessing an Existing Theory
+
+We describe two cases: one where the theory is archived only on Zenodo, and one where the theory is also archived on GitHub.
+
+### A Theory on Zenodo
+
+If the theory only exists on Zenodo,
+then we can download a local copy by running the code below,
+which is demonstrated here with Morris' Tripartite Model (see [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html)).
+Change the `path` to a directory on your hard drive where you want to store the theory.
+
+```{r eval = FALSE}
+download_theory(
+  id = "https://doi.org/10.5281/zenodo.14921521",
+  path = "c:/theories/tripartite_downloaded")
+```
+
+### A Theory on GitHub
+
+Navigate to the GitHub repository of the FAIR theory you want to update.
+Click the **Fork** button in the upper right corner to create your own copy of the repository under your GitHub account (for more information, see [the GitHub documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)).
+
+This gives you a space to experiment and propose changes without affecting the original repository.
+
+Once you've forked the repository, clone it to your local machine by running the following code in R ([see here for more information](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)):
+
+
+```{r eval = FALSE}
+download_theory(
+  id = "https://github.com/cjvanlissa/tripartite_model.git",
+  path = "c:/theories/tripartite_clone")
+```
+
+## Step 2: Make Changes to the Theory
+
+You can now:
+
+* Edit the theory implementation (e.g., `tripartite_model.txt`, or other files in which the theory is implemented, see the README if you're not sure which files these are)
+* Modify or expand the README
+* Update metadata or ontology elements
+* Add documentation or related materials
+* Increment the version number of the theory
+
+Track your changes using Git, and push these changes to your GitHub repository by running:
+
+```{r eval = FALSE}
+worcs::git_update("Describe your changes to the theory.")
+```
+
+
+## Step 3 (Optional): Create a Pull Request
+
+If you'd like the original authors to consider incorporating your updates into the main project:
+
+1. Go to your forked repository on GitHub.
+2. Click **"Compare & pull request"** (see [here for more information](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/))
+3. Write a short message explaining your changes and their motivation.
+4. Submit the pull request.
+
+The maintainers of the original theory can then review your suggestions and decide whether to merge them.
+
+## Step 4 (Optional): Create an Independent FAIR Theory
+
+Sometimes theories branch off and go their separate way;
+if this is the case for your theory, you should follow the steps in [this vignette](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html)) to archive your FAIR theory on Zenodo.
+
+Importantly, if your FAIR theory originated from a previous FAIR theory, you should document its predecessor in the metadata.
+
+To do so, [edit the theory's metadata](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#entering-meta-data). Under the `Related works` field, add the DOI of the theory's predecessor. In the `Relation` field, select `Is derived from`.

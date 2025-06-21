@@ -10,7 +10,7 @@ add_theory_file(path, theory_file = "theory.txt")
 \item{path}{Character, indicating the directory in which to create the FAIR
 theory.}
 
-\item{theory_file}{Character, referring to an existing theory file to be
+\item{theory_file}{Character, referring to existing theory file(s) to be
 copied, or a new theory file to be created. Default \code{NULL} does nothing.}
 }
 \value{
