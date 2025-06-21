@@ -168,8 +168,8 @@ g <- graph_from_literal(
 
 E(g)$relationship <- c(
  "negative association",
- "≃",
- "≃",
+ "~",
+ "~",
  "negative association",
  ":=",
  ":=",
@@ -180,13 +180,28 @@ E(g)$relationship <- c(
 
 We can visualize this graph with
 
-```{r}
+```{r echo = TRUE, eval = FALSE}
 plot(
   g,
   vertex.size = 20,
   vertex.color = "white",
   edge.label = E(g)$relationship,
 )
+```
+
+```{r echo = FALSE, eval = TRUE, message=FALSE}
+invisible({
+svg(filename = "dk.svg")
+set.seed(1)
+plot(
+  g,
+  vertex.size = 20,
+  vertex.color = "white",
+  edge.label = E(g)$relationship,
+)
+dev.off()
+})
+knitr::include_graphics("dk.svg")
 ```
 
 Finally, we save the graph in a standardized format such as [GraphML](http://graphml.graphdrawing.org/): 
@@ -415,14 +430,24 @@ theorytools::add_readme_fair_theory(title = "Dunning-Kruger Effect",
 ```
 
 We encourage users to edit the resulting `README.md` file, in particular, to add relevant information about X-interoperability.
+In this case, X-interoperability is limited:
+the definitions in `definitions.txt` are not yet well-defined (future work could be done here),
+the equations in `equations.tex` and `linear_model.tex` are interoperable through formal mathematical operations,
+and the `relationship_graph.txt` can be plotted using the `igraph` R-package.
+Importantly, we should add references to the original paper by Dunning and Kruger, and to the specification paper by Feld and colleagues:
+
+> Feld, J., Sauermann, J., & De Grip, Andreas. 2017. “Estimating the Relationship Between Skill and Overconfidence.” Journal of Behavioral and Experimental Economics 68: 18–24.
+
+> Kruger, J., & Dunning, D. (1999). Unskilled and unaware of it: how difficulties in recognizing one's own incompetence lead to inflated self-assessments. Journal of personality and social psychology, 77(6), 1121.
+
 For guidance on writing a README file for theory, see [this vignette](https://cjvanlissa.github.io/theorytools/articles/readme.html).
 
 ## Add Zenodo Metadata
 
 Create a `.zenodo.json` file with metadata about the theory, to allow it to be indexed automatically when we archive it on Zenodo:
 
-```{r}
-add_zenodo_json_theory(
+```{r eval}
+theorytools::add_zenodo_json_theory(
   path = ".",
   title = "Dunning-Kruger Effect",
   keywords = c("Dunning–Kruger", "Overconfidence", "Judgment error", "Measurement error")
@@ -485,10 +510,11 @@ Some metadata are pre-populated by the `.zenodo.json` file.
 We will additionally add several related works.
 
 For example:
-    + `Is documented by` a theory paper you wrote, in which you introduce this FAIR theory
-    + `Is derived from` an existing theory, which was published in print (paper, book chapter) but not made FAIR
-- [ ] References: Optionally, cite related works in plain text. For example, here we can provide the full citation of De Groot and Spiekerman:
-    
-    > De Groot, A. D., & Spiekerman, J. A. A. (1969). Methodology: Foundations of inference and research in the behavioral sciences. De Gruyter Mouton. https://doi.org/10.1515/9783112313121
+    + `Is derived from` Journal article: 10.1016/j.socec.2017.03.002 (DOI)
+    + `Is derived from` Journal article: 10.1037/0022-3514.77.6.1121 (DOI)
+
+Finally, click "Publish" to update these metadata.
+
+The end result of this tutorial should be a FAIR theory like this one: <https://doi.org/10.5281/zenodo.15633859>
 
 ## References

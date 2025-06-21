@@ -19,7 +19,7 @@ theory.}
 
 \item{title}{Character, indicating the theory title. Default: \code{NULL}}
 
-\item{theory_file}{Character, referring to an existing theory file to be
+\item{theory_file}{Character, referring to existing theory file(s) to be
 copied, or a new theory file to be created. Default \code{NULL} does nothing.}
 
 \item{remote_repo}{Name of a 'GitHub' repository that exists or should be
