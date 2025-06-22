@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -71,29 +72,158 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/theorytools" class="external-link">theorytools</a></span><span class="op">)</span></span></code></pre></div>
-<p>We start with the specification by Van Lissa and colleagues,
-conducted as part of Fiedler &amp; Glöckner’s many-theorists project.
-The definition of SDT is taken from this book chapter, but it seems to
-be consistent with the description on <a href="https://selfdeterminationtheory.org/the-theory/" class="external-link uri">https://selfdeterminationtheory.org/the-theory/</a>:</p>
+<p>This vignette is based on work conducted as part of the “Proposition
+Based Theory Specification” (PBTS) project by Andreas Glöckner, Susann
+Fiedler, Jennifer Biehl, &amp; Jasper Siol (in preparation). In this
+“many-theorists project”, groups of scholars were each assigned a
+chapter of the “Handbook of Theories of Social Psychology” <span class="citation">(<strong>vanlangeHandbookTheoriesSocial2012?</strong>)</span>,
+and asked to specify it and document the process.</p>
+<p>Van Lissa, Li, and Weber set out to formalize Deci and Ryan’s
+<em>Self-Determination Theory</em>, documented in Chapter 20 of the book
+<span class="citation">(<strong>deciSelfDeterminationTheory2012?</strong>)</span>.
+The definition of SDT used for the theory specification exercise was
+taken from this book chapter, but seems to be fully consistent with the
+description on <a href="https://selfdeterminationtheory.org/the-theory/" class="external-link uri">https://selfdeterminationtheory.org/the-theory/</a>.</p>
+<div class="section level4">
+<h4 id="time-to-complete">Time to Complete<a class="anchor" aria-label="anchor" href="#time-to-complete"></a>
+</h4>
+<p>Estimated time to complete: 45-60 minutes.</p>
+</div>
+<div class="section level4">
+<h4 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
+<ul class="task-list">
+<li><label><input type="checkbox">Translate a theory described in
+prose to a series of IF-THEN propositions</label></li>
+<li><label><input type="checkbox">Document construct definitions and
+operationalizations of a theory</label></li>
+<li><label><input type="checkbox">Translate IF-THEN proposions to a
+Directed Acyclic Graph</label></li>
+<li><label><input type="checkbox">Publish the resulting theory as a
+FAIR Theory on Zenodo</label></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="step-1-select-relevant-sources">Step 1: Select Relevant Sources<a class="anchor" aria-label="anchor" href="#step-1-select-relevant-sources"></a>
+</h2>
+<p>In the first step of the PBTS procedure, we were asked to select
+sources for the theory specification and agree on these sources with
+fellow raters; to detect relevant text snippets within these sources
+that contain descriptions of the definitions, causal relations, et
+cetera as proposed by the theory; and to agree with the fellow coders on
+these snippets. We decided to use only the book chapter as a source. As
+an example, the first snippet we selected was:</p>
 <blockquote>
-<p>Lange, P. A. M. V., W.Kruglanski, A., ToryHiggins, E., Deci, E. L.,
-&amp; Ryan, R. M. (2012). Self-Determination Theory. In Handbook of
-Theories of Social Psychology: Volume 1 (pp. 416–437). SAGE Publications
-Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link uri">https://doi.org/10.4135/9781446249215</a></p>
+<p>“For these natural, active processes of intrinsic motivation and
+integration to operate effectively toward healthy development and
+psychological well-being, human beings need particular nutriments – both
+biological and psychological (Ryan, 1995). In the relative absence of
+such nutriments, these natural processes will be impaired, resulting in
+experiences, development, and behaviors that are less than optimal.
+(Deci &amp; Ryan, 2012, p. 417)</p>
 </blockquote>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">SDT1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"sdt1.txt"</span>,package<span class="op">=</span><span class="st">"theorytools"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">SDT1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"IF"</span>, <span class="st">"THEN"</span>, <span class="st">"Original"</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT1</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"SDT translated into IF/THEN statements"</span><span class="op">)</span></span></code></pre></div>
+<p>Expand the section below to see all selected snippets:</p>
+<details><summary>
+See all snippets
+</summary><blockquote>
+<p><strong>Snippet 1:</strong> “For these natural, active processes of
+intrinsic motivation and integration to operate effectively toward
+healthy development and psychological well-being, human beings need
+particular nutriments – both biological and psychological (Ryan, 1995).
+In the relative absence of such nutriments, these natural processes will
+be impaired, resulting in experiences, development, and behaviors that
+are less than optimal. (Deci &amp; Ryan, 2012, p. 417)</p>
+</blockquote>
+<blockquote>
+<p><strong>Snippet 2:</strong> “The three basic psychological needs are
+universal such that their satisfaction versus thwarting affects the
+psychological well-being of all people.” (Deci &amp; Ryan, 2012,
+p. 425)</p>
+</blockquote>
+<blockquote>
+<p><strong>Snippet 3:</strong> “rewards do not always motivate
+subsequent persistence; indeed they can undermine intrinsic motivation”
+(Deci &amp; Ryan, 2012, p. 417)</p>
+</blockquote>
+<blockquote>
+<p><strong>Snippet 4:</strong> “[Intrinsic motivation] could be either
+undermined or enhanced depending on whether the social environment
+supported or thwarted the needs for competence and self-determination.
+If a reward or other external event such as threat of punishment (Deci
+and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and
+Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected
+to thwart these basic needs, it was predicted to prompt an external
+perceived locus of causality and undermine intrinsic motivation; but if
+the event were expected to support these basic needs, it was predicted
+to prompt an internal perceived locus of causality and enhance intrinsic
+motivation.” (Deci &amp; Ryan, 2012, p. 418)</p>
+</blockquote>
+</details>
+</div>
+<div class="section level2">
+<h2 id="step-2-extract-if-then-propositions">Step 2: Extract IF-THEN Propositions<a class="anchor" aria-label="anchor" href="#step-2-extract-if-then-propositions"></a>
+</h2>
+<p>Each individual coder then set out to extract a set of IF-THEN
+propositions from the selected snippets that, together, describe the
+theory.</p>
+<p>Let’s examine the first snippet, and code it for implied causality.
+The causes are coded in green, and outcomes in blue:</p>
+<blockquote>
+<p>“For these natural, active <font color="green"><strong>processes of
+intrinsic motivation and integration</strong></font> to operate
+effectively toward <font color="blue"><strong>healthy development and
+psychological well-being</strong></font>, human beings need particular
+<font color="green"><strong>nutriments</strong></font> – both
+biological and psychological (Ryan, 1995). In the relative absence of
+such <font color="green"><strong>nutriments</strong></font>, these
+natural <font color="blue"><strong>processes</strong></font> will be
+impaired, resulting in <font color="blue"><strong>experiences,
+development, and behaviors</strong></font> that are less than optimal”
+(Lange et al., 2012, p. 417)</p>
+</blockquote>
+<p>The text is a bit ambiguous, and possibly redundant. We see that
+<strong>processes</strong>, in the first sentence, refers to intrinsic
+motivation and integration. This invites the question of the
+relationship between intrinsic motivation and integration - do they go
+hand in hand (i.e., just two examples of processes set in motion by
+nutriments)? Are they distinct but similarly related to other
+constructs? It’s not clear. Furthermore, in the second sentence, we find
+the word <strong>processes</strong> again, but this time without
+explicit reference to intrinsic motivation and integration. For now, we
+will assume that intrinsic motivation and integration are distinct but
+have similar relationships to other constructs, and that the word is
+used consistently across both sentences.</p>
+<p><strong>Nutriments</strong> is defined elsewhere in the text - it
+appears to refer to refer to the three basic needs, as well as
+biological necessities.</p>
+<p><strong>Experiences, development, and behaviors</strong> is not
+well-defined, but we might assume it refers back to <strong>healthy
+development and psychological well-being</strong>.</p>
+<p>We could reconstruct implied propositions as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Processes (intrinsic motivation AND integration) -&gt; healthy
+development AND psychological well-being (<em>processes of intrinsic
+motivation and integration [operate effectively toward] healthy
+development and psychological well-being</em>)</li>
+<li>Nutriments -&gt; Processes (<em>human beings [need] nutriments […]
+for these processes to operate etc.</em>)</li>
+<li>Nutriments -&gt; Processes (<em>In the [absence of] nutriments […]
+processes will be impaired</em>)</li>
+<li>Processes -&gt; Healthy development AND psychological well-being
+(<em>processes will be impaired, resulting in experiences, development,
+and behaviors</em>)</li>
+</ol>
+<p>Assuming that our interpretations are correct, we see that the
+snippet redundantly states the same two relationships twice; once
+phrased in the positive and once in the negative.</p>
+<p>Let’s apply the same coding procedure to all snippets:</p>
 <table class="table">
 <caption>SDT translated into IF/THEN statements</caption>
 <colgroup>
 <col width="0%">
-<col width="11%">
-<col width="5%">
-<col width="82%">
+<col width="6%">
+<col width="7%">
+<col width="85%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">N</th>
@@ -105,19 +235,19 @@ Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link uri">
 <tr class="odd">
 <td align="right">1</td>
 <td align="left">nutriments are absent</td>
-<td align="left">intrinsic motivation and integration are impaired</td>
+<td align="left">intrinsic motivation AND integration are impaired</td>
 <td align="left">“For these natural, active processes of intrinsic
 motivation and integration to operate effectively toward healthy
 development and psychological well-being, human beings need particular
 nutriments – both biological and psychological (Ryan, 1995). In the
 relative absence of such nutriments, these natural processes will be
 impaired, resulting in experiences, development, and behaviors that are
-less than optimal. (Lange et al., 2012, p. 417)</td>
+less than optimal. (Deci &amp; Ryan, 2012, p. 417)</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="left">intrinsic motivation is present</td>
-<td align="left">healthy development and psychological well-being take
+<td align="left">[intrinsic motivation OR integration] is present</td>
+<td align="left">healthy development AND psychological well-being take
 place</td>
 <td align="left">“For these natural, active processes of intrinsic
 motivation and integration to operate effectively toward healthy
@@ -125,127 +255,118 @@ development and psychological well-being, human beings need particular
 nutriments – both biological and psychological (Ryan, 1995). In the
 relative absence of such nutriments, these natural processes will be
 impaired, resulting in experiences, development, and behaviors that are
-less than optimal. (Lange et al., 2012, p. 417)</td>
+less than optimal. (Deci &amp; Ryan, 2012, p. 417)</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="left">integration is present</td>
-<td align="left">healthy development and psychological well-being take
-place</td>
-<td align="left">“For these natural, active processes of intrinsic
-motivation and integration to operate effectively toward healthy
-development and psychological well-being, human beings need particular
-nutriments – both biological and psychological (Ryan, 1995). In the
-relative absence of such nutriments, these natural processes will be
-impaired, resulting in experiences, development, and behaviors that are
-less than optimal. (Lange et al., 2012, p. 417)</td>
-</tr>
-<tr class="even">
-<td align="right">4</td>
 <td align="left">needs are satisfied or thwarted</td>
 <td align="left">psychological well-being of all people is affected</td>
 <td align="left">“The three basic psychological needs are universal such
 that their satisfaction versus thwarting affects the psychological
-well-being of all people.” (Lange et al., 2012, p. 425)</td>
+well-being of all people.” (Deci &amp; Ryan, 2012, p. 425)</td>
 </tr>
-<tr class="odd">
-<td align="right">5</td>
+<tr class="even">
+<td align="right">4</td>
 <td align="left">rewards given</td>
 <td align="left">intrinsic motivation can decrease</td>
 <td align="left">“rewards do not always motivate subsequent persistence;
-indeed they can undermine intrinsic motivation” (Lange et al., 2012,
+indeed they can undermine intrinsic motivation” (Deci &amp; Ryan, 2012,
 p. 417)</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">external event is expected to thwart the basic
+needs</td>
+<td align="left">external perceived locus of causality</td>
+<td align="left">“[Intrinsic motivation] could be either undermined or
+enhanced depending on whether the social environment supported or
+thwarted the needs for competence and self-determination. If a reward or
+other external event such as threat of punishment (Deci and Cascio,
+1972), positive feedback (Deci, 1971), competition (Deci and Betley et
+al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart
+these basic needs, it was predicted to prompt an external perceived
+locus of causality and undermine intrinsic motivation; but if the event
+were expected to support these basic needs, it was predicted to prompt
+an internal perceived locus of causality and enhance intrinsic
+motivation.” (Deci &amp; Ryan, 2012, p. 418)</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
-<td align="left">external event is expected to thwart the basic needs
-(reward, threat of punishment, positive feedback, competition,
-choice)</td>
 <td align="left">external perceived locus of causality</td>
-<td align="left">“Intrinsic motivation was considered an inherent
-characteristic of human beings and was viewed as the prototype of
-psychological freedom or self-determination. It could be either
-undermined or enhanced depending on whether the social environment
-supported or thwarted the needs for competence and self-determination.
-If a reward or other external event such as threat of punishment (Deci
-and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and
-Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected
-to thwart these basic needs, it was predicted to prompt an external
-perceived locus of causality and undermine intrinsic motivation; but if
-the event were expected to support these basic needs, it was predicted
-to prompt an internal perceived locus of causality and enhance intrinsic
-motivation.” (Lange et al., 2012, p. 418)</td>
+<td align="left">undermined intrinsic motivation</td>
+<td align="left">“[Intrinsic motivation] could be either undermined or
+enhanced depending on whether the social environment supported or
+thwarted the needs for competence and self-determination. If a reward or
+other external event such as threat of punishment (Deci and Cascio,
+1972), positive feedback (Deci, 1971), competition (Deci and Betley et
+al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart
+these basic needs, it was predicted to prompt an external perceived
+locus of causality and undermine intrinsic motivation; but if the event
+were expected to support these basic needs, it was predicted to prompt
+an internal perceived locus of causality and enhance intrinsic
+motivation.” (Deci &amp; Ryan, 2012, p. 418)</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="left">external perceived locus of causality</td>
-<td align="left">undermined intrinsic motivation</td>
-<td align="left">“Intrinsic motivation was considered an inherent
-characteristic of human beings and was viewed as the prototype of
-psychological freedom or self-determination. It could be either
-undermined or enhanced depending on whether the social environment
-supported or thwarted the needs for competence and self-determination.
-If a reward or other external event such as threat of punishment (Deci
-and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and
-Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected
-to thwart these basic needs, it was predicted to prompt an external
-perceived locus of causality and undermine intrinsic motivation; but if
-the event were expected to support these basic needs, it was predicted
-to prompt an internal perceived locus of causality and enhance intrinsic
-motivation.” (Lange et al., 2012, p. 418)</td>
+<td align="left">external event is expected to support the basic
+needs</td>
+<td align="left">internal perceived locus of causality</td>
+<td align="left">“[Intrinsic motivation] could be either undermined or
+enhanced depending on whether the social environment supported or
+thwarted the needs for competence and self-determination. If a reward or
+other external event such as threat of punishment (Deci and Cascio,
+1972), positive feedback (Deci, 1971), competition (Deci and Betley et
+al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart
+these basic needs, it was predicted to prompt an external perceived
+locus of causality and undermine intrinsic motivation; but if the event
+were expected to support these basic needs, it was predicted to prompt
+an internal perceived locus of causality and enhance intrinsic
+motivation.” (Deci &amp; Ryan, 2012, p. 418)</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
-<td align="left">external event is expected to support the basic needs
-(reward, threat of punishment, positive feedback, competition,
-choice)</td>
-<td align="left">internal perceived locus of causality</td>
-<td align="left">“Intrinsic motivation was considered an inherent
-characteristic of human beings and was viewed as the prototype of
-psychological freedom or self-determination. It could be either
-undermined or enhanced depending on whether the social environment
-supported or thwarted the needs for competence and self-determination.
-If a reward or other external event such as threat of punishment (Deci
-and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and
-Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected
-to thwart these basic needs, it was predicted to prompt an external
-perceived locus of causality and undermine intrinsic motivation; but if
-the event were expected to support these basic needs, it was predicted
-to prompt an internal perceived locus of causality and enhance intrinsic
-motivation.” (Lange et al., 2012, p. 418)</td>
-</tr>
-<tr class="odd">
-<td align="right">9</td>
 <td align="left">internal perceived locus of causality</td>
 <td align="left">enhanced intrinsic motivation</td>
-<td align="left">“Intrinsic motivation was considered an inherent
-characteristic of human beings and was viewed as the prototype of
-psychological freedom or self-determination. It could be either
-undermined or enhanced depending on whether the social environment
-supported or thwarted the needs for competence and self-determination.
-If a reward or other external event such as threat of punishment (Deci
-and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and
-Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected
-to thwart these basic needs, it was predicted to prompt an external
-perceived locus of causality and undermine intrinsic motivation; but if
-the event were expected to support these basic needs, it was predicted
-to prompt an internal perceived locus of causality and enhance intrinsic
-motivation.” (Lange et al., 2012, p. 418)</td>
+<td align="left">“[Intrinsic motivation] could be either undermined or
+enhanced depending on whether the social environment supported or
+thwarted the needs for competence and self-determination. If a reward or
+other external event such as threat of punishment (Deci and Cascio,
+1972), positive feedback (Deci, 1971), competition (Deci and Betley et
+al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart
+these basic needs, it was predicted to prompt an external perceived
+locus of causality and undermine intrinsic motivation; but if the event
+were expected to support these basic needs, it was predicted to prompt
+an internal perceived locus of causality and enhance intrinsic
+motivation.” (Deci &amp; Ryan, 2012, p. 418)</td>
 </tr>
 </tbody>
 </table>
-<p>Next, we specify these verbal IF/THEN statements into causal links
-between specific constructs. Note that the numbers associated with the
-statements are retained, so that it is clear which causal links are
-derived from which IF/THEN statements:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">SDT2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"sdt2.txt"</span>,package<span class="op">=</span><span class="st">"theorytools"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">SDT2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"from"</span>, <span class="st">"to"</span>, <span class="st">"form"</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT2</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"IF/THEN statements translated into causal connections"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="from-if-then-propositions-to-causal-model">From IF-THEN Propositions to Causal Model<a class="anchor" aria-label="anchor" href="#from-if-then-propositions-to-causal-model"></a>
+</h3>
+<p>The IF-THEN specification prescribed by the PBTS framework has some
+limitations here; for example, it is not so well-suited to describe a
+difference in degrees (people are affected a little bit), or a
+probabilistic effect (some people are affected, but not all). Except
+proposition #3, which explicitly states that people are universally
+affected, none of the original statements appear to be binary. However,
+the direction of causality is relatively clear. Thus, a better fit might
+be a Directed Acyclic Graph (DAG), which incurs the additional advantage
+of being X-interoperable with covariate selection and data generation
+(see <a href="https://cjvanlissa.github.io/theorytools/articles/causal-inference.html">this
+vignette</a>).</p>
+<p>We can translate these IF-THEN statements into causal links between
+specific constructs. The result is contained in a file included in the
+<code>theorytools</code> package, which we load below. Note that the
+numbers associated with the statements are retained, so that it is clear
+which causal links are derived from which IF/THEN statements:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">SDT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"sdt.txt"</span>, package<span class="op">=</span><span class="st">"theorytools"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, caption <span class="op">=</span> <span class="st">"IF/THEN statements translated into causal connections"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>IF/THEN statements translated into causal connections</caption>
 <thead><tr class="header">
-<th align="right">N</th>
+<th align="right">Nr</th>
 <th align="left">from</th>
 <th align="left">to</th>
 </tr></thead>
@@ -271,68 +392,86 @@ derived from which IF/THEN statements:</p>
 <td align="left">wellbeing</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
+<td align="right">2</td>
 <td align="left">integration</td>
 <td align="left">healthy_development</td>
 </tr>
 <tr class="even">
-<td align="right">3</td>
+<td align="right">2</td>
 <td align="left">integration</td>
 <td align="left">wellbeing</td>
 </tr>
 <tr class="odd">
-<td align="right">4</td>
+<td align="right">3</td>
 <td align="left">needs</td>
 <td align="left">wellbeing</td>
 </tr>
 <tr class="even">
-<td align="right">5</td>
+<td align="right">4</td>
 <td align="left">external_event</td>
 <td align="left">intrinsic_motivation</td>
 </tr>
 <tr class="odd">
-<td align="right">6</td>
+<td align="right">5</td>
 <td align="left">external_event</td>
 <td align="left">needs</td>
 </tr>
 <tr class="even">
+<td align="right">5</td>
+<td align="left">external_event</td>
+<td align="left">locus_of_causality</td>
+</tr>
+<tr class="odd">
 <td align="right">6</td>
-<td align="left">needs</td>
+<td align="left">locus_of_causality</td>
+<td align="left">intrinsic_motivation</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="left">external_event</td>
 <td align="left">locus_of_causality</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="left">locus_of_causality</td>
-<td align="left">intrinsic_motivation</td>
-</tr>
-<tr class="even">
-<td align="right">8</td>
 <td align="left">external_event</td>
 <td align="left">needs</td>
 </tr>
-<tr class="odd">
-<td align="right">8</td>
-<td align="left">needs</td>
-<td align="left">locus_of_causality</td>
-</tr>
 <tr class="even">
-<td align="right">9</td>
+<td align="right">8</td>
 <td align="left">locus_of_causality</td>
 <td align="left">intrinsic_motivation</td>
 </tr>
 </tbody>
 </table>
-<p>This specification reveals redundancies in the original theory.
-Certain points were repeated, once phrased in a positive way, and once
-phrased in a negative way. When the statements are reduced to their
-implied causal connections, the redundancies become apparent. Now, we
-can simply remove the redundancies as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>This translation reveals some further ambiguities; for example, in
+proposition #4, we see “rewards” are related to intrinsic motivation.
+However, in the remainder of the text, rewards are mentioned as just one
+example of “external events”. We assumed that “rewards” is used as an
+example of the broader class of external events.</p>
+<p>Another ambiguity: we read that “If [an external event] were expected
+to thwart [basic needs], it [prompts] an external perceived locus of
+causality”. Since the theory otherwise does not explain how people might
+“expect” that external events will affect them, and this seems to be
+more of a question for cognitive than social psychology - we made a
+simplifying assumption: external events affect needs, and also perceived
+locus of causality.</p>
+<p>This specification also reveals redundancies in the original theory.
+Many propositions are repeated, once phrased in a positive way, and once
+phrased in a negative way. This can be confusing, especially if the two
+phrasings differ slightly; for example, in snippet #1, the positive
+phrasing refers to “healthy development and psychological well-being” as
+ultimate outcome of need satisfaction, and the negative phrasing refers
+to “experiences, development, and behaviors” as ultimate outcomes of
+need frustration. While it seems safe to assume that both sentences have
+the same meaning, there is ambiguity here. When the statements are
+reduced to their implied causal connections, the redundancies become
+readily apparent. We can simply remove the redundancies as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Drop statement numbers</span></span>
-<span><span class="va">SDT2</span> <span class="op">&lt;-</span> <span class="va">SDT2</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">SDT</span> <span class="op">&lt;-</span> <span class="va">SDT</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co"># Remove redundant statements</span></span>
-<span><span class="va">SDT2</span> <span class="op">&lt;-</span> <span class="va">SDT2</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">SDT2</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT2</span>, caption <span class="op">=</span> <span class="st">"Unique causal connections"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">SDT</span> <span class="op">&lt;-</span> <span class="va">SDT</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">SDT</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT</span>, caption <span class="op">=</span> <span class="st">"Unique causal connections"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Unique causal connections</caption>
 <thead><tr class="header">
@@ -377,7 +516,7 @@ can simply remove the redundancies as follows:</p>
 <td align="left">needs</td>
 </tr>
 <tr class="even">
-<td align="left">needs</td>
+<td align="left">external_event</td>
 <td align="left">locus_of_causality</td>
 </tr>
 <tr class="odd">
@@ -387,122 +526,311 @@ can simply remove the redundancies as follows:</p>
 </tbody>
 </table>
 <p>We can translate this table to a DAG:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">SDT</span> <span class="op">&lt;-</span> <span class="fu">dagitty</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html" class="external-link">dagitty</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"dag {"</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">SDT2</span><span class="op">$</span><span class="va">from</span>, <span class="st">" -&gt; "</span>, <span class="va">SDT2</span><span class="op">$</span><span class="va">to</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>,</span>
-<span>         <span class="st">"}"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">SDT</span><span class="op">$</span><span class="va">from</span>, <span class="st">" -&gt; "</span>, <span class="va">SDT</span><span class="op">$</span><span class="va">to</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>,</span>
+<span>  <span class="st">"}"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>We can plot the DAG as follows:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="co"># Specify plot layout</span></span>
+<span><span class="va">lo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/get_layout.html" class="external-link">get_layout</a></span><span class="op">(</span></span>
+<span><span class="st">"EE"</span>, <span class="st">""</span>,   <span class="st">"IN"</span>, <span class="st">"WB"</span>,</span>
+<span><span class="st">""</span>,   <span class="st">"LC"</span>, <span class="st">""</span>,   <span class="st">""</span>,</span>
+<span><span class="st">"NE"</span>, <span class="st">""</span>,   <span class="st">"IM"</span>, <span class="st">"HD"</span>,</span>
+<span>  rows <span class="op">=</span> <span class="fl">3</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># Rename nodes</span></span>
+<span><span class="va">renam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>EE <span class="op">=</span> <span class="st">"external_event"</span>, NE <span class="op">=</span> <span class="st">"needs"</span>, IN <span class="op">=</span> <span class="st">"integration"</span>, WB <span class="op">=</span> <span class="st">"wellbeing"</span>, </span>
+<span>           LC <span class="op">=</span> <span class="st">"locus_of_causality"</span>, HD <span class="op">=</span> <span class="st">"healthy_development"</span>, IM <span class="op">=</span> <span class="st">"intrinsic_motivation"</span><span class="op">)</span></span>
+<span><span class="va">lo</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">renam</span><span class="op">)</span>, <span class="va">lo</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">renam</span></span>
+<span><span class="co"># Prepare the graph</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/prepare_graph.html" class="external-link">prepare_graph</a></span><span class="op">(</span><span class="va">SDT</span>, layout <span class="op">=</span> <span class="va">lo</span>, angle <span class="op">=</span> <span class="fl">179</span>, text_size <span class="op">=</span> <span class="fl">3</span>, rect_width <span class="op">=</span> <span class="fl">1.5</span>, spacing_x <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Change node shape</span></span>
+<span><span class="va">p</span><span class="op">$</span><span class="va">nodes</span><span class="op">$</span><span class="va">shape</span> <span class="op">&lt;-</span> <span class="st">"rect"</span></span>
+<span><span class="co"># Change node labels</span></span>
+<span><span class="va">renam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>external_event <span class="op">=</span> <span class="st">"external\nevent"</span>, needs <span class="op">=</span> <span class="st">"needs"</span>, integration <span class="op">=</span> <span class="st">"integration"</span>, wellbeing <span class="op">=</span> <span class="st">"wellbeing"</span>, </span>
+<span>           locus_of_causality <span class="op">=</span> <span class="st">"locus of\ncausality"</span>, healthy_development <span class="op">=</span> <span class="st">"healthy\ndev."</span>, intrinsic_motivation <span class="op">=</span> <span class="st">"intrinsic\nmotivation"</span><span class="op">)</span></span>
+<span><span class="va">p</span><span class="op">$</span><span class="va">nodes</span><span class="op">$</span><span class="va">label</span> <span class="op">&lt;-</span> <span class="va">renam</span><span class="op">[</span><span class="va">p</span><span class="op">$</span><span class="va">nodes</span><span class="op">$</span><span class="va">name</span><span class="op">]</span></span>
+<span><span class="co"># Plot the graph</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="sdt.png" alt="Causal diagram implied by SDT" width="70%"><p class="caption">
 Causal diagram implied by SDT
 </p>
 </div>
-<p>Now, let’s look at the operationalizations of the constructs in the
-DAG.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">SDT_operationalizations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"../dev/sdt_op.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
-<span><span class="va">SDT_operationalizations</span><span class="op">$</span><span class="va">Operationalization</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"MIS"</span>, <span class="st">"Missing:"</span>, <span class="va">SDT_operationalizations</span><span class="op">$</span><span class="va">Operationalization</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">SDT_operationalizations</span><span class="op">$</span><span class="va">Operationalization</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"DER"</span>, <span class="st">"Derived from other source:"</span>, <span class="va">SDT_operationalizations</span><span class="op">$</span><span class="va">Operationalization</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">SDT_operationalizations</span>, caption <span class="op">=</span> <span class="st">"Operationalizations of constructs in SDT"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="step-3--define-and-operationalize-concepts">Step 3. Define and Operationalize Concepts<a class="anchor" aria-label="anchor" href="#step-3--define-and-operationalize-concepts"></a>
+</h2>
+<p>In this step, we were asked to add definitions for each concept
+referred to by the author of the theory. In principle, we were asked to
+refer to text snippets from the sources determined in Step 1. However,
+in case definitions were not provided by the author (which was the case
+for all constructs in this theory), we were allowed to derive them from
+the scientific literature. When operationalizations could not be derived
+from any relevant sources, they were coded as missing. The resulting
+definitions are stored inside the <code>theorytools</code> package and
+we can load them as follows:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">definitions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"sdt_definitions.csv"</span>,package<span class="op">=</span><span class="st">"theorytools"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">definitions</span></span></code></pre></div>
 <table class="table">
 <caption>Operationalizations of constructs in SDT</caption>
 <colgroup>
 <col width="0%">
-<col width="6%">
-<col width="15%">
-<col width="41%">
-<col width="35%">
+<col width="0%">
+<col width="7%">
+<col width="13%">
+<col width="7%">
+<col width="70%">
 </colgroup>
 <thead><tr class="header">
+<th align="left"></th>
 <th align="right">Nr.</th>
-<th align="left">concept</th>
+<th align="left">Concept</th>
+<th align="left">Synonym</th>
 <th align="left">Definition</th>
 <th align="left">Operationalization</th>
-<th align="left">Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
-<td align="left">Needs, nutriments</td>
-<td align="left">Needs for competence, autonomy, and relatedness.
-Nutriments appears to be a synonym for needs.</td>
-<td align="left">Missing: Not given in chapter, could not find</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
+<td align="left">2</td>
 <td align="right">2</td>
 <td align="left">Intrinsic motivation</td>
+<td align="left">processes</td>
 <td align="left">Intrinsic motivation</td>
 <td align="left">Derived from other source: Not given in chapter, but
 chapter references paper with definition: Mean number of seconds spent
-working on puzzle during eight-minute free choice period</td>
-<td align="left"><a href="https://doi.org/10.1037/h0030644" class="external-link uri">https://doi.org/10.1037/h0030644</a></td>
+working on puzzle during eight-minute free choice period. Reference: <a href="https://doi.org/10.1037/h0030644" class="external-link uri">https://doi.org/10.1037/h0030644</a>
+</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td align="left">3</td>
 <td align="right">3</td>
 <td align="left">integration</td>
+<td align="left">processes</td>
 <td align="left">integration</td>
 <td align="left">Derived from other source: Not given in chapter, But
 chapter references paper with definition: “ongoing reciprocal
 assimilation between schemas, such that there tends to be an internal
-consistency and equilibration among varied functions and
-structures”</td>
-<td align="left"><a href="https://doi.org/10.1111/j.1467-6494.1995.tb00501.x" class="external-link uri">https://doi.org/10.1111/j.1467-6494.1995.tb00501.x</a></td>
-</tr>
-<tr class="even">
-<td align="right">4</td>
-<td align="left">Healthy development</td>
-<td align="left">Healthy development</td>
-<td align="left">Missing: Not given in chapter, could not find</td>
-<td align="left"></td>
+consistency and equilibration among varied functions and structures”.
+Reference: <a href="https://doi.org/10.1111/j.1467-6494.1995.tb00501.x" class="external-link uri">https://doi.org/10.1111/j.1467-6494.1995.tb00501.x</a>
+</td>
 </tr>
 <tr class="odd">
+<td align="left">4</td>
+<td align="right">4</td>
+<td align="left">Healthy development</td>
+<td align="left"></td>
+<td align="left">Healthy development</td>
+<td align="left">Missing: Not given in chapter, could not find</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
 <td align="right">5</td>
 <td align="left">Psychological wellbeing</td>
+<td align="left"></td>
 <td align="left">Psychological wellbeing</td>
 <td align="left">Derived from other source: Not given in chapter,
 chapter cites paper with definition: “positive affect, vitality, and
-physical symptoms”</td>
-<td align="left"><a href="https://doi.org/10.1177/01461672962212007" class="external-link uri">https://doi.org/10.1177/01461672962212007</a></td>
+physical symptoms”. Reference: <a href="https://doi.org/10.1177/01461672962212007" class="external-link uri">https://doi.org/10.1177/01461672962212007</a>
+</td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td align="left">6</td>
 <td align="right">6</td>
 <td align="left">external event</td>
 <td align="left">reward, threat of punishment, positive feedback,
 competition, choice</td>
-<td align="left">Various external events, for example: positive feedback
-(Ryan, 1982) performance-contingent monetary rewards (Ryan et al., 1983)
-limits set on children (Koestner et al., 1984)</td>
-<td align="left">Ryan, 1982 <a href="https://doi.org/10.1037/0022-3514.43.3.450" class="external-link uri">https://doi.org/10.1037/0022-3514.43.3.450</a> Ryan et al.,
+<td align="left">Various external events</td>
+<td align="left">Positive feedback (Ryan, 1982), performance-contingent
+monetary rewards (Ryan et al., 1983), limits set on children (Koestner
+et al., 1984). References: Ryan, 1982 <a href="https://doi.org/10.1037/0022-3514.43.3.450" class="external-link uri">https://doi.org/10.1037/0022-3514.43.3.450</a> Ryan et al.,
 1983 <a href="https://doi.org/10.1037/0022-3514.45.4.736" class="external-link uri">https://doi.org/10.1037/0022-3514.45.4.736</a> Koestner et
 al., 1984 <a href="https://selfdeterminationtheory.org/SDT/documents/1984_KoestnerRyanBernHolt.pdf" class="external-link uri">https://selfdeterminationtheory.org/SDT/documents/1984_KoestnerRyanBernHolt.pdf</a>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td align="left">7</td>
 <td align="right">7</td>
 <td align="left">external perceived locus of causality</td>
+<td align="left"></td>
 <td align="left">external perceived locus of causality</td>
 <td align="left">Derived from other source: Not given in chapter. Most
 useful resource is Ryan &amp; Connell, 1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a> They use
 structured interviews, and the Multidimensional Measure of Children’s
-Perceptions of Control (Connell, 1985)</td>
-<td align="left">Ryan &amp; Connell, 1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a>
+Perceptions of Control (Connell, 1985). Reference: Ryan &amp; Connell,
+1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td align="left">8</td>
 <td align="right">8</td>
 <td align="left">internal perceived locus of causality</td>
+<td align="left"></td>
 <td align="left">internal perceived locus of causality</td>
 <td align="left">Derived from other source: Not given in chapter. Most
 useful resource is Ryan &amp; Connell, 1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a> They use
 structured interviews, and the Multidimensional Measure of Children’s
-Perceptions of Control (Connell, 1985)</td>
-<td align="left">Ryan &amp; Connell, 1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a>
+Perceptions of Control (Connell, 1985). Reference: Ryan &amp; Connell,
+1989 <a href="https://doi.org/10.1037/0022-3514.57.5.749" class="external-link uri">https://doi.org/10.1037/0022-3514.57.5.749</a>
 </td>
 </tr>
 </tbody>
-</table></main>
+</table>
+<p>As can be seen fom this overview - none of the definitions were given
+in the theory chapter. We were able to trace some definitions to
+empirical papers cited in the chapter, but these definitions appeared to
+fall short of proper “theoretical definitions”. For example,
+<strong>intrinsic motivation</strong> was defined as “number of seconds
+spent working on a puzzle”. This is a purely behaviorist definition of
+an internal state.</p>
+<p>In other words: While the theory is relatively explicit about causal
+links between constructs (with just a few ambiguities), it appears that
+important work remains to be done in terms of defining the constructs
+involved in the theory. While it is possible and likely that domain
+experts would be able to easily resolve some of these ambiguities and
+definitions, this is the best we could do. We will now create a FAIR
+theory archive, and invite others to further develop this theory.</p>
+</div>
+<div class="section level2">
+<h2 id="archiving-sdt-as-fair-theory">Archiving SDT as FAIR Theory<a class="anchor" aria-label="anchor" href="#archiving-sdt-as-fair-theory"></a>
+</h2>
+<p>We will automate most steps of FAIR theory creation; to go through
+the process manually, see <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html">this
+vignette</a>). Let’s create two files for our theory: a DAG to specify
+the causal relations, and a spreadsheet containing the definitions.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="va">SDT</span>, <span class="st">"sdt.txt"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">definitions</span>, <span class="st">"definitions.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Next, we can create the FAIR theory as follows:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"self_determination_theory"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/create_fair_theory.html">create_fair_theory</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="va">project_path</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Self-Determination Theory"</span>,</span>
+<span>  theory_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdt.txt"</span>, <span class="st">"definitions.csv"</span><span class="op">)</span>,</span>
+<span>  remote_repo <span class="op">=</span> <span class="st">"self_determination_theory"</span>,</span>
+<span>  add_license <span class="op">=</span> <span class="st">"cc0"</span><span class="op">)</span></span></code></pre></div>
+<p>We will manually complete the following steps:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Update README file</label></li>
+<li><label><input type="checkbox">Connect GitHub to
+Zenodo</label></li>
+<li><label><input type="checkbox">Push local updates to
+GitHub</label></li>
+<li><label><input type="checkbox">Publish a release on GitHub, which
+triggers a release on Zenodo</label></li>
+</ul>
+<div class="section level3">
+<h3 id="documenting-interoperability-with-a-readme-file">Documenting Interoperability with a README File<a class="anchor" aria-label="anchor" href="#documenting-interoperability-with-a-readme-file"></a>
+</h3>
+<p>We customized the README by adding these sections:</p>
+<blockquote>
+<p><strong>Description</strong> This is a FAIR theory (Van Lissa et al.,
+2025) specification of Deci and Ryan’s <em>Self-Determination
+Theory</em> (Deci &amp; Ryan, 2012). The definition of SDT used for the
+theory specification exercise was taken from this book chapter, but
+seems to be fully consistent with the description on <a href="https://selfdeterminationtheory.org/the-theory/" class="external-link uri">https://selfdeterminationtheory.org/the-theory/</a>.<br>
+The theory was first specified by Van Lissa, Li, and Weber as part of
+the “Proposition Based Theory Specification” (PBTS) project by Andreas
+Glöckner, Susann Fiedler, Jennifer Biehl, &amp; Jasper Siol (in
+preparation). In this “many-theorists project”, groups of scholars were
+each assigned a chapter of the “Handbook of Theories of Social
+Psychology” <span class="citation">(<strong>vanlangeHandbookTheoriesSocial2012?</strong>)</span>,
+and asked to specify it and document the process.<br>
+Van Lissa further adapted the theory specification, as documented in <a href="https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html">this
+vignette</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Interoperability</strong><br><code>sdt.txt</code> This file contains the main theory, specified as a
+DAG. It is interoperable for causal inference and data simulaiton in R,
+as explained in <a href="https://cjvanlissa.github.io/theorytools/articles/causal-inference.html">this
+vignette</a>.<br><code>definitions.csv</code> This file contains definitions of the
+constructs in <code>sdt.txt</code>, inasfar as we could find them. At
+present, this file is not very interoperable. We urgently invite domain
+experts to propose more concrete definitions of the constructs (as our
+attempt to identify the intended definitions likely fell short), or to
+propose new and better definitions.</p>
+</blockquote>
+<blockquote>
+<p><strong>Related works</strong></p>
+</blockquote>
+<blockquote>
+<p>Deci, E. L., &amp; Ryan, R. M. (2012). Self-Determination Theory. In
+P. A. M. V. Lange, A. W.Kruglanski, &amp; E. ToryHiggins (Eds.),
+Handbook of Theories of Social Psychology: Volume 1 (pp. 416–437). SAGE
+Publications Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link uri">https://doi.org/10.4135/9781446249215</a></p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="authorize-github-to-connect-with-zenodo">Authorize ‘GitHub’ to connect with ‘Zenodo’<a class="anchor" aria-label="anchor" href="#authorize-github-to-connect-with-zenodo"></a>
+</h3>
+<p>On the ‘Zenodo’ website navigate to the <a href="https://zenodo.org/account/settings/github/" class="external-link">‘GitHub’ repository
+listing page</a> and simply “flip the switch” next to your repository.
+If your repository <strong>does not show up</strong> in the list, you
+may need to press the ‘Syncronize now’ button. At the time of writing,
+we noticed that it can take quite a while (hours?) for ‘Zenodo’ to
+detect new ‘GitHub’ repositories. If so, take a break or come back to
+this last step tomorrow!</p>
+<div class="figure" style="text-align: center">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true" alt="Enable individual 'GitHub' repositories to be archived in 'Zenodo'" width="70%"><p class="caption">
+Enable individual ‘GitHub’ repositories to be archived in ‘Zenodo’
+</p>
+</div>
+<p>Flip the switch to set up a new webhook between ‘Zenodo’ and your
+repository.</p>
+</div>
+<div class="section level3">
+<h3 id="create-a-new-release">Create a New Release<a class="anchor" aria-label="anchor" href="#create-a-new-release"></a>
+</h3>
+<p>To archive a repository on ‘Zenodo’, you must create a new release.
+Since we changed the README file, first, add, commit, and push these
+changes to the remote repository using <code>git_update()</code>. Then,
+publish the release using <code>git_release_publish()</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">git_update</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
+<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="updating-zenodo-meta-data">Updating Zenodo Meta-Data<a class="anchor" aria-label="anchor" href="#updating-zenodo-meta-data"></a>
+</h3>
+<p>We can further document our ‘Zenodo’ archive as a FAIR theory by
+adding some extra information on ‘Zenodo’. Note that, if you created a
+<code>.zenodo.json</code> file in a previous step, some of these
+metadata will be populated automatically. On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
+you should find your newly uploaded repository.</p>
+<div class="figure" style="text-align: center">
+<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true" alt="Click the orange Edit button." width="70%"><p class="caption">
+Click the orange Edit button.
+</p>
+</div>
+<p>Click the orange <code>Edit</code> button, and verify/supply the
+following information:</p>
+<p><strong>Keywords</strong>: Following a paper by Deci &amp; Ryan
+(2008), we added the keywords <code>self-determination theory</code>,
+<code>autonomous motivation</code>, and
+<code>personality development</code>. <strong>Related works</strong>: We
+added the DOI of the book chapter by Deci &amp; Ryan (2012), with the
+relation <code>Is derived from</code>, as well as the DOIs of the papers
+referenced in <code>definitions.csv</code>, with relation type
+<code>References</code>. While citing these DOIs inside the file renders
+them Accessible and Interoperable for sentient readers, additionally
+documenting them in the DataCite metadata makes them Accessible and
+Interoperable for library systems and other scholarly analytics
+software.</p>
+<p>To save these changes, click ‘Publish’.</p>
+<p>View the final result, FAIR Self-Determination Theory, at <a href="https://doi.org/10.5281/zenodo.15648655" class="external-link uri">https://doi.org/10.5281/zenodo.15648655</a>.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
@@ -512,7 +840,7 @@ Perceptions of Control (Connell, 1985)</td>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

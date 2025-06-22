@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   augmented_dags: augmented_dags.html
@@ -8,7 +8,8 @@ articles:
   fair-theory: fair-theory.html
   formalizing_sdt: formalizing_sdt.html
   readme: readme.html
-last_built: 2025-03-09T11:37Z
+  updating_theory: updating_theory.html
+last_built: 2025-06-22T07:59Z
 urls:
   reference: https://cjvanlissa.github.io/theorytools/reference
   article: https://cjvanlissa.github.io/theorytools/articles

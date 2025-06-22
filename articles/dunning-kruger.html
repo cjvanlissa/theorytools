@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -57,8 +58,6 @@
 </nav><div class="container template-article">
 
 
-
-
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
@@ -71,60 +70,57 @@
 
     
     
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>In this example, we formalize the Dunning-Kruger (DK) effect
-according to <span class="citation">(Feld, Sauermann, and De Grip
-2017)</span>. The paper defines the DK effect as “low performers vastly
-overestimate their performance while high performers more accurately
-assess their performance”. It further contains a discussion of the DK
-effect and then restates it in terms of skill and overconfidence to show
-that measurement error can cause significant bias in the relationship
-between performance and overestimation. Statistical methods that can be
-used to correct for this bias are also discussed. Since this theory
-contains definitions of abstract concepts, relationships between the
-concepts, mathematical derivations as well as commonly used statistical
-models and experimental paradigms, it serves as a nice illustration on
-how to FAIRify all these different aspects.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Note that since we are trying to formalize this theory
-as close to the paper as possible, many descriptions are (almost)
-verbatim quotes from the paper.&lt;/p&gt;"><sup>1</sup></a></p>
-<div class="section level3">
-<h3 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+<div class="section level3" number="0.1">
+<h3 id="introduction">
+<span class="header-section-number">0.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
+<p>In this example, we implement the Dunning-Kruger (DK) effect, following the formalization by <span class="citation">Feld, Sauermann, and De Grip (2017)</span>.
+The DK effect is defined as follows: “low performers vastly overestimate their performance while high
+performers more accurately assess their performance”.
+The paper by Feld and colleagues restates the DK effect in terms of skill and overconfidence to show that measurement error can cause significant bias in the relationship between performance and overestimation.
+Statistical methods that can be used to correct for this bias are also discussed.
+Since this theory contains definitions of abstract concepts, relationships between the concepts, mathematical derivations as well as commonly used statistical models and experimental paradigms, it serves as a nice illustration on how to formalize and then FAIRify all these different aspects.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Note that since we are trying to formalize this theory as close to the paper as possible, many descriptions are (almost) verbatim quotes from the paper.&lt;/p&gt;"><sup>1</sup></a></p>
+<div class="section level4" number="0.1.1">
+<h4 id="learning-goals">
+<span class="header-section-number">0.1.1</span> Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
 <p>Once you have completed this tutorial, you will know how to:</p>
 <ul class="task-list">
-<li><label><input type="checkbox">Implement a theory consisting of
-multiple aspects that can not all be represented in the same
-format</label></li>
-<li><label><input type="checkbox">Learn how to FAIRify equations /
-proofs</label></li>
+<li><label><input type="checkbox">Implement a theory consisting of multiple aspects that can not all be represented in the same format</label></li>
+<li><label><input type="checkbox">Learn how to FAIRify equations / proofs</label></li>
 </ul>
 </div>
 </div>
-<div class="section level2">
-<h2 id="definitions">Definitions<a class="anchor" aria-label="anchor" href="#definitions"></a>
+<div class="section level2" number="1">
+<h2 id="implement-the-theory">
+<span class="header-section-number">1</span> 1. Implement the Theory<a class="anchor" aria-label="anchor" href="#implement-the-theory"></a>
 </h2>
-<p>Let’s start with collecting all definitions the theory makes use
-of:</p>
+<p>Begin by creating an empty folder to hold all files associated with the theory - this folder will become the theory archive.
+For example, create a folder:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">"dunning_kruger"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"dunning_kruger"</span><span class="op">)</span></span></code></pre></div>
+<p>We begin by implementing the theory; by far the greatest challenge of this tutorial.</p>
+<div class="section level3" number="1.1">
+<h3 id="definitions">
+<span class="header-section-number">1.1</span> Definitions<a class="anchor" aria-label="anchor" href="#definitions"></a>
+</h3>
+<p>Let’s start with collecting all definitions the theory makes use of:</p>
 <ul>
 <li>
 <strong>performance</strong> as a test score</li>
 <li>
-<strong>performance estimation</strong> as the difference between
-the expected and the actual test score</li>
+<strong>performance estimation</strong> as the difference between the expected and
+the actual test score</li>
 <li>
-<strong>skill</strong> as the ability to perform well on a given
-test</li>
+<strong>skill</strong> as the ability to perform well on a given test</li>
 <li>
-<strong>overconfidence</strong> as the difference between
-self-assessed and actual skill</li>
+<strong>overconfidence</strong> as the difference between self-assessed and actual skill</li>
 <li>
 <strong>measurement error</strong> as luck on a test</li>
 </ul>
-<p>Since these are verbal definitions, we can track them as a markdown
-file:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>Since these are verbal definitions, we can track them as a markdown file:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">definitions</span> <span class="op">&lt;-</span> </span>
 <span><span class="st">"</span></span>
 <span><span class="st">## Definitions</span></span>
@@ -139,23 +135,15 @@ file:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">definitions</span>, file<span class="op">=</span><span class="st">"definitions.md"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="relationships">Relationships<a class="anchor" aria-label="anchor" href="#relationships"></a>
-</h2>
-<p>We can visualise the originally proposed relationships between the
-concepts as a graph:</p>
-<p>As well as the reformulation of <span class="citation">Feld,
-Sauermann, and De Grip (2017)</span>:</p>
-<p>With
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>−</mo><annotation encoding="application/x-tex">-</annotation></semantics></math>
-signifying a negative association,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≃</mo><annotation encoding="application/x-tex">\simeq</annotation></semantics></math>
-signifying “measured by” and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>:=</mo><annotation encoding="application/x-tex">:=</annotation></semantics></math>
-signifying “defined as”.</p>
-<p>To FAIRify this graph, we can use a graph specification library such
-as igraph <span class="citation">(Csárdi et al. 2025)</span>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="section level3" number="1.2">
+<h3 id="relationships">
+<span class="header-section-number">1.2</span> Relationships<a class="anchor" aria-label="anchor" href="#relationships"></a>
+</h3>
+<p>We can visualise the originally proposed relationships between the concepts as a graph:</p>
+<p>As well as the reformulation of <span class="citation">Feld, Sauermann, and De Grip (2017)</span>:</p>
+<p>With <span class="math inline">\(-\)</span> signifying a negative association, <span class="math inline">\(\simeq\)</span> signifying “measured by” and <span class="math inline">\(:=\)</span> signifying “defined as”.</p>
+<p>To FAIRify this graph, we can use a graph specification library such as igraph <span class="citation">(Csárdi et al. 2025)</span>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_literal.html" class="external-link">graph_from_literal</a></span><span class="op">(</span></span>
@@ -171,8 +159,8 @@ as igraph <span class="citation">(Csárdi et al. 2025)</span>:</p>
 <span></span>
 <span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">$</span><span class="va">relationship</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span> <span class="st">"negative association"</span>,</span>
-<span> <span class="st">"≃"</span>,</span>
-<span> <span class="st">"≃"</span>,</span>
+<span> <span class="st">"~"</span>,</span>
+<span> <span class="st">"~"</span>,</span>
 <span> <span class="st">"negative association"</span>,</span>
 <span> <span class="st">":="</span>,</span>
 <span> <span class="st">":="</span>,</span>
@@ -180,241 +168,330 @@ as igraph <span class="citation">(Csárdi et al. 2025)</span>:</p>
 <span> <span class="st">"= (Theorem 1)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can visualize this graph with</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">g</span>,</span>
 <span>  vertex.size <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  vertex.color <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>  edge.label <span class="op">=</span> <span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">$</span><span class="va">relationship</span>,</span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="dunning-kruger_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="dk.svg"><!-- --></p>
 <p>Finally, we save the graph in a standardized format such as <a href="http://graphml.graphdrawing.org/" class="external-link">GraphML</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://r.igraph.org/reference/write_graph.html" class="external-link">write_graph</a></span><span class="op">(</span></span>
 <span>  <span class="va">g</span>,</span>
 <span>  <span class="st">"relationship_graph.txt"</span>,</span>
 <span>  format <span class="op">=</span> <span class="st">"graphml"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="mathematical-formulation">Mathematical formulation<a class="anchor" aria-label="anchor" href="#mathematical-formulation"></a>
-</h2>
-<div class="section level3">
-<h3 id="definitions-1">Definitions<a class="anchor" aria-label="anchor" href="#definitions-1"></a>
+<div class="section level3" number="1.3">
+<h3 id="mathematical-formulation">
+<span class="header-section-number">1.3</span> Mathematical formulation<a class="anchor" aria-label="anchor" href="#mathematical-formulation"></a>
 </h3>
+<div class="section level4" number="1.3.1">
+<h4 id="definitions-1">
+<span class="header-section-number">1.3.1</span> Definitions<a class="anchor" aria-label="anchor" href="#definitions-1"></a>
+</h4>
 <p>We define the random variables</p>
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>s</mi><mo>*</mo></msup><annotation encoding="application/x-tex">s^*</annotation></semantics></math>
-denoting skill</li>
+<span class="math inline">\(s^*\)</span> denoting skill</li>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
-denoting measurement error, with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>ε</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{E}[\varepsilon] = 0</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
-independent of all other random variables included in the model</li>
+<span class="math inline">\(\varepsilon\)</span> denoting measurement error, with <span class="math inline">\(\mathbb{E}[\varepsilon] = 0\)</span>, <span class="math inline">\(\varepsilon\)</span> independent of all other random variables included in the model</li>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>s</mi><mi>s</mi><mo>*</mo></msubsup><annotation encoding="application/x-tex">s^*_s</annotation></semantics></math>
-denoting self-assessed skill</li>
+<span class="math inline">\(s^*_s\)</span> denoting self-assessed skill</li>
 </ul>
-<p>And further performance
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
-as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>#</mi><mi>e</mi><mi>q</mi><mo>:</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>p</mi><mo>=</mo><msup><mi>s</mi><mo>*</mo></msup><mo>+</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-  (\#eq:p)
+<p>And further performance <span class="math inline">\(p\)</span> as
+<span class="math display" id="eq:p">\[\begin{equation}
+  \tag{1.1}
   p = s^* + \epsilon
-\end{equation}</annotation></semantics></math> overconfidence
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">oc^*</annotation></semantics></math>
-as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>#</mi><mi>e</mi><mi>q</mi><mo>:</mo><mi>o</mi><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup><mo>=</mo><msubsup><mi>s</mi><mi>s</mi><mo>*</mo></msubsup><mo>−</mo><msup><mi>s</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\begin{equation}
-  (\#eq:oc)
+\end{equation}\]</span>
+overconfidence <span class="math inline">\(oc^*\)</span> as
+<span class="math display" id="eq:oc">\[\begin{equation}
+  \tag{1.2}
   oc^* = s^*_s-s^*
-\end{equation}</annotation></semantics></math> expected performance
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>e</mi></msub><annotation encoding="application/x-tex">p_e</annotation></semantics></math>
-as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>#</mi><mi>e</mi><mi>q</mi><mo>:</mo><mi>e</mi><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>p</mi><mi>e</mi></msub><mo>=</mo><msup><mi>s</mi><mo>*</mo></msup><mo>+</mo><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\begin{equation}
-  (\#eq:ep)
+\end{equation}\]</span>
+expected performance <span class="math inline">\(p_e\)</span> as
+<span class="math display" id="eq:ep">\[\begin{equation}
+  \tag{1.3}
   p_e = s^* + oc^*
-\end{equation}</annotation></semantics></math> Overconfidence
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">oc^*</annotation></semantics></math>
-is measured by overestimation
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">oe</annotation></semantics></math>
-defined as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>#</mi><mi>e</mi><mi>q</mi><mo>:</mo><mi>o</mi><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>o</mi><mi>e</mi><mo>=</mo><msub><mi>p</mi><mi>e</mi></msub><mo>−</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-  (\#eq:oc)
+\end{equation}\]</span>
+Overconfidence <span class="math inline">\(oc^*\)</span> is measured by overestimation <span class="math inline">\(oe\)</span> defined as
+<span class="math display" id="eq:oc">\[\begin{equation}
+  \tag{1.2}
   oe = p_e - p
-\end{equation}</annotation></semantics></math></p>
+\end{equation}\]</span></p>
 </div>
-<div class="section level3">
-<h3 id="theorems">Theorems<a class="anchor" aria-label="anchor" href="#theorems"></a>
-</h3>
+<div class="section level4" number="1.3.2">
+<h4 id="theorems">
+<span class="header-section-number">1.3.2</span> Theorems<a class="anchor" aria-label="anchor" href="#theorems"></a>
+</h4>
 <p>Theorem 1:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><mi>e</mi><mo>=</mo><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup><mo>−</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
+<span class="math display">\[\begin{equation}
 oe = oc^* - \epsilon
-\end{equation}</annotation></semantics></math></p>
+\end{equation}\]</span></p>
 <p>Proof:</p>
-<p>From eq. @ref(eq:oc) and @ref(eq:ep) it follows that
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>e</mi></msub><mo>=</mo><msubsup><mi>s</mi><mi>s</mi><mo>*</mo></msubsup></mrow><annotation encoding="application/x-tex">p_e = s^*_s</annotation></semantics></math>
-and further from eq. @ref(eq:ep) and @ref(eq:p) we see
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mrow><mo stretchy="true" form="prefix">(</mo><mi>#</mi><mi>e</mi><mi>q</mi><mo>:</mo><mi>d</mi><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>o</mi><mi>e</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>p</mi><mi>e</mi></msub><mo>−</mo><mi>p</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>s</mi><mo>*</mo></msup><mo>+</mo><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>s</mi><mo>*</mo></msup><mo>+</mo><mi>ϵ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup><mo>−</mo><mi>ϵ</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
-  (\#eq:dd)
+<p>From eq. <a href="#eq:oc">(1.2)</a> and <a href="#eq:ep">(1.3)</a> it follows that <span class="math inline">\(p_e = s^*_s\)</span> and further from eq. <a href="#eq:ep">(1.3)</a> and <a href="#eq:p">(1.1)</a> we see
+<span class="math display" id="eq:dd">\[\begin{align}
+  \tag{1.4}
   oe &amp;= p_e - p \\
   &amp;= (s^* + oc^*) - (s^* + \epsilon) \\
   &amp;= oc^* - \epsilon
-\end{align}</annotation></semantics></math></p>
-<p>Since there is no accepted standard on how to represent mathematical
-knowledge as a digital object (see also this <a href="https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf" class="external-link">whitepaper</a>),
-there are many possible routes to FAIRify equations. Here we opt for a
-representation as latex code as a widely used and known way of
-typesetting equations. First, we create a file “equations.tex”
-containing the actual derivations:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>\section{Definitions}</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>Define random variables</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>\begin{itemize}</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a> \item $s^*$ denoting skill</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a> \item $\epsilon$ denoting measurement error, with $\Exp[\epsilon] = 0$, $\epsilon$ independent of all other random variables included in the model</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a> \item $s^*_s$ denoting self-assessed skill</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>\end{itemize}</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>\noindent Then we define performance $p$ as</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>\begin{equation} \label{p}</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  p \coloneq s^* + \epsilon</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>\end{equation}</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>and overconfidence $oc^*$ as</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>\begin{equation} \label{oc}</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  oc^* \coloneq s^*_s-s^*</span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>\end{equation}</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>and expected performance $p_e$ as</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>\begin{equation} \label{ep}</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  p_e \coloneq s^* + oc^*</span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>\end{equation}</span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>Overconfidence $oc^*$ is measured by overestimation $oe$ defined as</span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>  oe \coloneq p_e - p</span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>\end{equation}</span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>\section{Theorems}</span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>Theorem 1:</span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>  oe = oc^* - \epsilon</span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>\end{equation}</span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>Proof 1:</span>
-<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>\noindent From eq. \ref{oc} and \ref{ep} it follows that $p_e = s^*_s$ and further from eq. \ref{ep} and \ref{p} we see</span>
-<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>\begin{align} \label{dd}</span>
-<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>  oe &amp;= p_e - p \\</span>
-<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>  &amp;= (s^* + oc^*) - (s^* + \epsilon) \\</span>
-<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>  &amp;= oc^* - \epsilon</span>
-<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>\end{align}</span></code></pre></div>
-<p>Then, we create a file “render.tex” containing the necessary
-information (document format, packages, commands) that can be used to
-render the equations:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>\documentclass[a4paper,11pt]{article}</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>% load packages</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>\usepackage[utf8]{inputenc}</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>\usepackage{amsmath}</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>\usepackage{amssymb}</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>\usepackage{mathtools}</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>\usepackage{parskip}</span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>% Statistics</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>\newcommand{\Var}{\mathbb{V}}</span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>\newcommand{\Exp}{\mathbb{E}}</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>% commands</span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>\renewcommand*{\epsilon}{\varepsilon}</span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>% operators</span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>\DeclareMathOperator{\cov}{cov}</span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>\begin{document}</span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>\input{equations.tex}</span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>\end{document}</span></code></pre></div>
-<p>As you can see, we use <code>\input{equations.tex}</code> to insert
-the equations into the document. This way, the mathematical theory is
-version controlled separately from the LaTex code required to render it.
-This way, it is clear when changes are made to the theory (i.e.,
-<code>equations.tex</code> is edited), and when changes are made to the
-formatting of the theory (i.e., <code>render.tex</code> is edited).</p>
+\end{align}\]</span></p>
+<p>Since there is no accepted standard on how to represent mathematical knowledge as a digital object (see also this <a href="https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf" class="external-link">whitepaper</a>), there are many possible routes to FAIRify equations.
+Here we opt for a representation as latex code as a widely used and known way of typesetting equations.
+First, we create a file “equations.tex” containing the actual derivations:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>\section{Definitions}</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>Define random variables</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>\begin{itemize}</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a> \item $s^*$ denoting skill</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a> \item $\epsilon$ denoting measurement error, with $\Exp[\epsilon] = 0$, $\epsilon$ independent of all other random variables included in the model</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a> \item $s^*_s$ denoting self-assessed skill</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>\end{itemize}</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>\noindent Then we define performance $p$ as</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>\begin{equation} \label{p}</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  p \coloneq s^* + \epsilon</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>\end{equation}</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>and overconfidence $oc^*$ as</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>\begin{equation} \label{oc}</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  oc^* \coloneq s^*_s-s^*</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>\end{equation}</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>and expected performance $p_e$ as</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>\begin{equation} \label{ep}</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  p_e \coloneq s^* + oc^*</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>\end{equation}</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>Overconfidence $oc^*$ is measured by overestimation $oe$ defined as</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>  oe \coloneq p_e - p</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>\end{equation}</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>\section{Theorems}</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>Theorem 1:</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>  oe = oc^* - \epsilon</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>\end{equation}</span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>Proof 1:</span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>\noindent From eq. \ref{oc} and \ref{ep} it follows that $p_e = s^*_s$ and further from eq. \ref{ep} and \ref{p} we see</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>\begin{align} \label{dd}</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>  oe &amp;= p_e - p \\</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>  &amp;= (s^* + oc^*) - (s^* + \epsilon) \\</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>  &amp;= oc^* - \epsilon</span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>\end{align}</span></code></pre></div>
+<p>Then, we create a file “render.tex” containing the necessary information (document format, packages, commands) that can be used to render the equations:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>\documentclass[a4paper,11pt]{article}</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>% load packages</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>\usepackage[utf8]{inputenc}</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>\usepackage{amsmath}</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>\usepackage{amssymb}</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>\usepackage{mathtools}</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>\usepackage{parskip}</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>% Statistics</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>\newcommand{\Var}{\mathbb{V}}</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>\newcommand{\Exp}{\mathbb{E}}</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>% commands</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>\renewcommand*{\epsilon}{\varepsilon}</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>% operators</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>\DeclareMathOperator{\cov}{cov}</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>\begin{document}</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>\input{equations.tex}</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>\end{document}</span></code></pre></div>
+<p>As you can see, we use <code>\input{equations.tex}</code> to insert the equations into the document.
+This way, the mathematical theory is version controlled separately from the LaTex code required to render it.
+This way, it is clear when changes are made to the theory (i.e., <code>equations.tex</code> is edited),
+and when changes are made to the formatting of the theory (i.e., <code>render.tex</code> is edited).</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="statistical-models">Statistical Models<a class="anchor" aria-label="anchor" href="#statistical-models"></a>
-</h2>
-<p>Using a linear regression model, the Dunning-Kruger effect can be
-stated as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><msup><mi>c</mi><mo>*</mo></msup><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><msup><mi>s</mi><mo>*</mo></msup><mo>+</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
- oc^* = \alpha + \beta_1 s^* + u
-\end{equation}</annotation></semantics></math> with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta_1 &lt; 0</annotation></semantics></math>.
-Substituting the observable variables and rearranging according to eq.
-@ref(eq:p) and @ref(eq:dd):
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>o</mi><mi>e</mi><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mi>p</mi><mo>+</mo><mi>u</mi><mo>−</mo><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
-\end{equation}</annotation></semantics></math></p>
-<div class="section level3">
-<h3 id="correction">Correction<a class="anchor" aria-label="anchor" href="#correction"></a>
+<div class="section level3" number="1.4">
+<h3 id="statistical-models">
+<span class="header-section-number">1.4</span> Statistical Models<a class="anchor" aria-label="anchor" href="#statistical-models"></a>
 </h3>
-<p>There are different ways to correct for the bias introduced by
-measurement error:</p>
+<p>Using a linear regression model, the Dunning-Kruger effect can be stated as</p>
+<p><span class="math display">\[\begin{equation}
+oc^* = \alpha + \beta_1 s^* + u
+\end{equation}\]</span>
+with <span class="math inline">\(\beta_1 &lt; 0\)</span>.
+Substituting the observable variables and rearranging according to eq. <a href="#eq:p">(1.1)</a> and <a href="#eq:dd">(1.4)</a>:
+<span class="math display">\[\begin{equation}
+  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
+\end{equation}\]</span></p>
+<div class="section level4" number="1.4.1">
+<h4 id="correction">
+<span class="header-section-number">1.4.1</span> Correction<a class="anchor" aria-label="anchor" href="#correction"></a>
+</h4>
+<p>There are different ways to correct for the bias introduced by measurement error:</p>
 <ul>
-<li>Bias correction: use a bias correction formula that takes into
-account the correlation between performance and the error term</li>
-<li>IV approach: measure performance on a second test
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>2</mn></msub><annotation encoding="application/x-tex">p_2</annotation></semantics></math>)
-and compute
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">v</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>o</mi><mi>e</mi><mo>,</mo><msub><mi>p</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">v</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo>,</mo><msub><mi>p</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">\beta_1 = \frac{\mathrm{cov}(oe, p_2)}{\mathrm{cov}(p, p_2)}</annotation></semantics></math>.</li>
+<li>Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term</li>
+<li>IV approach: measure performance on a second test (<span class="math inline">\(p_2\)</span>) and compute <span class="math inline">\(\beta_1 = \frac{\mathrm{cov}(oe, p_2)}{\mathrm{cov}(p, p_2)}\)</span>.</li>
 </ul>
-<p>Let’s add this model again as latex code by adding a new file
-“linear_model.tex”:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>\subsection{Linear Model}</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>Using a linear regression model, the Dunning-Kruger effect can be stated as</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a> oc^* = \alpha + \beta_1 s^* + u</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>\end{equation}</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>with $\beta_1 &lt; 0$.</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>Substituting the observable variables and rearranging according to eq. \ref{p} and \ref{dd}:</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>\end{equation}</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>\subsubsection{Correction}</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>There are different ways to correct for the bias introduced by measurement error:</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>\begin{itemize}</span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a> \item Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term</span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a> \item IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\cov(oe, p_2)}{\cov(p, p_2)}$.</span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>\end{itemize}</span></code></pre></div>
+<p>Let’s add this model again as latex code by adding a new file “linear_model.tex”:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>\subsection{Linear Model}</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>Using a linear regression model, the Dunning-Kruger effect can be stated as</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a> oc^* = \alpha + \beta_1 s^* + u</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>\end{equation}</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>with $\beta_1 &lt; 0$.</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>Substituting the observable variables and rearranging according to eq. \ref{p} and \ref{dd}:</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>\end{equation}</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>\subsubsection{Correction}</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>There are different ways to correct for the bias introduced by measurement error:</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>\begin{itemize}</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a> \item Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a> \item IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\cov(oe, p_2)}{\cov(p, p_2)}$.</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>\end{itemize}</span></code></pre></div>
 <p>and adding to <code>render.tex</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>...</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>\section{Statistical Models}</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>\input{linear_model.tex}</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>...</span></code></pre></div>
-<p>If we now render <code>render.tex</code>, the resulting document
-looks like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>...</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>\section{Statistical Models}</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>\input{linear_model.tex}</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>...</span></code></pre></div>
+<p>If we now render <code>render.tex</code>, the resulting document looks like this:</p>
 <div class="float">
 <embed src="./render.pdf" style="width:90.0%"></embed><div class="figcaption">Rendered Document</div>
 </div>
 </div>
 </div>
-<div class="section level2 unnumbered">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<div class="section level3" number="1.5">
+<h3 id="overview">
+<span class="header-section-number">1.5</span> Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
+<p>You should now have a folder containing the following files:</p>
+<ul>
+<li><code>definitions.md</code></li>
+<li><code>relationship_graph.txt</code></li>
+<li><code>render.tex</code></li>
+<li><code>equations.tex</code></li>
+<li><code>linear_model.tex</code></li>
+<li>(Optionally:) <code>render.pdf</code>
+</li>
+</ul>
+</div>
+</div>
+<div class="section level2" number="2">
+<h2 id="document-the-theory">
+<span class="header-section-number">2</span> 2. Document the Theory<a class="anchor" aria-label="anchor" href="#document-the-theory"></a>
 </h2>
+<div class="section level3" number="2.1">
+<h3 id="documenting-reusability-with-a-license">
+<span class="header-section-number">2.1</span> Documenting Reusability with a LICENSE<a class="anchor" aria-label="anchor" href="#documenting-reusability-with-a-license"></a>
+</h3>
+<p>We will add a CC0 (Creative Commons Zero) license to the repository, to waive all copryright protection</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_license_file.html" class="external-link">add_license_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"."</span>, license <span class="op">=</span> <span class="st">"cc0"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3" number="2.2">
+<h3 id="documenting-interoperability-with-a-readme-file">
+<span class="header-section-number">2.2</span> Documenting Interoperability with a README File<a class="anchor" aria-label="anchor" href="#documenting-interoperability-with-a-readme-file"></a>
+</h3>
+<p>We will add a README file describes the repository’s contents and purpose, making it easier for others to understand the theory’s potential for interoperability and reuse.
+First, we include a draft README file using:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/add_readme_fair_theory.html">add_readme_fair_theory</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Dunning-Kruger Effect"</span>,</span>
+<span>                                    path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<p>We encourage users to edit the resulting <code>README.md</code> file, in particular, to add relevant information about X-interoperability.
+In this case, X-interoperability is limited:
+the definitions in <code>definitions.txt</code> are not yet well-defined (future work could be done here),
+the equations in <code>equations.tex</code> and <code>linear_model.tex</code> are interoperable through formal mathematical operations,
+and the <code>relationship_graph.txt</code> can be plotted using the <code>igraph</code> R-package.
+Importantly, we should add references to the original paper by Dunning and Kruger, and to the specification paper by Feld and colleagues:</p>
+<blockquote>
+<p>Feld, J., Sauermann, J., &amp; De Grip, Andreas. 2017. “Estimating the Relationship Between Skill and Overconfidence.” Journal of Behavioral and Experimental Economics 68: 18–24.</p>
+</blockquote>
+<blockquote>
+<p>Kruger, J., &amp; Dunning, D. (1999). Unskilled and unaware of it: how difficulties in recognizing one’s own incompetence lead to inflated self-assessments. Journal of personality and social psychology, 77(6), 1121.</p>
+</blockquote>
+<p>For guidance on writing a README file for theory, see <a href="https://cjvanlissa.github.io/theorytools/articles/readme.html">this vignette</a>.</p>
+</div>
+<div class="section level3" number="2.3">
+<h3 id="add-zenodo-metadata">
+<span class="header-section-number">2.3</span> Add Zenodo Metadata<a class="anchor" aria-label="anchor" href="#add-zenodo-metadata"></a>
+</h3>
+<p>Create a <code>.zenodo.json</code> file with metadata about the theory, to allow it to be indexed automatically when we archive it on Zenodo:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/add_zenodo_json.html">add_zenodo_json_theory</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Dunning-Kruger Effect"</span>,</span>
+<span>  keywords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dunning–Kruger"</span>, <span class="st">"Overconfidence"</span>, <span class="st">"Judgment error"</span>, <span class="st">"Measurement error"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2" number="3">
+<h2 id="version-control-the-theory">
+<span class="header-section-number">3</span> 3. Version Control the Theory<a class="anchor" aria-label="anchor" href="#version-control-the-theory"></a>
+</h2>
+<div class="section level3" number="3.1">
+<h3 id="using-git-for-version-control">
+<span class="header-section-number">3.1</span> Using Git for Version Control<a class="anchor" aria-label="anchor" href="#using-git-for-version-control"></a>
+</h3>
+<p>We use ‘Git’ to version control the project folder.
+If you have not yet set up Git and GitHub integration on your computer,
+reference the basic <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html">FAIR theory tutorial</a>.</p>
+<p>Initialize version control in your project repository by running:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_repo.html" class="external-link">git_init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3" number="3.2">
+<h3 id="connecting-to-a-remote-github-repository">
+<span class="header-section-number">3.2</span> Connecting to a Remote (‘GitHub’) Repository<a class="anchor" aria-label="anchor" href="#connecting-to-a-remote-github-repository"></a>
+</h3>
+<p>To make your FAIR theory accessible to collaborators and discoverable by the wider community, you must connect your local ‘Git’ repository to a remote repository on a platform like ‘GitHub’:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_remote_create</a></span><span class="op">(</span><span class="st">"dunning_kruger"</span>, private <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>This command will create a new public repository on ‘GitHub’ and link it to your local repository. The <code>private = FALSE</code> argument ensures the repository is public by default.</p>
+<p>Connect this repository to your FAIR theory folder as follows:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_connect.html" class="external-link">git_remote_connect</a></span><span class="op">(</span><span class="st">"."</span>, remote_repo <span class="op">=</span> <span class="st">"dunning_kruger"</span><span class="op">)</span></span></code></pre></div>
+<p>Finally, push the local files to the remote repository:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">git_update</a></span><span class="op">(</span><span class="st">"First commit of my theory"</span>, repo <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2" number="4">
+<h2 id="archive-the-theory-on-zenodo">
+<span class="header-section-number">4</span> 4. Archive the Theory on ‘Zenodo’<a class="anchor" aria-label="anchor" href="#archive-the-theory-on-zenodo"></a>
+</h2>
+<p>Head over to <a href="https://zenodo.org" class="external-link">zenodo.org</a>.
+Uuthorize Zenodo to connect to your ‘GitHub’ account in the ‘<a href="https://zenodo.org/account/settings/github/" class="external-link">Using ’GitHub’</a>’ section. Here, ‘Zenodo’ will redirect you to ‘GitHub’ to ask for permissions to use ‘<a href="https://developer.github.com/webhooks/" class="external-link">webhooks</a>’ on your repositories. You want to authorize ‘Zenodo’ here with the permissions it needs to form those links.</p>
+<p>Navigate to the <a href="https://zenodo.org/account/settings/github/" class="external-link">‘GitHub’ repository listing page</a> and “flip the switch” next to your repository.
+If your repository <strong>does not show up</strong> in the list, you may need to press the ‘Syncronize now’ button.
+At the time of writing, we noticed that it can take quite a while (hours?) for ‘Zenodo’ to detect new ‘GitHub’ repositories.
+If so, take a break or come back to this last step tomorrow!</p>
+</div>
+<div class="section level2" number="5">
+<h2 id="entering-meta-data">
+<span class="header-section-number">5</span> 5. Entering Meta-Data<a class="anchor" aria-label="anchor" href="#entering-meta-data"></a>
+</h2>
+<p>We can further document our ‘Zenodo’ archive as a FAIR theory by adding some extra information on ‘Zenodo’.
+On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where you should find your newly uploaded repository.</p>
+<p>Some metadata are pre-populated by the <code>.zenodo.json</code> file.
+We will additionally add several related works.</p>
+<p>For example:
++ <code>Is derived from</code> Journal article: 10.1016/j.socec.2017.03.002 (DOI)
++ <code>Is derived from</code> Journal article: 10.1037/0022-3514.77.6.1121 (DOI)</p>
+<p>Finally, click “Publish” to update these metadata.</p>
+<p>The end result of this tutorial should be a FAIR theory like this one: <a href="https://doi.org/10.5281/zenodo.15633859" class="external-link uri">https://doi.org/10.5281/zenodo.15633859</a></p>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-igraph" class="csl-entry">
-Csárdi, Gábor, Tamás Nepusz, Vincent Traag, Szabolcs Horvát, Fabio
-Zanini, Daniel Noom, Kirill Müller, David Schoch, and Maëlle Salmon.
-2025. <em><span class="nocase">igraph</span>: Network Analysis and
-Visualization in r</em>. <a href="https://doi.org/10.5281/zenodo.7682609" class="external-link">https://doi.org/10.5281/zenodo.7682609</a>.
+Csárdi, Gábor, Tamás Nepusz, Vincent Traag, Szabolcs Horvát, Fabio Zanini, Daniel Noom, Kirill Müller, David Schoch, and Maëlle Salmon. 2025. <em><span class="nocase">igraph</span>: Network Analysis and Visualization in r</em>. <a href="https://doi.org/10.5281/zenodo.7682609" class="external-link">https://doi.org/10.5281/zenodo.7682609</a>.
 </div>
 <div id="ref-feld2017estimating" class="csl-entry">
-Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. <span>“Estimating
-the Relationship Between Skill and Overconfidence.”</span> <em>Journal
-of Behavioral and Experimental Economics</em> 68: 18–24.
+Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. <span>“Estimating the Relationship Between Skill and Overconfidence.”</span> <em>Journal of Behavioral and Experimental Economics</em> 68: 18–24.
+</div>
 </div>
 </div>
 </div>
@@ -430,7 +507,7 @@ of Behavioral and Experimental Economics</em> 68: 18–24.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
