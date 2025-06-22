@@ -47,7 +47,9 @@ Suggests:
     withr,
     usethis,
     fs,
-    ggplot2
+    ggplot2,
+    igraph,
+    bookdown
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 

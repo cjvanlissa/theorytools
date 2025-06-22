@@ -36,9 +36,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -190,6 +192,59 @@ prevent redundancy:</p>
 <pre><code>## Citing this work
 
 See [this project's Zenodo page](https://doi.org/10.5281/zenodo.14552329) for the preferred citation.</code></pre>
+<div class="section level3">
+<h3 id="complete-readme">Complete Readme<a class="anchor" aria-label="anchor" href="#complete-readme"></a>
+</h3>
+<p>The complete resulting readme.MD is shown below (click to
+expand).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># FAIR theory: The Empirical Cycle</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="do">## Description</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>This is a FAIR implementation of De Groot and Spiekerman<span class="st">'s "empirical cycle"</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="st">theory, a theory of cumulative knowledge acquisition through scientific</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="st">research.</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="st">## Interoperability</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="st">The theory is implemented in the DOT language for describing graphs.</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="st">### Rendering the theory using graphviz</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="st">See the graphviz manual for more information: https://graphviz.org</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="st">## Contributing</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="st">If you want to contribute to this project, please get involved. You can do so in</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="st">three ways:</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="st">1. **To discuss the current implementation and discuss potential changes**, file</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="st">a ‘GitHub’ issue [here](https://github.com/cjvanlissa/empirical_cycle/issues)</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="st">2. **To directly propose changes**, send a pull request containing the proposed</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="st">changes [here](https://github.com/cjvanlissa/tidySEM/pulls)</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="st">3. **To create a derivative theory**, please fork the repository</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="st">[here](https://github.com/cjvanlissa/empirical_cycle/fork). Please cite this</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="st">repository (see below), and add this repository as a related work (below and by</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="st">adding the appropriate metadata on Zenodo).</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="st">By participating in this project, you agree to abide by the [Contributor</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="st">Covenant](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="st">## Related Works</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="st">See this project'</span>s Zenodo page <span class="cf">for</span> cross<span class="sc">-</span>references to related work. </span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a>This repository contains an implementation of the <span class="st">"empirical cycle"</span>, a model</span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>proposed by De Groot and <span class="fu">Spiekerman</span> (<span class="dv">1969</span>, p. <span class="dv">28</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="sc">&gt;</span> De Groot, A. D., <span class="sc">&amp;</span> Spiekerman, J. A. <span class="fu">A.</span> (<span class="dv">1969</span>). Methodology<span class="sc">:</span> Foundations of</span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="sc">&gt;</span> inference and research <span class="cf">in</span> the behavioral sciences. De Gruyter Mouton.</span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="sc">&gt;</span> https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.1515</span><span class="sc">/</span><span class="dv">9783112313121</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="do">## Citing this work</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>See [this project<span class="st">'s Zenodo page](https://doi.org/10.5281/zenodo.14552329) for</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a><span class="st">the preferred citation.</span></span></code></pre></div>
 <!-- For example, we referenced the original empirical cycle paper here: -->
 <!-- For example, our example is implemented in the DOT language for describing graphs, so we would could provide instructions here on how to plot a DOT graph. -->
 <!-- Example: -->
@@ -270,6 +325,7 @@ See [this project's Zenodo page](https://doi.org/10.5281/zenodo.14552329) for th
 guide for understanding, using, and extending your FAIR theory, ensuring
 its accessibility and reusability for diverse audiences.</p>
 </div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -281,7 +337,7 @@ its accessibility and reusability for diverse audiences.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

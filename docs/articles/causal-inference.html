@@ -36,9 +36,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -75,9 +77,9 @@
 <!-- We can find more examples of causal inference with DAGs in these tutorials: -->
 <!-- https://www.r-bloggers.com/2019/08/causal-inference-with-dags-in-r/ -->
 <!-- https://www.r-bloggers.com/2018/08/applications-of-dags-in-causal-inference/ -->
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>Directed acyclic graphs (DAGs) are a powerful tool for expressing and
 testing causal assumptions. They allow researchers to identify potential
 confounders or colliders, and guide decisions about which variables to
@@ -86,15 +88,15 @@ implemented as FAIR theories, or can be derived from FAIR theories. In
 this vignette, we’ll illustrate how to use DAGs for causal inference in
 <code>R</code>, inspired by the <em>Tripartite Model</em> of the impact
 of the family on children’s emotion regulation and adjustment <span class="citation">(Morris et al. 2007)</span>.</p>
-<div class="section level3">
-<h3 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
-</h3>
-<p>Once you have completed this tutorial, you will know how to:</p>
+<div class="section level4">
+<h4 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
+<p>By the end of this tutorial, you will be able to:</p>
 <ul class="task-list">
-<li><label><input type="checkbox">Implement a theory represented as a
-diagram as a FAIR theory</label></li>
-<li><label><input type="checkbox">Access that FAIR theory in the data
-analysis environment (i.e., theory reuse)</label></li>
+<li><label><input type="checkbox">Transform a theory represented as a
+diagram to a FAIR theory</label></li>
+<li><label><input type="checkbox">Access and reuse that FAIR theory
+within a data analysis environment</label></li>
 <li><label><input type="checkbox">Generate synthetic data from a FAIR
 theory</label></li>
 <li><label><input type="checkbox">Select control variables using a
@@ -104,9 +106,9 @@ on a FAIR theory</label></li>
 </ul>
 <!-- Below, we’ll translate this example into a simple DAG, simulate some data, and demonstrate how controlling for the collider can change the observed relationship between Immigrant Status and Self-Efficacy. -->
 </div>
-<div class="section level3">
-<h3 id="optional-video-lecture">Optional: Video Lecture<a class="anchor" aria-label="anchor" href="#optional-video-lecture"></a>
-</h3>
+<div class="section level4">
+<h4 id="optional-video-lecture">Optional: Video Lecture<a class="anchor" aria-label="anchor" href="#optional-video-lecture"></a>
+</h4>
 <p><a href="https://www.youtube.com/watch?v=wBB4sed9ku0" class="external-link">This video
 lecture</a> gives an introduction to causal inference, with a focus on
 DAGs comprising three variables, including the distinction between
@@ -114,9 +116,9 @@ confounders and colliders.</p>
 <!-- <iframe width="560" height="315" src="http://www.youtube.com/embed/wBB4sed9ku0?rel=0" frameborder="0" allowfullscreen></iframe> -->
 </div>
 </div>
-<div class="section level2">
-<h2 id="install-and-load-required-packages">Install and Load Required Packages<a class="anchor" aria-label="anchor" href="#install-and-load-required-packages"></a>
-</h2>
+<div class="section level3">
+<h3 id="install-and-load-required-packages">Install and Load Required Packages<a class="anchor" aria-label="anchor" href="#install-and-load-required-packages"></a>
+</h3>
 <p>We’ll use the following packages:</p>
 <ul>
 <li>
@@ -128,8 +130,8 @@ a sample dataset</li>
 <li>
 <code>tidySEM</code> for visualizing DAGs</li>
 </ul>
-<p>If you already have these packages installed, it is not necessary to
-run this code:</p>
+<p>Only run this code if you haven’t already installed these
+packages:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"theorytools"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dagitty"</span><span class="op">)</span></span>
@@ -145,11 +147,11 @@ run this code:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="the-tripartite-model">The Tripartite Model<a class="anchor" aria-label="anchor" href="#the-tripartite-model"></a>
-</h2>
+<div class="section level3">
+<h3 id="the-tripartite-model">The Tripartite Model<a class="anchor" aria-label="anchor" href="#the-tripartite-model"></a>
+</h3>
 <p>The tripartite model identifies three major familial influences on
-children’s ER:</p>
+children’s emotion regulation (ER):</p>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Observation (O)</strong>, e.g., modeling parents’
@@ -174,17 +176,18 @@ Development
 </p>
 </div>
 <p>This figure, loosely based on the visual representation of the theory
-in the paper by Morris and colleagues, is relatively formalized compared
-to the standard for developmental psychological theories. Before we can
-FAIRify this theory, however, we have to clarify a few things, and make
-some decisions.</p>
+in the paper by <span class="citation">Morris et al. (2007)</span> (see
+their Figure 1, p.362). is relatively well formalized compared to the
+standard for developmental psychological theories. Before we can FAIRify
+this theory, however, we have to clarify a few things, and make some
+decisions.</p>
 <p>First, notice that the model does not explicitly follow any graphing
-convention. It resembles a structural equation model - but notice that
-there is an unconnected bold double-headed arrow near CC (Child
-Characteristics). The written description of the text clarifies the
-meaning of the bold arrow: the authors argue that Child Characteristics
-<em>“moderate relations between family context [and] ER”</em> (Morris et
-al., 2007, p. 364).</p>
+convention. It resembles a path diagram, as used to visualize a
+structural equation model - but notice that there is an unconnected bold
+double-headed arrow near CC (Child Characteristics). The written
+description of the text clarifies the meaning of the bold arrow: the
+authors argue that Child Characteristics <em>“moderate relations between
+family context [and] ER”</em> (Morris et al., 2007, p. 364).</p>
 <p>Second, note that most arrows are bidirectional. This would be fine
 if we wished to specify the model as a structural equation model where
 associations can be undirected. However, since our goal is to perform
@@ -212,9 +215,9 @@ there are direct effects of the family context on children’s adjustment
 EC). We can thus either include all three direct effects, or omit them
 and assume full mediation. Since the latter option results in a much
 simpler DAG, we opt for full mediation.</p>
-<div class="section level3">
-<h3 id="implementing-the-tripartite-model-as-a-dag">Implementing the Tripartite Model as a DAG<a class="anchor" aria-label="anchor" href="#implementing-the-tripartite-model-as-a-dag"></a>
-</h3>
+<div class="section level4">
+<h4 id="implementing-the-tripartite-model-as-a-dag">Implementing the Tripartite Model as a DAG<a class="anchor" aria-label="anchor" href="#implementing-the-tripartite-model-as-a-dag"></a>
+</h4>
 <p>We can implement the model as a DAG using the <code>dagitty</code>
 package. We start with an “ontology”, or simply, by stating which
 constructs exist in our DAG:</p>
@@ -248,10 +251,14 @@ have to explicitly include interaction effects. We can annotate the
 graph in such a way that it is clear which variables are involved in
 interactions with O, PP, and EC, like this:</p>
 <pre><code><span><span class="va">CC</span> <span class="op">-&gt;</span> <span class="va">ER</span> <span class="op">[</span>form<span class="op">=</span><span class="st">"CC:O+CC:PP+CC:EC"</span><span class="op">]</span>;</span></code></pre>
-<p>Finally, we have to make a decision about the interrelations between
-the predictors of emotion regulation. We could omit them, or delve
-further into the literature to direct them. For now, I made the
-following assumptions:</p>
+<p>Note that we use R’s formula syntax, which you may already know from
+linear regression models. Here, we specified three interaction terms,
+which are specified using the interaction operator <code>:</code> and
+which are connected by the <code>+</code> operator, which means that the
+interaction effects form a weighted sum. Finally, we have to make a
+decision about the interrelations between the predictors of emotion
+regulation. We could omit them, or delve further into the literature to
+direct them. For now, I made the following assumptions:</p>
 <ul>
 <li>The Emotional Climate and specific Parenting Practices affect
 children’s Observation (=modeling) of parents’ behavior</li>
@@ -259,8 +266,11 @@ children’s Observation (=modeling) of parents’ behavior</li>
 </ul>
 <pre><code>PP -&gt; O
 EC -&gt; O
-PP -&gt; EC}')</code></pre>
-<p>Now, we have a complete DAG!</p>
+PP -&gt; EC
+}')</code></pre>
+<p>Note that the final line closes our DAG specification, which is
+stored in a variable called <code>tripartite</code>. Now, we have a
+complete DAG!</p>
 <div class="webex-check webex-box">
 <span>
 <p style="margin-top:1em; text-align:center">
@@ -271,24 +281,24 @@ PP -&gt; EC}')</code></pre>
 <p>A DAG can have arrows that run left to right, arrows that run right
 to left, and bidirectional arrows.
 <select class="webex-select"><option value="blank"></option>
-<option value="">TRUE</option>
+<option value="NA">TRUE</option>
 <option value="answer">FALSE</option></select></p>
 <p>An interaction effect of X1 and X2 on Y is represented in a DAG by
 drawing a directed arrow from X1 to Y, and from X2 to Y.
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">TRUE</option>
-<option value="">FALSE</option></select></p>
+<option value="NA">FALSE</option></select></p>
 Information about functional form, like
 <code>[form="CC:O+CC:PP+CC:EC"]</code>, is part of the DAG.
 <select class="webex-select"><option value="blank"></option>
-<option value="">TRUE</option>
+<option value="NA">TRUE</option>
 <option value="answer">FALSE</option></select><p></p></span>
 </div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="from-dag-to-fair-theory">From DAG to FAIR Theory<a class="anchor" aria-label="anchor" href="#from-dag-to-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="from-dag-to-fair-theory">From DAG to FAIR Theory<a class="anchor" aria-label="anchor" href="#from-dag-to-fair-theory"></a>
+</h3>
 <p>A DAG is not yet a FAIR theory. We can FAIRify the DAG we specified
 above by following the steps outlined in the <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html">Making
 a Theory FAIR vignette</a>. We briefly go over the steps here. First,
@@ -299,8 +309,8 @@ let’s save the DAG to a text file:</p>
 integration must be set up</a> for the next step to work. You can check
 if everything is set up correctly by running:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Next, we can create a FAIR theory repository:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/create_fair_theory.html">create_fair_theory</a></span><span class="op">(</span></span>
@@ -313,14 +323,14 @@ if everything is set up correctly by running:</p>
 Zenodo, and <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#select-the-repository-to-archive">switch
 on archiving for this GitHub repository</a>. Once this is done, run:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"tripartite_model"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"tripartite_model"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, you can <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#entering-meta-data">edit
 the metadata</a> for the archived version on Zenodo.</p>
 <p>The following DOI shows my version of the FAIR Tripartite Model: <a href="https://doi.org/10.5281/zenodo.14921521" class="external-link uri">https://doi.org/10.5281/zenodo.14921521</a></p>
 </div>
-<div class="section level2">
-<h2 id="accessing-an-existing-fair-theory">Accessing an Existing FAIR Theory<a class="anchor" aria-label="anchor" href="#accessing-an-existing-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="accessing-an-existing-fair-theory">Accessing an Existing FAIR Theory<a class="anchor" aria-label="anchor" href="#accessing-an-existing-fair-theory"></a>
+</h3>
 <p>There are several ways in which we can access an existing FAIR
 theory. If our goal is simply to use it in our analysis workflow (as is
 the case in this tutorial), then we can access the static archived
@@ -347,9 +357,9 @@ branches, and continues to version control changes you make.</p>
 <p>For this tutorial, please download my version of the Tripartite Model
 using <code>download_zenodo()</code>.</p>
 </div>
-<div class="section level2">
-<h2 id="x-interoperability-in-r">X-Interoperability in R<a class="anchor" aria-label="anchor" href="#x-interoperability-in-r"></a>
-</h2>
+<div class="section level3">
+<h3 id="x-interoperability-in-r">X-Interoperability in R<a class="anchor" aria-label="anchor" href="#x-interoperability-in-r"></a>
+</h3>
 <p>Interoperability pertains to the ability to use a theory in
 scientific workflows. X-interoperability refers to the ability to use a
 theory for <em>specific operations</em> in scientific workflows. When we
@@ -395,54 +405,53 @@ of a FAIR theory?
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">It
 can be reused for a specific operation.</option>
-<option value="NA">It
-can be reused for any operation.</option>
-<option value="NA">It can be
-reused by any person.</option>
-<option value="NA">It is licenced to be
+<option value="">It can
+be reused for any operation.</option>
+<option value="">It can be reused
+by any person.</option>
+<option value="">It is licenced to be
 reused.</option></select></p>
 If you are contributing to theory development, which platform provides
 infrastructure to coordinate collaborate with known others and
 strangers?
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">GitHub</option>
-<option value="NA">Zenodo</option>
-<option value="NA">RStudio</option></select><p></p></span>
+<option value="">Zenodo</option>
+<option value="">RStudio</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="simulating-data-from-the-fair-theory">Simulating Data from the FAIR Theory<a class="anchor" aria-label="anchor" href="#simulating-data-from-the-fair-theory"></a>
-</h2>
+<div class="section level3">
+<h3 id="simulating-data-from-the-fair-theory">Simulating Data from the FAIR Theory<a class="anchor" aria-label="anchor" href="#simulating-data-from-the-fair-theory"></a>
+</h3>
 <p>Simulation studies allow us to explore the implications of model
 assumptions, to plan our analyses before data collection, to conduct
 power analysis and plan our sample size, and to preregister a fully
 reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert, Van Lissa, and
 Brandmaier 2021; Van Lissa 2022)</span>.</p>
-<p>Below is a simplistic code snippet to generate synthetic data using
-the <code><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">dagitty::simulateSEM()</a></code> function. This function
-interprets the DAG as a structural equation model, samples random values
-for the path coefficients (unless specific values are provided), and
-assumes normal residual variances. Note that many other functions for
-simulating data exist, and some may be better suited to particular use
-cases.</p>
+<p>Below is a simple code snippet to generate synthetic data using the
+<code><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">dagitty::simulateSEM()</a></code> function. This function interprets
+the DAG as a structural equation model, samples random values for the
+path coefficients (unless specific values are provided), and assumes
+normal residual variances. Note that many other functions for simulating
+data exist, and some may be better suited to particular use cases.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">simulateSEM</a></span><span class="op">(</span><span class="va">tripartite</span>, N <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span>
+<span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">tripartite</span>, n <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_sim</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             A         CC           EC         ER          O          PC</span></span>
-<span><span class="co">#&gt; 1  0.04103747 -0.6521996  0.441980426  1.3464706 -1.1814515  0.83889824</span></span>
-<span><span class="co">#&gt; 2  1.88702074 -0.1975775 -0.256197190  1.0674489  0.3406396 -0.02163595</span></span>
-<span><span class="co">#&gt; 3  0.40705740 -1.3591083  0.319985214  1.1334489  1.8517664 -1.06364141</span></span>
-<span><span class="co">#&gt; 4 -0.51613591  0.7973387 -0.337020725 -1.1480291 -1.5748778  0.37919677</span></span>
-<span><span class="co">#&gt; 5  1.22537069 -1.5630894 -1.946047994  0.5514646 -0.6099942  0.01637417</span></span>
-<span><span class="co">#&gt; 6 -1.23368280 -0.9879830  0.009866581  0.8895392  0.8006259 -1.26121894</span></span>
-<span><span class="co">#&gt;           PP</span></span>
-<span><span class="co">#&gt; 1  0.1457759</span></span>
-<span><span class="co">#&gt; 2 -0.6250181</span></span>
-<span><span class="co">#&gt; 3 -0.4471091</span></span>
-<span><span class="co">#&gt; 4  0.4668580</span></span>
-<span><span class="co">#&gt; 5  0.1474225</span></span>
-<span><span class="co">#&gt; 6 -1.1976349</span></span></code></pre></div>
+<span><span class="co">#&gt;            A         CC          EC          ER          O         PC</span></span>
+<span><span class="co">#&gt; 1  1.4283750  0.1952592  0.92442982 -0.02533034 -0.3079385 -0.3320551</span></span>
+<span><span class="co">#&gt; 2  0.6110565  0.5038031 -0.43340243  0.11994203 -0.1300071 -0.4105931</span></span>
+<span><span class="co">#&gt; 3  0.9664801 -0.2880780  0.16515985  1.19959014  0.4153041 -0.4792975</span></span>
+<span><span class="co">#&gt; 4  0.4108811  1.0183695  0.03334491 -1.31108579  0.7340244 -0.9784317</span></span>
+<span><span class="co">#&gt; 5 -0.5930765 -0.9278015  0.68502195 -0.40608709  0.4953758 -0.2662130</span></span>
+<span><span class="co">#&gt; 6  2.7303903  0.6736708 -1.96050511  1.30038387 -1.3353841 -1.0096257</span></span>
+<span><span class="co">#&gt;            PP</span></span>
+<span><span class="co">#&gt; 1 -0.09642845</span></span>
+<span><span class="co">#&gt; 2 -0.15211457</span></span>
+<span><span class="co">#&gt; 3 -0.10912407</span></span>
+<span><span class="co">#&gt; 4  1.12574549</span></span>
+<span><span class="co">#&gt; 5 -1.51551309</span></span>
+<span><span class="co">#&gt; 6 -1.47788571</span></span></code></pre></div>
 <p>This synthetic dataset is consistent with the structure encoded in
 our Tripartite Model, though the parameter values are arbitrary. In real
 research, you might use prior studies or expert knowledge to set more
@@ -479,9 +488,9 @@ the paths in our DAG:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">51</span><span class="op">)</span></span>
 <span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">simulateSEM</a></span><span class="op">(</span><span class="va">tripartite_coef</span>, N <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="selecting-control-variables">Selecting Control Variables<a class="anchor" aria-label="anchor" href="#selecting-control-variables"></a>
-</h2>
+<div class="section level3">
+<h3 id="selecting-control-variables">Selecting Control Variables<a class="anchor" aria-label="anchor" href="#selecting-control-variables"></a>
+</h3>
 <p>One advantage of a DAG is the ability to identify <strong>which
 variables should be controlled for</strong> (e.g., to avoid confounding)
 and which variables should <strong>not</strong> be controlled for (e.g.,
@@ -512,7 +521,7 @@ Practices.</p>
 is fine to control for both Child Characteristics and Parent
 Characteristics.
 <select class="webex-select"><option value="blank"></option>
-<option value="">TRUE</option>
+<option value="NA">TRUE</option>
 <option value="answer">FALSE</option></select></p>
 What is the smallest possible simple adjustment set for the effect of
 Child Characteristics on Adjustment?
@@ -524,9 +533,9 @@ PP</option>
 <option value="answer">PC</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="basic-causal-inference">Basic Causal Inference<a class="anchor" aria-label="anchor" href="#basic-causal-inference"></a>
-</h2>
+<div class="section level3">
+<h3 id="basic-causal-inference">Basic Causal Inference<a class="anchor" aria-label="anchor" href="#basic-causal-inference"></a>
+</h3>
 <p>Once we know which variables to control for, we can use standard
 regression to estimate the causal effect. Using regression assumes that
 all causal effects are linear and additive, with normally distributed
@@ -549,38 +558,40 @@ variables, as you can just use the model formula
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span><span class="co">#&gt; -2.8773 -0.6705 -0.0366  0.7262  3.2154 </span></span>
+<span><span class="co">#&gt; -2.7096 -0.6396  0.0236  0.5654  3.8339 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; (Intercept) -0.02616    0.04608  -0.568    0.571</span></span>
-<span><span class="co">#&gt; O            0.06788    0.04652   1.459    0.145</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)   </span></span>
+<span><span class="co">#&gt; (Intercept)  0.01203    0.04310   0.279  0.78028   </span></span>
+<span><span class="co">#&gt; O            0.12287    0.04400   2.792  0.00544 **</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 1.023 on 495 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.004283,   Adjusted R-squared:  0.002271 </span></span>
-<span><span class="co">#&gt; F-statistic: 2.129 on 1 and 495 DF,  p-value: 0.1452</span></span>
+<span><span class="co">#&gt; Residual standard error: 0.9577 on 495 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.01551,    Adjusted R-squared:  0.01352 </span></span>
+<span><span class="co">#&gt; F-statistic: 7.797 on 1 and 495 DF,  p-value: 0.005436</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_causal</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; lm(formula = ER ~ ., data = df_controls)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
-<span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span><span class="co">#&gt; -2.5732 -0.5483  0.0839  0.6073  3.4954 </span></span>
+<span><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></span>
+<span><span class="co">#&gt; -2.28457 -0.57563 -0.02952  0.52891  2.90854 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -0.03514    0.04053  -0.867  0.38633    </span></span>
-<span><span class="co">#&gt; O            0.13537    0.04140   3.270  0.00115 ** </span></span>
-<span><span class="co">#&gt; CC           0.46224    0.04085  11.315  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; EC           0.19545    0.03996   4.891 1.36e-06 ***</span></span>
-<span><span class="co">#&gt; PP          -0.04527    0.04082  -1.109  0.26793    </span></span>
+<span><span class="co">#&gt; (Intercept)  0.02641    0.03758   0.703    0.483    </span></span>
+<span><span class="co">#&gt; O            0.18607    0.03881   4.794 2.17e-06 ***</span></span>
+<span><span class="co">#&gt; CC           0.42455    0.03641  11.659  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; EC           0.15208    0.03650   4.166 3.66e-05 ***</span></span>
+<span><span class="co">#&gt; PP           0.02262    0.03756   0.602    0.547    </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 0.8965 on 492 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.2397, Adjusted R-squared:  0.2335 </span></span>
-<span><span class="co">#&gt; F-statistic: 38.78 on 4 and 492 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<span><span class="co">#&gt; Residual standard error: 0.8324 on 492 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.2607, Adjusted R-squared:  0.2547 </span></span>
+<span><span class="co">#&gt; F-statistic: 43.38 on 4 and 492 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
 <div class="webex-check webex-box">
 <span>
 <p style="margin-top:1em; text-align:center">
@@ -594,17 +605,17 @@ variables, as you can just use the model formula
 Regulation.
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">TRUE</option>
-<option value="">FALSE</option></select></p>
+<option value="NA">FALSE</option></select></p>
 If the DAG is correct, then <code>model_bivariate</code> gives us an
 unbiased estimate of the effect of Observation on Emotion Regulation.
 <select class="webex-select"><option value="blank"></option>
-<option value="">TRUE</option>
+<option value="NA">TRUE</option>
 <option value="answer">FALSE</option></select><p></p></span>
 </div>
 </div>
-<div class="section level2">
-<h2 id="using-real-data">Using Real Data<a class="anchor" aria-label="anchor" href="#using-real-data"></a>
-</h2>
+<div class="section level3">
+<h3 id="using-real-data">Using Real Data<a class="anchor" aria-label="anchor" href="#using-real-data"></a>
+</h3>
 <p>When working with real data, causal inference quickly becomes more
 complicated. Therefore, we provide a “real data” example here, to
 practice the relevant skills. The <code>theorytools</code> package
@@ -629,13 +640,14 @@ the data:</p>
 <span><span class="co">#&gt; 4                1.2      3</span></span>
 <span><span class="co">#&gt; 5                1.2      4</span></span>
 <span><span class="co">#&gt; 6                2.6      1</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="mapping-measured-variables-onto-theoretical-constructs">Mapping Measured Variables onto Theoretical Constructs<a class="anchor" aria-label="anchor" href="#mapping-measured-variables-onto-theoretical-constructs"></a>
-</h3>
-<p>Here, we are using real data to operationalize the theoretical
-constructs in our DAG. If we inspect the documentation of the data, we
-can conclude that the most likely mapping of constructs to variables
-is:</p>
+<div class="section level4">
+<h4 id="mapping-theoretical-constructs-onto-measured-variables">Mapping Theoretical Constructs onto Measured Variables<a class="anchor" aria-label="anchor" href="#mapping-theoretical-constructs-onto-measured-variables"></a>
+</h4>
+<p>Using real data, we need to find operationalizations of the
+theoretical constructs in our DAG, that is, we need to map the
+theoretical constructs onto measured variables. If we inspect the
+documentation of the data, we can conclude that the most likely mapping
+of constructs to variables is:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">operationalizations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>PP <span class="op">=</span> <span class="st">"warmth"</span>, EC <span class="op">=</span> <span class="st">"relationship_quality"</span>, CC <span class="op">=</span> <span class="st">"temperament_negreact"</span>, ER <span class="op">=</span> <span class="st">"emotion_regulation"</span>, A <span class="op">=</span> <span class="st">"social_functioning"</span>, PC <span class="op">=</span> <span class="st">"coping"</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s rename the variables, so the data and the DAG are consistent.
@@ -645,7 +657,7 @@ practices in handling missing data; here, we use single imputation for
 pragmatic reasons.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Impute missing data</span></span>
-<span><span class="va">df_real</span> <span class="op">&lt;-</span> <span class="fu">VIM</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/VIM/man/kNN.html" class="external-link">kNN</a></span><span class="op">(</span><span class="va">lsac</span>, numFun <span class="op">=</span> <span class="va">median</span><span class="op">)</span></span>
+<span><span class="va">df_real</span> <span class="op">&lt;-</span> <span class="fu">VIM</span><span class="fu">::</span><span class="fu">kNN</span><span class="op">(</span><span class="va">lsac</span>, numFun <span class="op">=</span> <span class="va">median</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_real</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">operationalizations</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">operationalizations</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_real</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <p>Note that one variable is missing: Observation (O). This is
 unfortunate, as for the previous example we used O as our exposure
@@ -687,17 +699,17 @@ following code block:</p>
 <span><span class="va">ci_tests</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/localTests.html" class="external-link">localTests</a></span><span class="op">(</span><span class="va">tripartite</span>, <span class="va">df_sim</span>, type <span class="op">=</span> <span class="st">"cis.loess"</span>, R <span class="op">=</span> <span class="fl">1000</span>, tests <span class="op">=</span> <span class="va">cis</span>, conf.level <span class="op">=</span> <span class="va">bonferroni</span><span class="op">)</span></span>
 <span><span class="co"># Print result, with added significance asterisks</span></span>
 <span><span class="fu"><a href="../reference/add_significance.html">add_significance</a></span><span class="op">(</span><span class="va">ci_tests</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                               estimate  std.error       0.25%      99.75%</span></span>
-<span><span class="co">#&gt; A _||_ CC | ER             -0.02488395 0.04541527 -0.14715226 0.108502878</span></span>
-<span><span class="co">#&gt; A _||_ EC | ER             -0.08206144 0.04910397 -0.20560400 0.055630567</span></span>
-<span><span class="co">#&gt; A _||_ O | ER               0.01604344 0.04103371 -0.09277371 0.135921735</span></span>
-<span><span class="co">#&gt; A _||_ PC | CC, EC, O, PP  -0.06710313 0.04162413 -0.18500210 0.033920284</span></span>
-<span><span class="co">#&gt; A _||_ PC | ER             -0.06037961 0.04378464 -0.17342936 0.056272447</span></span>
-<span><span class="co">#&gt; A _||_ PP | ER             -0.01504872 0.04463377 -0.13707558 0.109638952</span></span>
-<span><span class="co">#&gt; CC _||_ EC | PC            -0.06701484 0.04548868 -0.18696604 0.058277531</span></span>
-<span><span class="co">#&gt; CC _||_ O | PC             -0.04608873 0.04135799 -0.15492342 0.067892851</span></span>
-<span><span class="co">#&gt; CC _||_ PP | PC             0.03402876 0.04614528 -0.09232252 0.161732327</span></span>
-<span><span class="co">#&gt; ER _||_ PC | CC, EC, O, PP -0.11134996 0.04751354 -0.23923411 0.009837374</span></span>
+<span><span class="co">#&gt;                                estimate  std.error      0.25%      99.75%</span></span>
+<span><span class="co">#&gt; A _||_ CC | ER             -0.013574751 0.04521815 -0.1249765 0.103419766</span></span>
+<span><span class="co">#&gt; A _||_ EC | ER             -0.067963372 0.04899751 -0.2026027 0.059623609</span></span>
+<span><span class="co">#&gt; A _||_ O | ER              -0.032075703 0.03925539 -0.1460065 0.082468770</span></span>
+<span><span class="co">#&gt; A _||_ PC | CC, EC, O, PP  -0.108268605 0.04378309 -0.2343738 0.009319617</span></span>
+<span><span class="co">#&gt; A _||_ PC | ER             -0.074632477 0.04341100 -0.1832199 0.042081582</span></span>
+<span><span class="co">#&gt; A _||_ PP | ER             -0.057487551 0.04041972 -0.1782834 0.059505723</span></span>
+<span><span class="co">#&gt; CC _||_ EC | PC             0.004924626 0.04618816 -0.1218149 0.132872164</span></span>
+<span><span class="co">#&gt; CC _||_ O | PC             -0.079341937 0.04305753 -0.2037448 0.052084854</span></span>
+<span><span class="co">#&gt; CC _||_ PP | PC            -0.004823582 0.04646765 -0.1272407 0.120773019</span></span>
+<span><span class="co">#&gt; ER _||_ PC | CC, EC, O, PP -0.123590237 0.04662597 -0.2499145 0.001300478</span></span>
 <span><span class="co">#&gt;                            significant</span></span>
 <span><span class="co">#&gt; A _||_ CC | ER                        </span></span>
 <span><span class="co">#&gt; A _||_ EC | ER                        </span></span>
@@ -746,32 +758,37 @@ tests!</p>
 set.
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">TRUE</option>
-<option value="">FALSE</option></select></p>
+<option value="NA">FALSE</option></select></p>
 <p>Which of these causal effects can we estimate using these data?
 <select class="webex-select"><option value="blank"></option>
-<option value="NA">CC
+<option value="">CC
 -&gt; A</option>
-<option value="NA">ER -&gt;
-PC</option>
-<option value="NA">PP -&gt;
-A</option>
-<option value="answer">All of these </option></select></p>
+<option value="">ER -&gt; PC</option>
+<option value="">PP
+-&gt; A</option>
+<option value="answer">All of these
+</option></select></p>
 <p>The <code>ci_tests</code> give us reasons to doubt that
 <code>df_sim</code> is consistent with the DAG.
 <select class="webex-select"><option value="blank"></option>
-<option value="">TRUE</option>
+<option value="NA">TRUE</option>
 <option value="answer">FALSE</option></select></p>
 <p>The <code>ci_tests</code> give us reasons to doubt that
 <code>df_real</code> is consistent with the DAG.
 <select class="webex-select"><option value="blank"></option>
 <option value="answer">TRUE</option>
-<option value="">FALSE</option></select></p>
+<option value="NA">FALSE</option></select></p>
 Consider the sample size of <code>df_real</code>. Could this be related
 to your answers in the previous two questions?
 <select class="webex-select"><option value="blank"></option>
-<option value="NA">No</option>
+<option value="">No</option>
 <option value="answer">Yes</option></select><p></p></span>
 </div>
+</div>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-cinelliCrashCourseGood2022" class="csl-entry">
 Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. <span>“A
@@ -817,7 +834,6 @@ Within-Family Investigation.”</span> <em>Developmental Psychology</em>
 </div>
 </div>
 </div>
-</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -829,7 +845,7 @@ Within-Family Investigation.”</span> <em>Developmental Psychology</em>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

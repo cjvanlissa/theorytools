@@ -36,9 +36,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
+    <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -93,28 +95,28 @@ users might use this function directly.</p>
 <h4 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
 </h4>
 <ul class="task-list">
-<li><label><input type="checkbox">Creating a project folder for your
+<li><label><input type="checkbox">Create a project folder for your
 theory</label></li>
-<li><label><input type="checkbox">Version controlling this folder with
-‘Git’</label></li>
-<li><label><input type="checkbox">Connecting the local repository to a
+<li><label><input type="checkbox">Put this folder under version
+control with ‘Git’</label></li>
+<li><label><input type="checkbox">Connect the local repository to a
 remote (‘GitHub’) repository</label></li>
-<li><label><input type="checkbox">Adding a shareable theory file to
-the repository</label></li>
-<li><label><input type="checkbox">Adding a LICENSE file to the
-repository (we recommend CC0)</label></li>
-<li><label><input type="checkbox">Adding a README file to the
+<li><label><input type="checkbox">Add a shareable theory file to the
 repository</label></li>
-<li><label><input type="checkbox">Adding a ‘Zenodo’ metadata to the
+<li><label><input type="checkbox">Add a LICENSE file to the repository
+(we recommend CC0)</label></li>
+<li><label><input type="checkbox">Add a README file to the
 repository</label></li>
-<li><label><input type="checkbox">Pushing these changes to the remote
+<li><label><input type="checkbox">Add a ‘Zenodo’ metadata to the
 repository</label></li>
-<li><label><input type="checkbox">Turning on ‘Zenodo’ archiving for
-the remote repository</label></li>
-<li><label><input type="checkbox">Publishing a release of your
+<li><label><input type="checkbox">Push these changes to the remote
+repository</label></li>
+<li><label><input type="checkbox">Turn on ‘Zenodo’ archiving for the
+remote repository</label></li>
+<li><label><input type="checkbox">Publish a release of your
 theory</label></li>
-<li><label><input type="checkbox">Verifying that ‘Zenodo’ mints a DOI
-for your theory and its latest release</label></li>
+<li><label><input type="checkbox">Verify that ‘Zenodo’ mints a DOI for
+your theory and its latest release</label></li>
 </ul>
 <!-- fig.width=600, fig.height=861,  --><div class="figure" style="text-align: center">
 <img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/Task2.png?raw=true" alt="Conceptual workflow for this task." width="70%"><p class="caption">
@@ -156,65 +158,13 @@ possible for a theory to be implemented in a programming language like
 R, it often is not - the empirical cycle described above is implemented
 in plain text. Therefore, we will not create an R project (with an
 <code>.Rproj</code> file et cetera), but just a regular nondescript
-project. This starts with creating an empty project folder. If we want
-to create a new folder called <code>empirical_cycle</code> in the
-existing folder <code>c:/theories/</code>, we can call:</p>
+project. This starts with creating an empty project folder, which will
+become the theory archive. If we want to create a new folder called
+<code>empirical_cycle</code> in the existing folder
+<code>c:/theories/</code>, we can call:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"empirical_cycle"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="version-controlling-the-project-folder">Version Controlling The Project Folder<a class="anchor" aria-label="anchor" href="#version-controlling-the-project-folder"></a>
-</h3>
-<p>We use ‘Git’ to version control the project folder. If you do not
-already have ‘Git’ installed on your computer, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" class="external-link">install
-it now</a>. You can verify that ‘Git’ is installed and working by
-running:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check if Git is available on the command line.<span style="color: #00BB00;">✔</span> Check if Git is available on the command line. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Checking if libgit2 is properly installed, required for connecting to Git rem…<span style="color: #00BB00;">✔</span> Checking if libgit2 is properly installed, required for connecting to Git rem…</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Initiating Git repository.<span style="color: #00BB00;">✔</span> Initiating Git repository. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Git user is configured.<span style="color: #00BB00;">✔</span> Git user is configured. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Adding files with `gert::git_add()`.<span style="color: #00BB00;">✔</span> Adding files with `gert::git_add()`. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Committing with `gert::git_commit()`.<span style="color: #00BB00;">✔</span> Committing with `gert::git_commit()`. ... done</span></span></code></pre></div>
-<p>If this function shows a green checkmark, you can initialize version
-control in your project repository by running:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_repo.html" class="external-link">git_init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="connecting-to-a-remote-github-repository">Connecting to a Remote (‘GitHub’) Repository<a class="anchor" aria-label="anchor" href="#connecting-to-a-remote-github-repository"></a>
-</h3>
-<p>To make your FAIR theory accessible to collaborators and discoverable
-by the wider community, you must connect your local ‘Git’ repository to
-a remote repository on a platform like ‘GitHub’.</p>
-<p>Before proceeding, ensure you <a href="https://github.com/" class="external-link">have a
-‘GitHub’ account</a>. Academics may qualify for a <a href="https://github.com/education/teachers" class="external-link">free upgrade</a>. To
-authorize ‘R’ to interact with your ‘GitHub’ account, run
-<code><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">usethis::create_github_token()</a></code>, which takes you to a
-website to create a personal access token (PAT). Copy it, then run
-<code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> and paste the PAT when asked. If
-you still experience problems try <code><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">usethis::gh_token_help()</a></code>
-for help.</p>
-<p>To check that you are ready to proceed, run:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Active project has a remote repository that requires PAT authentication.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check for PAT.<span style="color: #00BB00;">✔</span> Check for PAT. ... done</span></span></code></pre></div>
-<p>If you see a green checkmark, you can create a new repository on
-‘GitHub’ directly from ‘R’:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_remote_create</a></span><span class="op">(</span><span class="st">"empirical_cycle"</span>, private <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>This command will create a new public repository on ‘GitHub’ and link
-it to your local repository. The <code>private = FALSE</code> argument
-ensures the repository is public by default.</p>
-<p>Alternatively, you may have already created a remote repository on
-the ‘GitHub’ website. Either way, assuming the name of that repository
-is <code>empirical_cycle</code>, you can connect it to your project
-folder as follows:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_connect.html" class="external-link">git_remote_connect</a></span><span class="op">(</span><span class="va">project_path</span>, remote_repo <span class="op">=</span> <span class="st">"empirical_cycle"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-a-shareable-theory-file-to-the-repository">Adding a Shareable Theory File to the Repository<a class="anchor" aria-label="anchor" href="#adding-a-shareable-theory-file-to-the-repository"></a>
@@ -223,11 +173,11 @@ folder as follows:</p>
 structured plain-text document or a machine-readable file (e.g., ‘DOT’,
 ‘JSON’, ‘YAML’, ‘R’ code). At this point, we offer two alternatives.</p>
 <div class="section level4">
-<h4 id="creating-a-plain-text-theory">Creating a Plain-Text Theory<a class="anchor" aria-label="anchor" href="#creating-a-plain-text-theory"></a>
+<h4 id="theory-as-plain-text">Theory as Plain Text<a class="anchor" aria-label="anchor" href="#theory-as-plain-text"></a>
 </h4>
 <p>You could simply copy De Groot’s implementation of the empirical
 cycle into a plain text file, like so:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"*Phase 1:* 'Observation': collection and grouping of empirical materials;</span></span>
 <span><span class="st">    (tentative) formation of hypotheses."</span>,</span>
@@ -242,14 +192,16 @@ cycle into a plain text file, like so:</p>
 <span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project_path</span>, <span class="st">"theory.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="further-formalizing-the-empirical-cycle">Further Formalizing the Empirical Cycle<a class="anchor" aria-label="anchor" href="#further-formalizing-the-empirical-cycle"></a>
+<h4 id="implementing-the-theory-in-a-formal-language">Implementing the Theory in a Formal Language<a class="anchor" aria-label="anchor" href="#implementing-the-theory-in-a-formal-language"></a>
 </h4>
 <p>If we compare it to the levels of theory formalization <span class="citation">(Guest and Martin 2021)</span>, De Groot’s theory is
 either at the “theory” or “specification” level. It consists of a series
 of natural language statements. We can increase the level of
 formalization, and present an “implementation” in the human- and
-machine-readable DOT language:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+machine-readable DOT language, thereby meeting criterion I1 of the FAIR
+principles (<em>“using a formal language for knowledge
+representation”</em>):</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">theory</span> <span class="op">&lt;-</span> </span>
 <span><span class="st">"digraph {</span></span>
 <span><span class="st"></span></span>
@@ -270,53 +222,103 @@ machine-readable DOT language:</p>
 code has been organized so that the first half describes an ontology of
 the entities the theory postulates, and the second half describes their
 proposed interrelations. This follows the first two properties of good
-theory according to Meehl <span class="citation">(Meehl
-1990)</span>.</p>
-<p>We can now write this implementation of the empirical cycle to a text
-file, say <code>empirical_cycle.dot</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+theory according to Meehl <span class="citation">(Meehl 1990)</span>.
+Because Git tracks changes on a line-by-line basis, separating the
+ontology and structural parts of the theory facilitates tracking changes
+to either of them. We can now write this implementation of the empirical
+cycle to a text file, say <code>empirical_cycle.dot</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">theory</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project_path</span>, <span class="st">"empirical_cycle.dot"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="adding-a-license-file-to-the-repository">Adding a LICENSE File to the Repository<a class="anchor" aria-label="anchor" href="#adding-a-license-file-to-the-repository"></a>
+<h3 id="documenting-reusability-with-a-license">Documenting Reusability with a LICENSE<a class="anchor" aria-label="anchor" href="#documenting-reusability-with-a-license"></a>
 </h3>
 <p>A license ensures that others know how they can legally reuse your
-work. For FAIR theory, we recommend using the CC0 (Creative Commons
-Zero) license, which places your work in the public domain. Add a
-license file to your repository:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/add_license_file.html" class="external-link">add_license_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span>, license <span class="op">=</span> <span class="st">"cc0"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Writing license file<span style="color: #00BB00;">✔</span> Writing license file ... done</span></span></code></pre></div>
+work. We recommend a CC0 (Creative Commons Zero) license for FAIR
+theory, which waives all copryright protection and places your work in
+the public domain. This recommendation is based on the fact that
+copyright protection does not cover ideas, and the assumption that FAIR
+theory is created to maximize reuse. Other licenses are available, see
+<a href="https://choosealicense.com/non-software/" class="external-link">https://choosealicense.com</a>.
+You can add a license file to your repository like so:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_license_file.html" class="external-link">add_license_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span>, license <span class="op">=</span> <span class="st">"cc0"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="adding-a-readme-file-to-the-repository">Adding a README File to the Repository<a class="anchor" aria-label="anchor" href="#adding-a-readme-file-to-the-repository"></a>
+<h3 id="documenting-interoperability-with-a-readme-file">Documenting Interoperability with a README File<a class="anchor" aria-label="anchor" href="#documenting-interoperability-with-a-readme-file"></a>
 </h3>
 <p>A README file describes the repository’s contents and purpose, making
-it easier for others to understand and reuse your theory. The
-<code>theorytools</code> package contains a function to generate a
-README file with appropriate sections for FAIR theory, which can be used
-like so:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+it easier for others to understand your theory’s potential for
+interoperability and reuse. The <code>theorytools</code> package
+contains a function to generate a README file with appropriate sections
+for FAIR theory, which can be used like so:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/add_readme_fair_theory.html">add_readme_fair_theory</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"The Empirical Cycle"</span>,</span>
-<span>                                    path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating README.md<span style="color: #00BB00;">✔</span> Creating README.md ... done</span></span></code></pre></div>
+<span>                                    path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 <p>We encourage users to edit the resulting <code>README.md</code> file,
-in particular, to add relevant information about X-interoperability.</p>
+in particular, to add relevant information about X-interoperability. For
+guidance on writing a README file for theory, see <a href="https://cjvanlissa.github.io/theorytools/articles/readme.html">this
+vignette</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="adding-zenodo-metadata-to-the-repository">Adding ‘Zenodo’ Metadata to the Repository<a class="anchor" aria-label="anchor" href="#adding-zenodo-metadata-to-the-repository"></a>
 </h3>
-<p>‘Zenodo’ uses metadata files to archive and index repositories.
-Create a <code>.zenodo.json</code> file with metadata about your theory
-so that it is indexed appropriately:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>In a later step, we will archive the theory on ‘Zenodo’. Creating a
+<code>.zenodo.json</code> file with metadata about your theory allows
+the project to be indexed automatically. This can be done by
+running:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/add_zenodo_json.html">add_zenodo_json_theory</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="va">project_path</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"The Empirical Cycle"</span>,</span>
 <span>  keywords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"philosophy of science"</span>, <span class="st">"methodology"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Add 'Zenodo' metadata<span style="color: #00BB00;">✔</span> Add 'Zenodo' metadata ... done</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="version-controlling-the-project-folder">Version Controlling The Project Folder<a class="anchor" aria-label="anchor" href="#version-controlling-the-project-folder"></a>
+</h3>
+<p>We use ‘Git’ to version control the project folder. If you do not
+already have ‘Git’ installed on your computer, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" class="external-link">install
+it now</a>. You can verify that ‘Git’ is installed and working by
+running:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/check_worcs_installation.html" class="external-link">check_git</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If this function shows a green checkmark, you can initialize version
+control in your project repository by running:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_repo.html" class="external-link">git_init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="connecting-to-a-remote-github-repository">Connecting to a Remote (‘GitHub’) Repository<a class="anchor" aria-label="anchor" href="#connecting-to-a-remote-github-repository"></a>
+</h3>
+<p>To make your FAIR theory accessible to collaborators and discoverable
+by the wider community, you must connect your local ‘Git’ repository to
+a remote repository on a platform like ‘GitHub’.</p>
+<p>Before proceeding, ensure you <a href="https://github.com/" class="external-link">have a
+‘GitHub’ account</a>. Academics may qualify for a <a href="https://github.com/education/teachers" class="external-link">free upgrade</a>. To
+authorize ‘R’ to interact with your ‘GitHub’ account, run
+<code><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">usethis::create_github_token()</a></code>, which takes you to a
+website to create a personal access token (PAT). Copy it, then run
+<code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> and paste the PAT when asked. If
+you still experience problems try <code><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">usethis::gh_token_help()</a></code>
+for help.</p>
+<p>To check that you are ready to proceed, run:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/check_worcs_installation.html" class="external-link">check_github</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If you see a green checkmark, you can create a new repository on
+‘GitHub’ directly from ‘R’:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_remote_create</a></span><span class="op">(</span><span class="st">"empirical_cycle"</span>, private <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>This command will create a new public repository on ‘GitHub’ and link
+it to your local repository. The <code>private = FALSE</code> argument
+ensures the repository is public by default.</p>
+<p>Alternatively, you may have already created a remote repository on
+the ‘GitHub’ website. Either way, assuming the name of that repository
+is <code>empirical_cycle</code>, you can connect it to your project
+folder as follows:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_connect.html" class="external-link">git_remote_connect</a></span><span class="op">(</span><span class="va">project_path</span>, remote_repo <span class="op">=</span> <span class="st">"empirical_cycle"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pushing-these-changes-to-the-remote-repository">Pushing These Changes to the Remote Repository<a class="anchor" aria-label="anchor" href="#pushing-these-changes-to-the-remote-repository"></a>
@@ -325,14 +327,10 @@ so that it is indexed appropriately:</p>
 (<code><a href="https://docs.ropensci.org/gert/reference/git_commit.html" class="external-link">gert::git_add()</a></code>), committing changes to those files
 (<code><a href="https://docs.ropensci.org/gert/reference/git_commit.html" class="external-link">gert::git_commit()</a></code>), and pushing them to the remote
 repository (<code><a href="https://docs.ropensci.org/gert/reference/git_fetch.html" class="external-link">gert::git_push()</a></code>). The <code>worcs</code>
-function <code><a href="https://rdrr.io/pkg/worcs/man/git_update.html" class="external-link">worcs::git_update()</a></code> combines these three actions,
+function <code><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">worcs::git_update()</a></code> combines these three actions,
 acting like a kind of “quick-save” function:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_update.html" class="external-link">git_update</a></span><span class="op">(</span><span class="st">"First commit of my theory"</span>, repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Identify local 'Git' repository at <span style="color: #0000BB;">"C:\\Users\\vanlissa\\AppData\\Local\\Temp</span>…<span style="color: #00BB00;">✔</span> Identify local 'Git' repository at <span style="color: #0000BB;">"C:\\Users\\vanlissa\\AppData\\Local\\Temp</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Adding files to staging area of 'Git' repository.<span style="color: #00BB00;">✔</span> Adding files to staging area of 'Git' repository. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Committed staged files to 'Git' repository.<span style="color: #00BB00;">✔</span> Committed staged files to 'Git' repository. ... done</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Push local commits to remote repository.<span style="color: #BB0000;">✖</span> Push local commits to remote repository. ... failed</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">git_update</a></span><span class="op">(</span><span class="st">"First commit of my theory"</span>, repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-your-github-repository">Check Your ‘GitHub’ Repository<a class="anchor" aria-label="anchor" href="#check-your-github-repository"></a>
@@ -431,7 +429,7 @@ Check that webhooks are enabled for your ‘GitHub’ repository.
 <p>To archive a repository on ‘Zenodo’, you must create a new release.
 You can do this using the following code:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 <p>If you have not previously published any releases, this function will
 assume that you want to use semantic versioning for both the release tag
 and the release title. This means that the first release will be labeled
@@ -440,7 +438,7 @@ increment the trailing digit, i.e.: “0.1.1”, “0.1.2”. If you make a
 major change to the theory, you may want to manually increment the
 middle digit like so:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/worcs/man/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
 <span>                           tag_name <span class="op">=</span> <span class="st">"0.2.0"</span>,</span>
 <span>                           release_name <span class="op">=</span> <span class="st">"0.2.0"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -456,10 +454,12 @@ Check the new release has been uploaded.
 </div>
 </div>
 <div class="section level3">
-<h3 id="entering-meta-data">Entering Meta-Data<a class="anchor" aria-label="anchor" href="#entering-meta-data"></a>
+<h3 id="updating-meta-data">Updating Meta-Data<a class="anchor" aria-label="anchor" href="#updating-meta-data"></a>
 </h3>
 <p>We can further document our ‘Zenodo’ archive as a FAIR theory by
-adding some extra information on ‘Zenodo’. On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
+adding some extra information on ‘Zenodo’. Note that, if you created a
+<code>.zenodo.json</code> file in a previous step, some of these
+metadata will be populated automatically. On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
 you should find your newly uploaded repository.</p>
 <div class="figure" style="text-align: center">
 <img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true" alt="Click the orange Edit button." width="70%"><p class="caption">
@@ -510,13 +510,13 @@ repository, where the DOI will be displayed. Include this DOI in any
 citations or references to your theory to enhance its discoverability
 and reusability.</p>
 <p>The ‘GitHub’/‘Zenodo’ integration will assign one “mother-DOI” to the
-project, as well as a unique DOI to each version/release of the FAIR
-theory. This enables users to refer to and cite specific versions of the
-theory. The list of authors for the citation is automatically determined
-by the ‘GitHub’ user account names used by the repository - this can be
-edited on ‘Zenodo’, as explained above. DOIs used in ‘Zenodo’ are
-registered through the <a href="https://www.datacite.org/" class="external-link">DataCite</a>
-service.</p>
+project, which will always resolve to the latest version, as well as a
+unique DOI to each version/release of the FAIR theory. This enables
+users to refer to and cite either the theory in general or specific
+versions of the theory. The list of authors for the citation is
+automatically determined by the ‘GitHub’ user account names used by the
+repository - this can be edited on ‘Zenodo’, as explained above. DOIs
+used in ‘Zenodo’ are registered through the <a href="https://www.datacite.org/" class="external-link">DataCite</a> service.</p>
 <blockquote>
 <p><strong>Pro-tip</strong>: Check the <code>Citation</code> field on
 the ‘Zenodo’ page, and copy-paste it into the README file of your
@@ -576,8 +576,7 @@ to all subsequent release DOIs. Copy this DOI link and embed it in your
 </div>
 </div>
 <div class="section level2">
-<h2 id="optional-everything-in-one-step">
-<em>Optional:</em> Everything in One Step<a class="anchor" aria-label="anchor" href="#optional-everything-in-one-step"></a>
+<h2 id="automating-fair-theory-creation">Automating FAIR Theory Creation<a class="anchor" aria-label="anchor" href="#automating-fair-theory-creation"></a>
 </h2>
 <p>The function <code><a href="../reference/create_fair_theory.html">theorytools::create_fair_theory()</a></code> automates
 most of the preceding steps, up to step 2.8. Assuming you have already
@@ -635,7 +634,7 @@ Zenodo. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">h
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

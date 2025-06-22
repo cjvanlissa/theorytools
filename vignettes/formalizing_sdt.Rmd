@@ -318,7 +318,7 @@ If your repository **does not show up** in the list, you may need to press the '
 At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
 If so, take a break or come back to this last step tomorrow!
 
-```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Enable individual 'GitHub' repositories to be archived in 'Zenodo'"}
+```{r include = knitr::is_html_output(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Enable individual 'GitHub' repositories to be archived in 'Zenodo'"}
 knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true")
 ```
 Flip the switch to set up a new webhook between 'Zenodo' and your repository. 
@@ -340,7 +340,7 @@ We can further document our 'Zenodo' archive as a FAIR theory by adding some ext
 Note that, if you created a `.zenodo.json` file in a previous step, some of these metadata will be populated automatically.
 On 'Zenodo' click the [Upload](https://zenodo.org/deposit) tab in the main menu, where you should find your newly uploaded repository.
 
-```{r include = in_packagedown, eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
+```{r include = knitr::is_html_output(), eval = TRUE, echo = FALSE, fig.align='center', out.width = "70%", fig.cap="Click the orange Edit button."}
 knitr::include_graphics("https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true")
 ```
 
