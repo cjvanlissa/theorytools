@@ -1,8 +1,6 @@
 ---
 title: "FAIRifying the Dunning-Kruger Effect"
-output: 
-  bookdown::html_document2:
-    base_format: rmarkdown::html_vignette
+output: theorytools:::vignette_bookdown_if_available
 pkgdown:
   as_is: true
 bibliography: dunning-kruger.bib

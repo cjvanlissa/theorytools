@@ -27,3 +27,11 @@ webex_vignette <- function (...){
   }
   do.call(rmarkdown::html_vignette, Args)
 }
+
+vignette_bookdown_if_available <- function(...){
+  if(requireNamespace("bookdown", quietly = TRUE)){
+    bookdown::html_document2(...)
+  } else {
+    rmarkdown::html_vignette(...)
+  }
+}
