@@ -24,6 +24,6 @@
 #' @keywords datasets
 #' @name lsac
 #' @usage data(lsac)
-#' @references Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. <https://growingupinaustralia.gov.au/>
+#' @references Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. <https://aifs.gov.au/growing-up-in-australia>
 #' @format A data frame with 8214 rows and 6 variables.
 "lsac"

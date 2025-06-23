@@ -34,6 +34,6 @@ LSAC codebook are given below.
 }
 }
 \references{
-Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. \url{https://growingupinaustralia.gov.au/}
+Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. \url{https://aifs.gov.au/growing-up-in-australia}
 }
 \keyword{datasets}
