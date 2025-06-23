@@ -1,7 +1,7 @@
 #' Synthetic Data: Longitudinal Study of Australian Children
 #'
 #' This synthetic dataset, based on
-#' ["Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC)](https://aifs.gov.au/growing-up-in-australia).
+#' "Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC).
 #' This longitudinal study covers a representative sample of about 10.000
 #' children and their families, and aims to examine children's development
 #' from early childhood through to adolescence and adulthood.
@@ -24,6 +24,6 @@
 #' @keywords datasets
 #' @name lsac
 #' @usage data(lsac)
-#' @references Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. <https://aifs.gov.au/growing-up-in-australia>
+#' @references Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia.
 #' @format A data frame with 8214 rows and 6 variables.
 "lsac"

@@ -12,7 +12,7 @@ data(lsac)
 }
 \description{
 This synthetic dataset, based on
-\href{https://aifs.gov.au/growing-up-in-australia}{"Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC)}.
+"Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC).
 This longitudinal study covers a representative sample of about 10.000
 children and their families, and aims to examine children's development
 from early childhood through to adolescence and adulthood.
@@ -34,6 +34,6 @@ LSAC codebook are given below.
 }
 }
 \references{
-Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia. \url{https://aifs.gov.au/growing-up-in-australia}
+Australian Institute of Family Studies. (2020, March 23). Growing Up in Australia.
 }
 \keyword{datasets}
