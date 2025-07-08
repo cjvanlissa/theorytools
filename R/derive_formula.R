@@ -169,6 +169,9 @@ chunks_to_form <- function(chunks){
 
 #' @importFrom Deriv Simplify
 edges_to_simfun <- function(edg, beta_default, duplicated = "unique"){
+  if(is.null(edg[["form"]])){
+    edg$form <- NA
+  }
   if(any(is.na(edg$form))){
     edg$form[which(is.na(edg$form))] <- edg$from[which(is.na(edg$form))]
   }

@@ -377,7 +377,7 @@ to plan our analyses before data collection,
 to conduct power analysis and plan our sample size,
 and to preregister a fully reproducible analysis pipeline [Preregistration-As-Code, @peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
 
-Below is a simple code snippet to generate synthetic data using the `dagitty::simulateSEM()` function.
+Below is a simple code snippet to generate synthetic data using the `theorytools::simulate_data()` function.
 This function interprets the DAG as a structural equation model,
 samples random values for the path coefficients (unless specific values are provided),
 and assumes normal residual variances.
