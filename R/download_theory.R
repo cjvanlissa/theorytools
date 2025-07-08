@@ -34,10 +34,10 @@ download_theory <- function(id,
          "zenodo" = {
            with_cli_try("Accessing record on 'Zenodo'", {
              record <- jsonlite::fromJSON(rawToChar(curl::curl_fetch_memory(paste0("https://zenodo.org/api/records/", gsub("^.{0,}10.5281/zenodo\\.", "", id)))$content))
+             url_zip <- record$files$links$self
              if(!grepl(".zip", url_zip, fixed = TRUE)){
                stop()
              }
-             url_zip <- record$files$links$self
              filename <- basename(record$files$key)
              file_temp <- file.path(tempdir(), filename)
              zenodo_checksum <- record$files$checksum
