@@ -428,11 +428,12 @@ power analysis and plan our sample size, and to preregister a fully
 reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert, Van Lissa, and
 Brandmaier 2021; Van Lissa 2022)</span>.</p>
 <p>Below is a simple code snippet to generate synthetic data using the
-<code><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">dagitty::simulateSEM()</a></code> function. This function interprets
-the DAG as a structural equation model, samples random values for the
-path coefficients (unless specific values are provided), and assumes
-normal residual variances. Note that many other functions for simulating
-data exist, and some may be better suited to particular use cases.</p>
+<code><a href="../reference/simulate_data.html">theorytools::simulate_data()</a></code> function. This function
+interprets the DAG as a structural equation model, samples random values
+for the path coefficients (unless specific values are provided), and
+assumes normal residual variances. Note that many other functions for
+simulating data exist, and some may be better suited to particular use
+cases.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">tripartite</span>, n <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span>
