@@ -1,6 +1,7 @@
 # theorytools 0.1.2
 
 * Minor bugfixes
+* Add prune_dag()
 
 # theorytools 0.1.1
 
