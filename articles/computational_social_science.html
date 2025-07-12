@@ -159,9 +159,9 @@ function; these functions are said to be
 <p><strong>Interactive:</strong> You’ll need to install some packages to
 run this tutorial. Run this code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"theorytools"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dagitty"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidySEM"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"theorytools"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dagitty"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidySEM"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>To your <code>"manuscript.Rmd"</code> file, add the following lines
 in the setup chunk:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -171,12 +171,11 @@ in the setup chunk:</p>
 <p>We will use a FAIR version of <strong>Self-Determination Theory
 (SDT)</strong>. The vignette <a href="https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html">Formalizing
 Self-Determination Theory</a> describes how this FAIR theory was created
-based on the original Self-Determination Theory <span class="citation">(<strong>deciSelfDeterminationTheory2012?</strong>)</span>.
-It was specified as a Directed Acyclic Graph, or DAG: a diagram that
-specifies the causal relations proposed by a theory. Such diagrams can
-be used to derive hypotheses, select control variables for causal
-inference, and conduct simulation studies (as we will do in this
-tutorial).</p>
+based on the original Self-Determination Theory <span class="citation">(Deci and Ryan 2012)</span>. It was specified as a
+Directed Acyclic Graph, or DAG: a diagram that specifies the causal
+relations proposed by a theory. Such diagrams can be used to derive
+hypotheses, select control variables for causal inference, and conduct
+simulation studies (as we will do in this tutorial).</p>
 <p><strong>Interactive:</strong> Run the code below to download this
 existing FAIR theory, which is stored on Zenodo. It will create a new
 subfolder called <code>"theory/"</code> for these files, because the
@@ -204,10 +203,15 @@ are.</p>
 <p>Such DAGs are particularly useful for computational social science
 studies, because the <code>theorytools</code> package contains methods
 to convert augmented DAGs to generative models.</p>
-<p>Now, let’s load the augmented DAG. You will need the
-<code>dagitty</code> package:</p>
+<p>Now, let’s load the augmented DAG. <strong>Note:</strong> when
+running this code from a code chunk in your Rmarkdown file, you must use
+the file path <code>../theory/sdt.txt</code> to go back to the parent
+directory, because the manuscript and the theory are both in different
+subdirectories. If you run it interactively instead, you are already
+inside the parent directory, and you can use the path
+<code>theory/sdt.txt</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sdt</span> <span class="op">&lt;-</span> <span class="fu">dagitty</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html" class="external-link">dagitty</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"theory/sdt.txt"</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sdt</span> <span class="op">&lt;-</span> <span class="fu">dagitty</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html" class="external-link">dagitty</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"../theory/sdt.txt"</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we can plot the model using the tidySEM package. Get a basic
 plot by running <code>graph_sem(sdt)</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -350,7 +354,8 @@ of interest between intrinsic motivation and well-being:</p>
 DAG:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">intrinsic_motivation</th>
@@ -359,34 +364,34 @@ DAG:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">-0.29</td>
+<td align="right">-0.81</td>
 <td align="right">-0.33</td>
-<td align="right">1.28</td>
+<td align="right">-1.19</td>
 </tr>
 <tr class="even">
-<td align="right">0.52</td>
+<td align="right">-1.22</td>
 <td align="right">-0.41</td>
-<td align="right">0.86</td>
+<td align="right">-1.90</td>
 </tr>
 <tr class="odd">
-<td align="right">-1.78</td>
+<td align="right">-0.49</td>
 <td align="right">-0.48</td>
-<td align="right">0.60</td>
+<td align="right">0.22</td>
 </tr>
 <tr class="even">
-<td align="right">1.21</td>
+<td align="right">0.28</td>
 <td align="right">-0.98</td>
-<td align="right">1.39</td>
+<td align="right">1.25</td>
 </tr>
 <tr class="odd">
-<td align="right">0.92</td>
+<td align="right">0.82</td>
 <td align="right">-0.27</td>
-<td align="right">-0.40</td>
+<td align="right">0.34</td>
 </tr>
 <tr class="even">
-<td align="right">-0.87</td>
+<td align="right">0.59</td>
 <td align="right">-1.01</td>
-<td align="right">-0.16</td>
+<td align="right">-1.17</td>
 </tr>
 </tbody>
 </table>
@@ -417,18 +422,20 @@ effect of needs):</p>
 <span><span class="co">## lm(formula = wellbeing ~ intrinsic_motivation + needs, data = df)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
-<span><span class="co">##       1       2       3       4       5       6 </span></span>
-<span><span class="co">##  0.7488  0.2346  0.1897  0.6061 -1.0323 -0.7469 </span></span>
+<span><span class="co">##      Min       1Q   Median       3Q      Max </span></span>
+<span><span class="co">## -2.93688 -0.87862 -0.03086  0.74147  2.56125 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                      Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span><span class="co">## (Intercept)           0.50658    0.83211   0.609    0.586</span></span>
-<span><span class="co">## intrinsic_motivation  0.09583    0.36569   0.262    0.810</span></span>
-<span><span class="co">## needs                -0.16015    1.27474  -0.126    0.908</span></span>
+<span><span class="co">##                      Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)          -0.02492    0.11579  -0.215 0.830069    </span></span>
+<span><span class="co">## intrinsic_motivation  0.44496    0.11522   3.862 0.000203 ***</span></span>
+<span><span class="co">## needs                -0.30228    0.11815  -2.558 0.012061 *  </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Residual standard error: 0.9385 on 3 degrees of freedom</span></span>
-<span><span class="co">## Multiple R-squared:  0.02724,    Adjusted R-squared:  -0.6213 </span></span>
-<span><span class="co">## F-statistic: 0.04201 on 2 and 3 DF,  p-value: 0.9594</span></span></code></pre>
+<span><span class="co">## Residual standard error: 1.126 on 97 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.1839, Adjusted R-squared:  0.1671 </span></span>
+<span><span class="co">## F-statistic: 10.93 on 2 and 97 DF,  p-value: 5.231e-05</span></span></code></pre>
 <p>Then, our outcome of interest is the significance of the effect of
 <code>intrinsic_motivation</code>. We can extract the p-value as
 follows, and compare it to the significance level
@@ -477,8 +484,8 @@ analysis pipeline are not unnecessarily re-computed.</li>
 <p><strong>Interactive:</strong> Let’s install the packages required for
 this next section:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"targets"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tarchetypes"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"targets"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tarchetypes"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> Then, add <code>targets</code>
 integration to the <code>worcs</code> project by running:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -515,9 +522,40 @@ placeholder steps:</p>
 <span>  <span class="fu">tarchetypes</span><span class="fu">::</span><span class="fu">tar_render</span><span class="op">(</span><span class="va">manuscript</span>, <span class="st">"manuscript/manuscript.Rmd"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> You can run this pipeline by executing
-the command <code>targets::tar_make()</code>. <em>If it fails the first
-time, try re-running <code>targets::tar_make()</code> a second
-time.</em></p>
+the command <code>targets::tar_make()</code>.</p>
+<div class="section level4">
+<h4 id="set-a-seed">Set a Seed<a class="anchor" aria-label="anchor" href="#set-a-seed"></a>
+</h4>
+<p>Computational simulation studies typically rely on random number
+generation to repeatedly simulate a scenario with some variability.</p>
+<p>This dependency on random numbers makes the results non-reproducible
+(the random numbers will be different upon repeated evaluation).</p>
+<p>Fortunately, true random numbers are rarely used: we typically use a
+sequence of <em>pseudo</em> random numbers.</p>
+<p>To make the randomness reproducible, we can set a “seed” for the
+random number generator. Setting a seed essentially jumps into the
+sequence of pseudo-random numbers at the same point each time, so we get
+the same “random” numbers over and over.</p>
+<p>To set a seed, add the command <code>set.seed(1)</code> above the
+<code>targets</code> pipeline. You can use any number instead of
+<code>1</code>, which will lead to different results.</p>
+</div>
+<div class="section level4">
+<h4 id="debugging">Debugging<a class="anchor" aria-label="anchor" href="#debugging"></a>
+</h4>
+<p>Running <code>targets::tar_make()</code> might fail; I have observed
+two modes of failure:</p>
+<ol style="list-style-type: decimal">
+<li>It fails because it cannot find the file at
+<code>../theory/sdt.txt</code>; changing this to
+<code>theory/sdt.txt</code> seems to work. Perhaps
+<code>targets::tar_make()</code> evaluates code chunks in the parent
+directory?</li>
+<li>
+<code>targets::tar_make()</code> fails the first time, but succeeds
+when re-running it a second time.</li>
+</ol>
+</div>
 </div>
 <div class="section level3">
 <h3 id="create-your-own-functions">8. Create Your Own Functions<a class="anchor" aria-label="anchor" href="#create-your-own-functions"></a>
@@ -534,19 +572,19 @@ create a single synthetic dataset can also generate a script for
 synthetic data generation:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "# Set random seed"                                                    </span></span>
-<span><span class="co">##  [2] "set.seed(1565743975)"                                                 </span></span>
-<span><span class="co">##  [3] "# Set simulation parameters"                                          </span></span>
-<span><span class="co">##  [4] "n &lt;- 100"                                                             </span></span>
-<span><span class="co">##  [5] "# Simulate exogenous nodes"                                           </span></span>
-<span><span class="co">##  [6] "needs &lt;- rnorm(n = n)"                                                </span></span>
-<span><span class="co">##  [7] "# Simulate endogenous nodes"                                          </span></span>
-<span><span class="co">##  [8] "intrinsic_motivation &lt;- 0.19 * needs + rnorm(n = n)"                  </span></span>
-<span><span class="co">##  [9] "wellbeing &lt;- 0.17 * intrinsic_motivation + 0.3 * needs + rnorm(n = n)"</span></span>
-<span><span class="co">## [10] "df &lt;- data.frame("                                                    </span></span>
-<span><span class="co">## [11] "intrinsic_motivation = intrinsic_motivation,"                         </span></span>
-<span><span class="co">## [12] "needs = needs,"                                                       </span></span>
-<span><span class="co">## [13] "wellbeing = wellbeing"                                                </span></span>
+<pre><code><span><span class="co">##  [1] "# Set random seed"                                                     </span></span>
+<span><span class="co">##  [2] "set.seed(644938424)"                                                   </span></span>
+<span><span class="co">##  [3] "# Set simulation parameters"                                           </span></span>
+<span><span class="co">##  [4] "n &lt;- 100"                                                              </span></span>
+<span><span class="co">##  [5] "# Simulate exogenous nodes"                                            </span></span>
+<span><span class="co">##  [6] "needs &lt;- rnorm(n = n)"                                                 </span></span>
+<span><span class="co">##  [7] "# Simulate endogenous nodes"                                           </span></span>
+<span><span class="co">##  [8] "intrinsic_motivation &lt;- 0.16 * needs + rnorm(n = n)"                   </span></span>
+<span><span class="co">##  [9] "wellbeing &lt;- 0.21 * intrinsic_motivation - 0.21 * needs + rnorm(n = n)"</span></span>
+<span><span class="co">## [10] "df &lt;- data.frame("                                                     </span></span>
+<span><span class="co">## [11] "intrinsic_motivation = intrinsic_motivation,"                          </span></span>
+<span><span class="co">## [12] "needs = needs,"                                                        </span></span>
+<span><span class="co">## [13] "wellbeing = wellbeing"                                                 </span></span>
 <span><span class="co">## [14] ")"</span></span></code></pre>
 <p>Let’s write this script to a new file in <code>./R/</code>, and edit
 it.</p>
@@ -718,7 +756,7 @@ should be automatically re-run.</p>
 <p><strong>Interactive:</strong> To verify that the interdependencies
 between pipeline steps are properly tracked, you can run:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"visNetwork"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"visNetwork"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">targets</span><span class="fu">::</span><span class="fu">tar_visnetwork</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visnetwork.png"><!-- --></p>
 <p>Add the following code to the manuscript to tabulate the results:</p>
@@ -779,7 +817,8 @@ between pipeline steps are properly tracked, you can run:</p>
 </tbody>
 </table>
 <p>Or alternatively, add the following code to plot the study results
-(this requires running <code>install.packages("ggplot2")</code>).</p>
+(this requires running
+<code>install.packages("ggplot2", prompt = FALSE)</code>).</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">df_plot</span> <span class="op">&lt;-</span> <span class="va">study_results</span></span>
@@ -788,7 +827,7 @@ between pipeline steps are properly tracked, you can run:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="computational_social_science_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="computational_social_science_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="run-the-pipeline">11. Run the Pipeline<a class="anchor" aria-label="anchor" href="#run-the-pipeline"></a>
@@ -867,8 +906,7 @@ works (at least) on Windows.</p>
 <p><strong>Interactive:</strong> First, install the required
 packages:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future.apply"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-paralellization-to-perform_study">2. Adding Paralellization to <code>perform_study()</code><a class="anchor" aria-label="anchor" href="#adding-paralellization-to-perform_study"></a>
@@ -993,6 +1031,197 @@ scope of the present tutorial).</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="optional-add-integration-tests">
+<em>Optional:</em> Add Integration Tests<a class="anchor" aria-label="anchor" href="#optional-add-integration-tests"></a>
+</h2>
+<p>Integration testing is a procedure used in software development to
+ensure that your code works as expected. In a WORCS project, using
+integration tests increases scientific rigor and helps you ensure
+reproducibility. This section explains the bare basics of integration
+testing for reproducible research workflows; see the <a href="https://r-pkgs.org/testing-basics.html" class="external-link">R Packages book</a> for
+more detail.</p>
+<div class="section level4">
+<h4 id="why-write-tests">Why Write Tests?<a class="anchor" aria-label="anchor" href="#why-write-tests"></a>
+</h4>
+<p>You probably already test your functions informally - you write a
+function, run it in the console, and see if the output looks good. This
+is better than nothing - but is it fool-proof? Will you remember which
+functions looked good in 6 months? What if someone changes part of your
+code? What if functions are used in a different way then you
+expected?</p>
+<p><strong>Integration tests:</strong></p>
+<ul>
+<li>Run automatically and consistently.</li>
+<li>Help catch bugs.</li>
+<li>Provide documentation of expected behavior.</li>
+<li>Encourage modular, testable code.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="when-to-test">When to Test?<a class="anchor" aria-label="anchor" href="#when-to-test"></a>
+</h4>
+<ul>
+<li>When you write a new function.</li>
+<li>When fixing a bug (add a test to catch it next time).</li>
+<li>Before sharing, submitting, or publishing your analysis.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="set-up-testthat">1. Set Up <code>testthat</code><a class="anchor" aria-label="anchor" href="#set-up-testthat"></a>
+</h3>
+<p><strong>Interactive</strong>: In your WORCS project, run the
+following code:</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">add_testthat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>This creates a <code>tests/testthat/</code> folder to hold your
+tests. Note the two suggestions printed in the console:</p>
+<ul>
+<li>Run <code><a href="https://usethis.r-lib.org/reference/use_r.html" class="external-link">usethis::use_test()</a></code> to initialize a basic test file
+and open it for editing.</li>
+<li>Run <code>worcs::github_action_testthat()</code> to add a GitHub
+action that evaluates the integration tests.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="write-a-simple-test">2. Write a Simple Test<a class="anchor" aria-label="anchor" href="#write-a-simple-test"></a>
+</h3>
+<p>Let’s prepare a file to test the behavior of our function
+<code>generate_data()</code> by running
+<code>usethis::use_test(name = "generate_data")</code>.</p>
+<p>By default, the test file should look like this, testing some common
+sense math:</p>
+<pre><code><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"multiplication works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre>
+<p>Each test file contains:</p>
+<ul>
+<li>A function call to <code>test_that()</code>
+</li>
+<li>A short description, in this case
+<code>"multiplication works"</code>.</li>
+<li>One or more <strong>expectations</strong> that are evaluated, like
+<code>expect_equal()</code> in the example above.</li>
+</ul>
+<p>Test files’ names must start with <code>test-</code>, and they must
+be saved in <code>tests/testthat/</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="run-tests">3. Run Tests<a class="anchor" aria-label="anchor" href="#run-tests"></a>
+</h3>
+<p>In your console or script, you can run:</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">test_worcs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Or, to test a single file:</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_file.html" class="external-link">test_file</a></span><span class="op">(</span><span class="st">"tests/testthat/test-generate_data.R"</span><span class="op">)</span></span></code></pre></div>
+<p>The output should tell you which tests passed or failed, and why they
+failed.</p>
+</div>
+<div class="section level3">
+<h3 id="customize-your-test">4. Customize Your Test<a class="anchor" aria-label="anchor" href="#customize-your-test"></a>
+</h3>
+<p>What do we want to test about <code>generate_data()</code>?</p>
+<p>It’s up to you, but consider testing any assumptions you make about
+the function, for example:</p>
+<ul>
+<li>It generates a <code>data.frame</code>
+</li>
+<li>All columns are <code>numeric</code>
+</li>
+<li>The number of rows corresponds to <code>n</code>
+</li>
+<li>The number of columns corresponds to the number of variables in the
+DAG (not tested below)</li>
+<li>At a very high sample size <code>n</code>, the regression
+coefficient of <code>intrinsic_motivation -&gt; wellbeing</code>
+approaches <code>beta</code> within a certain tolerance</li>
+</ul>
+<p>What would these assumptions look like when tested? For example,
+like:</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"generate_data works"</span>, <span class="op">{</span></span>
+<span>  <span class="co"># Run generate_data()</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="co"># It generates a `data.frame`</span></span>
+<span>  <span class="fu">expect_s3_class</span><span class="op">(</span><span class="va">df</span>, <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span>  <span class="co"># All columns are `numeric`</span></span>
+<span>  <span class="fu">expect_true</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">inherits</span>, what <span class="op">=</span> <span class="st">"numeric"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="co"># The number of rows corresponds to `n`</span></span>
+<span>  <span class="fu">expect_true</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="co"># At high n, the regression coefficient approaches beta within tolerance</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100000</span><span class="op">)</span></span>
+<span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wellbeing</span> <span class="op">~</span> <span class="va">intrinsic_motivation</span> <span class="op">+</span> <span class="va">needs</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equivalent</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">.4</span>, tolerance <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>Copy-paste any of these tests, or write your own. Note that, instead
+of grouping all tests, you could also break them up into separate
+<code>test_that()</code> commands:</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"generate_data generates a data.frame"</span>, <span class="op">{</span></span>
+<span>  <span class="co"># Run generate_data()</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="co"># It generates a `data.frame`</span></span>
+<span>  <span class="fu">expect_s3_class</span><span class="op">(</span><span class="va">df</span>, <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">test_that</span><span class="op">(</span><span class="st">"generate_data returns all numeric columns"</span>, <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_true</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">inherits</span>, what <span class="op">=</span> <span class="st">"numeric"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>The main advantage of this style is that the output of
+<code><a href="https://testthat.r-lib.org/reference/test_dir.html" class="external-link">testthat::test_dir()</a></code> will be documented at a more
+fine-grained level.</p>
+</div>
+<div class="section level3">
+<h3 id="run-your-tests-online">5. Run your Tests Online<a class="anchor" aria-label="anchor" href="#run-your-tests-online"></a>
+</h3>
+<p>The development platform ‘GitHub’ allows you to run code in the cloud
+(= on their servers). This is very useful when checking if your
+<code>worcs</code> project reproduces on a different system from your
+own, and also, to run your integration tests on a different system.</p>
+<p>Doing so avoids the famous meme:</p>
+<pre><code>It works on my machine ¯\_(ツ)_/¯</code></pre>
+<p>GitHub Actions is an automation tool offered by GitHub, which allows
+developers to run workflows directly from their repositories. By using
+GitHub Actions, we can automate processes such as continuous
+integration, continuous deployment, testing, and code reviews.</p>
+<p>GitHub Actions are triggered by events - for example, when pushing
+code updates to GitHub.</p>
+<p><strong>Interactive:</strong> Let’s set up a GitHub action to run our
+integration tests:</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add the appropriate GitHub action:</span></span>
+<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">github_action_testthat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Interactive:</strong> The virtual computer environment on
+GitHub actions will attempt to recreate your local environment based on
+the <code>renv</code> dependency manager. To ensure that your
+<code>renv</code> records are up to date, run the code below. It is
+important to always snapshot your dependencies before reproducing your
+analyses on another system; so run <code><a href="https://rstudio.github.io/renv/reference/snapshot.html" class="external-link">renv::snapshot()</a></code> before
+publishing your code, before triggering a GitHub action, before sharing
+your code with a collaborator, et cetera.</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/snapshot.html" class="external-link">snapshot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Interactive:</strong> Now, push your code to GitHub. Among
+the files that will be updated are instructions for GitHub actions in
+the <code>.github/</code> folder, and your updated
+<code>renv.lock</code> file.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">git_update</a></span><span class="op">(</span><span class="st">"add testthat"</span><span class="op">)</span></span></code></pre></div>
+<p>Since this GitHub action is triggered by pushing code to GitHub, if
+you now navigate to your GitHub repository. If you don’t remember your
+GitHub URL, run:</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">".git"</span>, <span class="st">"/actions"</span>, <span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_remote.html" class="external-link">git_remote_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">url</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>You should see the action running. If all is good, it will show you a
+green dot (red if there are errors).</p>
+<p>Integration testing gives you peace of mind - you know that your code
+works as expected, and via GitHub actions, can show it to the world
+too.</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="additional-resources">Additional Resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a>
 </h2>
 <ul>
@@ -1018,6 +1247,13 @@ Dask and Future Tutorial</a>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-deciSelfDeterminationTheory2012" class="csl-entry">
+Deci, Edward L., and Richard M. Ryan. 2012.
+<span>“Self-<span>Determination Theory</span>.”</span> In <em>Handbook
+of <span>Theories</span> of <span>Social Psychology</span>:
+<span>Volume</span> 1</em>, edited by Paul A. M. Van Lange, Arie
+W.Kruglanski, and E. ToryHiggins, 416–37. SAGE Publications Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link">https://doi.org/10.4135/9781446249215</a>.
+</div>
 <div id="ref-guptaChasingCarbonElusive2021" class="csl-entry">
 Gupta, Udit, Young Geun Kim, Sylvia Lee, Jordan Tse, Hsien-Hsin S. Lee,
 Gu-Yeon Wei, David Brooks, and Carole-Jean Wu. 2021. <span>“Chasing
