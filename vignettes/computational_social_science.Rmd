@@ -58,9 +58,9 @@ All other code can be inserted in code chunks in your `"manuscript.Rmd"` file; k
 **Interactive:** You'll need to install some packages to run this tutorial. Run this code:
 
 ```{r eval = FALSE}
-install.packages("theorytools")
-install.packages("dagitty")
-install.packages("tidySEM")
+install.packages("theorytools", prompt = FALSE)
+install.packages("dagitty", prompt = FALSE)
+install.packages("tidySEM", prompt = FALSE)
 ```
 
 To your `"manuscript.Rmd"` file, add the following lines in the setup chunk:
@@ -97,11 +97,19 @@ The vignette [Specifying Augmented Directed Acyclic Graphs](https://cjvanlissa.g
 
 Such DAGs are particularly useful for computational social science studies, because the `theorytools` package contains methods to convert augmented DAGs to generative models.
 
-Now, let’s load the augmented DAG. You will need the `dagitty` package:
+Now, let’s load the augmented DAG.
+**Note:** when running this code from a code chunk in your Rmarkdown file, you must use the file path `../theory/sdt.txt` to go back to the parent directory, because the manuscript and the theory are both in different subdirectories.
+If you run it interactively instead, you are already inside the parent directory, and you can use the path `theory/sdt.txt`.
 
-```{r load_theory}
-sdt <- dagitty::dagitty(paste(readLines("theory/sdt.txt"), collapse = "\n"))
+```{r load_theory, eval = FALSE}
+sdt <- dagitty::dagitty(paste(readLines("../theory/sdt.txt"), collapse = "\n"))
 ```
+
+```{r echo = FALSE}
+sdt <- structure("dag {\nexternal_event\nhealthy_development\nintegration\nintrinsic_motivation\nlocus_of_causality\nneeds\nwellbeing\nexternal_event -> intrinsic_motivation\nexternal_event -> locus_of_causality\nexternal_event -> needs\nintegration -> healthy_development\nintegration -> wellbeing\nintrinsic_motivation -> healthy_development\nintrinsic_motivation -> wellbeing\nlocus_of_causality -> intrinsic_motivation\nneeds -> integration\nneeds -> intrinsic_motivation\nneeds -> wellbeing\n}\n", class = "dagitty")
+
+```
+
 
 Then, we can plot the model using the tidySEM package.
 Get a basic plot by running `graph_sem(sdt)`:
@@ -172,12 +180,13 @@ We can now generate a synthetic dataset based on this simplified DAG:
 
 ```{r eval = FALSE}
 set.seed(1)
-df <- theorytools::simulate_data(sdt_pruned, n = 6)
+df <- theorytools::simulate_data(sdt_pruned, n = 100)
+head(df)
 ```
 ```{r echo = FALSE}
 set.seed(1)
-df <- theorytools::simulate_data(sdt_pruned, n = 6)
-knitr::kable(df, digits = 2)
+df <- theorytools::simulate_data(sdt_pruned, n = 100)
+knitr::kable(head(df), digits = 2)
 ```
 
 
@@ -226,8 +235,8 @@ By combining `worcs` with `targets`, we get the best of both worlds:
 **Interactive:** Let's install the packages required for this next section:
 
 ```{r install_targets, results='hide', eval = FALSE}
-install.packages("targets")
-install.packages("tarchetypes")
+install.packages("targets", prompt = FALSE)
+install.packages("tarchetypes", prompt = FALSE)
 ```
 **Interactive:** Then, add `targets` integration to the `worcs` project by running:
 
@@ -260,7 +269,28 @@ list(
 )
 ```
 
-**Interactive:** You can run this pipeline by executing the command `targets::tar_make()`. *If it fails the first time, try re-running `targets::tar_make()` a second time.*
+**Interactive:** You can run this pipeline by executing the command `targets::tar_make()`.
+
+### Set a Seed
+
+Computational simulation studies typically rely on random number generation to repeatedly simulate a scenario with some variability.
+
+This dependency on random numbers makes the results non-reproducible (the random numbers will be different upon repeated evaluation).
+
+Fortunately, true random numbers are rarely used: we typically use a sequence of *pseudo* random numbers.
+
+To make the randomness reproducible, we can set a "seed" for the random number generator.
+Setting a seed essentially jumps into the sequence of pseudo-random numbers at the same point each time,
+so we get the same "random" numbers over and over.
+
+To set a seed, add the command `set.seed(1)` above the `targets` pipeline. You can use any number instead of `1`, which will lead to different results.
+
+### Debugging
+
+Running `targets::tar_make()` might fail; I have observed two modes of failure:
+
+1. It fails because it cannot find the file at `../theory/sdt.txt`; changing this to `theory/sdt.txt` seems to work. Perhaps `targets::tar_make()` evaluates code chunks in the parent directory?
+1. `targets::tar_make()` fails the first time, but succeeds when re-running it a second time.
 
 ## 8. Create Your Own Functions
 
@@ -426,7 +456,7 @@ Thus, if `study_results` changes, the manuscript should be automatically re-run.
 **Interactive:** To verify that the interdependencies between pipeline steps are properly tracked, you can run:
 
 ```{r eval = FALSE}
-install.packages("visNetwork")
+install.packages("visNetwork", prompt = FALSE)
 targets::tar_visnetwork()
 ```
 ```{r echo = FALSE}
@@ -447,7 +477,7 @@ study_results = structure(list(beta = c(0, 0.2, 0.4, 0, 0.2, 0.4, 0, 0.2, 0.4
 knitr::kable(study_results, digits = 2)
 ```
 
-Or alternatively, add the  following code to plot the study results (this requires running `install.packages("ggplot2")`).
+Or alternatively, add the  following code to plot the study results (this requires running `install.packages("ggplot2", prompt = FALSE)`).
 
 
 ```{r}
@@ -514,8 +544,7 @@ There are various ways to implement parallel computing, and some methods are spe
 **Interactive:** First, install the required packages:
 
 ```{r eval = FALSE}
-install.packages("future")
-install.packages("future.apply")
+install.packages("future", prompt = FALSE)
 ```
 
 
@@ -632,6 +661,186 @@ because the overhead associated with setting up the parallel back-end outweighs 
 When you are running many repetitions or conducting large computational simulation studies,
 there will be time saved.
 You can [benchmark your code](https://www.alexejgossmann.com/benchmarking_r/) to estimate how much time will be saved (but this is beyond the scope of the present tutorial).
+
+
+# *Optional:* Add Integration Tests
+
+Integration testing is a procedure used in software development to ensure that your code works as expected.
+In a WORCS project, using integration tests increases scientific rigor and
+helps you ensure reproducibility.
+This section explains the bare basics of integration testing for reproducible research workflows;
+see the [R Packages book](https://r-pkgs.org/testing-basics.html) for more detail.
+
+### Why Write Tests?
+
+You probably already test your functions informally - you write a function, run it in the console, and see if the output looks good.
+This is better than nothing - but is it fool-proof?
+Will you remember which functions looked good in 6 months?
+What if someone changes part of your code?
+What if functions are used in a different way then you expected?
+
+**Integration tests:**
+
+* Run automatically and consistently.
+* Help catch bugs.
+* Provide documentation of expected behavior.
+* Encourage modular, testable code.
+
+### When to Test?
+
+* When you write a new function.
+* When fixing a bug (add a test to catch it next time).
+* Before sharing, submitting, or publishing your analysis.
+
+## 1. Set Up `testthat`
+
+**Interactive**: In your WORCS project, run the following code:
+
+```{r eval = FALSE}
+worcs::add_testthat()
+```
+
+This creates a `tests/testthat/` folder to hold your tests.
+Note the two suggestions printed in the console: 
+
+* Run `usethis::use_test()` to initialize a basic test file and open it for editing.
+* Run `worcs::github_action_testthat()` to add a GitHub action that evaluates the integration tests.
+
+## 2. Write a Simple Test
+
+Let's prepare a file to test the behavior of our function `generate_data()` by running `usethis::use_test(name = "generate_data")`.
+
+By default, the test file should look like this, testing some common sense math:
+
+```
+test_that("multiplication works", {
+  expect_equal(2 * 2, 4)
+})
+```
+
+Each test file contains:
+
+* A function call to `test_that()`
+* A short description, in this case `"multiplication works"`.
+* One or more **expectations** that are evaluated, like `expect_equal()` in the example above.
+
+Test files' names must start with `test-`, and they must be saved in `tests/testthat/`.
+
+## 3. Run Tests
+
+In your console or script, you can run:
+
+```{r eval = FALSE}
+worcs::test_worcs()
+```
+
+Or, to test a single file:
+
+```{r eval = FALSE}
+testthat::test_file("tests/testthat/test-generate_data.R")
+```
+
+The output should tell you which tests passed or failed, and why they failed.
+
+
+## 4. Customize Your Test
+
+What do we want to test about `generate_data()`?
+
+It's up to you, but consider testing any assumptions you make about the function, for example:
+
+* It generates a `data.frame`
+* All columns are `numeric`
+* The number of rows corresponds to `n`
+* The number of columns corresponds to the number of variables in the DAG (not tested below)
+* At a very high sample size `n`, the regression coefficient of `intrinsic_motivation -> wellbeing` approaches `beta` within a certain tolerance
+
+What would these assumptions look like when tested? For example, like:
+
+```{r eval = FALSE}
+test_that("generate_data works", {
+  # Run generate_data()
+  df <- generate_data(.4, 100)
+  # It generates a `data.frame`
+  expect_s3_class(df, "data.frame")
+  # All columns are `numeric`
+  expect_true(all(sapply(df, inherits, what = "numeric")))
+  # The number of rows corresponds to `n`
+  expect_true(nrow(df) == 100)
+  # At high n, the regression coefficient approaches beta within tolerance
+  set.seed(1)
+  df <- generate_data(.4, 100000)
+  res <- lm(wellbeing ~ intrinsic_motivation + needs, data = df)
+  expect_equivalent(res$coefficients[2], .4, tolerance = .01)
+})
+```
+
+Copy-paste any of these tests, or write your own. Note that, instead of grouping all tests, you could also break them up into separate `test_that()` commands:
+
+```{r eval = FALSE}
+test_that("generate_data generates a data.frame", {
+  # Run generate_data()
+  df <- generate_data(.4, 100)
+  # It generates a `data.frame`
+  expect_s3_class(df, "data.frame")
+})
+
+test_that("generate_data returns all numeric columns", {
+  df <- generate_data(.4, 100)
+  expect_true(all(sapply(df, inherits, what = "numeric")))
+})
+```
+
+The main advantage of this style is that the output of `testthat::test_dir()` will be documented at a more fine-grained level.
+
+## 5. Run your Tests Online
+
+The development platform 'GitHub' allows you to run code in the cloud (= on their servers).
+This is very useful when checking if your `worcs` project reproduces on a different system from your own,
+and also, to run your integration tests on a different system.
+
+Doing so avoids the famous meme:
+
+```
+It works on my machine ¯\_(ツ)_/¯
+```
+
+GitHub Actions is an automation tool offered by GitHub, which allows developers to run workflows directly from their repositories. By using GitHub Actions, we can automate processes such as continuous integration, continuous deployment, testing, and code reviews.
+
+GitHub Actions are triggered by events - for example, when pushing code updates to GitHub.
+
+**Interactive:** Let's set up a GitHub action to run our integration tests:
+
+```{r eval = FALSE}
+# Add the appropriate GitHub action:
+worcs::github_action_testthat()
+```
+
+**Interactive:** The virtual computer environment on GitHub actions will attempt to recreate your local environment based on the `renv` dependency manager.
+To ensure that your `renv` records are up to date, run the code below.
+It is important to always snapshot your dependencies before reproducing your analyses on another system;
+so run `renv::snapshot()` before publishing your code, before triggering a GitHub action, before sharing your code with a collaborator, et cetera.
+
+```{r eval = FALSE}
+renv::snapshot()
+```
+
+**Interactive:** Now, push your code to GitHub. Among the files that will be updated are instructions for GitHub actions in the `.github/` folder, and your updated `renv.lock` file.
+
+```{r eval = FALSE}
+worcs::git_update("add testthat")
+```
+
+Since this GitHub action is triggered by pushing code to GitHub, if you now navigate to your GitHub repository.
+If you don't remember your GitHub URL, run:
+
+```{r eval = FALSE}
+utils::browseURL(gsub(".git", "/actions", gert::git_remote_list()$url, fixed = TRUE))
+```
+
+You should see the action running. If all is good, it will show you a green dot (red if there are errors).
+
+Integration testing gives you peace of mind - you know that your code works as expected, and via GitHub actions, can show it to the world too.
 
 
 # Additional Resources
