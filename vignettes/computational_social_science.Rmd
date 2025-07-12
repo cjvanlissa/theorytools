@@ -1,0 +1,645 @@
+---
+title: "Conducting Theory-Based Reproducible Simulation Studies"
+output: theorytools:::webex_vignette
+bibliography: computational.bib
+vignette: >
+  %\VignetteIndexEntry{Conducting Theory-Based Reproducible Simulation Studies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+This tutorial introduces a reproducible research workflow for computational social science studies,
+based on the [Workflow for Open Reproducible Code in Science (WORCS)](https://github.com/cjvanlissa/worcs).
+
+The WORCS workflow, implemented in the `worcs` package, is designed to create fully reproducible research archives in R. 
+The `theorytools` R-package is designed to make and work with *FAIR theories*: theories that are Findable in standardized archives (Zenodo, Open Science Framework), Accessible using human- and machine-readable file formats, Interoperable for specific purposes (in this case, conducting computational simulation studies), and Reusable (licensed to be iteratively updated, including by others than the original author).
+
+In this tutorial, we combine `worcs` and `theorytools` to conduct a fully reproducible, theory-driven computational simulation study.
+
+The learning goals are to:
+
+- [ ] Create a reproducible research project using WORCS.
+- [ ] Import a FAIR theory structured as an augmented DAG.
+- [ ] Simulate data based on the FAIR theory.
+
+# Setting up a Reproducible Project with WORCS
+
+## 1. Create a new WORCS Project
+
+WORCS helps automate reproducible workflows by setting up version control, metadata, licenses, and more.
+
+1. Open RStudio.
+1. Go to **File > New Project > New Directory > WORCS Project Template**.
+    a. Choose a directory name, e.g., `"fair_theory_simulation"`.
+    a. *Optionally*, you can create a GitHub repository. If you have GitHub integration set up, all that is required is to specify a GitHub remote repository name.
+    a. Keep Manuscript template set to "GitHub document"
+    a. Keep Preregistration template set to "None"
+    a. Keep License set to "cc0" for a CC-0 copyright waiver
+    a. Select "Use renv"
+    a. **De-select** "Use targets": we will use `targets` in the next chapter, but we'll add support for it manually for didactic purposes. Once you're familiar with the `targets` workflow, feel free to add it automatically when creating your next project.
+    a. Select "Open in new session"
+1. Click **Create Project**.
+
+WORCS will now set up a project that implements best practices for reproducibility. A new Rstudio instance should open automatically.
+
+When working through the next sections, add the code chunks to your `"manuscript.Rmd"` file except when the code is labeled with **Interactive:**.
+Code labeled with  **Interactive:** should be run only once, in the Console window.
+All other code can be inserted in code chunks in your `"manuscript.Rmd"` file; knit it regularly to verify that everything runs as expected.
+
+> What does it mean to run R code *interactively*? `r webexercises::mcq(sample(c(answer = "Executing code immediately in an R session that a human user is interacting with.", "Having one function call another function; these functions are said to be 'interacting'", "Evaluating code by placing it in an Rmarkdown document, and knitting that document.")))`
+
+
+## 2. Download a FAIR Theory
+
+**Interactive:** You'll need to install some packages to run this tutorial. Run this code:
+
+```{r eval = FALSE}
+install.packages("theorytools")
+install.packages("dagitty")
+install.packages("tidySEM")
+```
+
+To your `"manuscript.Rmd"` file, add the following lines in the setup chunk:
+
+```{r eval = FALSE}
+library(theorytools)
+library(dagitty)
+library(tidySEM)
+```
+
+We will use a FAIR version of **Self-Determination Theory (SDT)**.
+The vignette [Formalizing Self-Determination Theory](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html) describes how this FAIR theory was created based on the original Self-Determination Theory [@deciSelfDeterminationTheory2012].
+It was specified as a Directed Acyclic Graph, or DAG: a diagram that specifies the causal relations proposed by a theory.
+Such diagrams can be used to derive hypotheses, select control variables for causal inference, and conduct simulation studies (as we will do in this tutorial).
+
+**Interactive:** Run the code below to download this existing FAIR theory, which is stored on Zenodo.
+It will create a new subfolder called `"theory/"` for these files, because the theory repository has its own README and LICENSE files; you don't want to overwrite those files from your WORCS repository.
+Optionally, you can have a look at the archived version by opening the URL <https://doi.org/10.5281/zenodo.15648655>.
+
+```{r download_theory}
+theorytools::download_theory("10.5281/zenodo.15648655", path = "theory")
+```
+
+The theory includes a README file, describing the contents of the other files, a LICENSE describing how the theory can be reused, a file called `sdt.txt` containing the DAG, and `definitions.csv`, containing construct definitions.
+Note that these definitions require further specification;
+as explained [in the Vignette on formalizing SDT](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html)),
+the book chapter describing the theory does not explicitly define any of the constructs involved.
+
+## 3. Load the FAIR Theory
+
+This FAIR theory is an augmented DAG, which can be read using the `dagitty` package.
+
+The vignette [Specifying Augmented Directed Acyclic Graphs](https://cjvanlissa.github.io/theorytools/articles/augmented_dags.html) describes what augmented DAGs are.
+
+Such DAGs are particularly useful for computational social science studies, because the `theorytools` package contains methods to convert augmented DAGs to generative models.
+
+Now, let’s load the augmented DAG. You will need the `dagitty` package:
+
+```{r load_theory}
+sdt <- dagitty::dagitty(paste(readLines("theory/sdt.txt"), collapse = "\n"))
+```
+
+Then, we can plot the model using the tidySEM package.
+Get a basic plot by running `graph_sem(sdt)`:
+
+```{r echo = TRUE, eval = FALSE}
+tidySEM::graph_sem(sdt)
+```
+
+```{r echo = FALSE, out.width="60%"}
+if(!file.exists('sdt.png')){
+  set.seed(1)
+  p <- tidySEM::graph_sem(sdt, rect_width = 2, rect_height = 2) + ggplot2::scale_x_continuous(expand = c(.2,0))
+  ggplot2::ggsave("sdt.png", p, device = "png")
+}
+knitr::include_graphics("sdt.png")
+```
+
+
+
+> According to the DAG, what are the causes of `wellbeing`? `r webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))`
+
+
+## 4. Creating a Computational Model
+
+Computational simulation studies allow us to generate and analyze simulated datasets, for example to:
+
+* Explore what-if scenarios
+* Test the implications of model assumptions
+* Plan our analyses before data collection
+* Conduct power analysis and plan our sample size
+* Preregister a fully reproducible analysis pipeline [Preregistration-As-Code, @peikertReproducibleResearchTutorial2021; @vanlissaComplementingPreregisteredConfirmatory2022].
+
+Below is a simple code snippet to generate synthetic data using the `theorytools::simulate_data()` function.
+This function samples random values for exogenous variables and computes endogenous variables as functions of their predictors (linear functions, by default).
+By default, regression coefficients are randomly sampled in the range `[-0.6, +0.6]` unless specific values are provided by the user.
+You might use prior studies or expert knowledge to set more realistic parameter values,
+or use the conventional values for null (0), small (.2), or medium (.4) effect sizes.
+By default, normal distributions are assumed for exogenous variables and residual error, unless other distributions are specified.
+Note that many other functions for simulating data exist,
+and some may be better suited to particular use cases.
+The tutorial on [Specifying Augmented DAGS](https://cjvanlissa.github.io/theorytools/articles/augmented_dags.html) contains more information about user-defined functional forms and (error) distributions.
+
+```{r simulate-data, eval = FALSE}
+set.seed(1)
+theorytools::simulate_data(sdt, n = 5)
+```
+```{r echo = FALSE}
+set.seed(1)
+knitr::kable(theorytools::simulate_data(sdt, n = 5), digits = 2)
+```
+
+This synthetic dataset is consistent with the structure encoded in our FAIR SDT, though the parameter values are arbitrary.
+
+### Simplifying the Model
+
+Suppose we are interested in studying the effect of intrinsic motivation on well-being.
+Even if our research is grounded in SDT, we do not need the entire theory to hypothesize about this specific relationship.
+We can use the DAG to derive a restricted version of the theory that includes all variables that might confound the relationship of interest between intrinsic motivation and well-being:
+
+```{r}
+sdt_pruned <- theorytools:::prune_dag(sdt,
+                                      exposure = "intrinsic_motivation",
+                                      outcome = "wellbeing")
+sdt_pruned
+```
+
+We can now generate a synthetic dataset based on this simplified DAG:
+
+```{r eval = FALSE}
+set.seed(1)
+df <- theorytools::simulate_data(sdt_pruned, n = 6)
+```
+```{r echo = FALSE}
+set.seed(1)
+df <- theorytools::simulate_data(sdt_pruned, n = 6)
+knitr::kable(df, digits = 2)
+```
+
+
+## 5. Analyze the Simulated Data
+
+If our goal is to conduct a computational study, we can manipulate any aspect of the data simulation procedure. 
+These manipulations are the independent variables of our computational study.
+We can then apply any kind of analysis to the simulated data to obtain the outcome (dependent variable) of our computational study.
+
+One of the most basic types of computational simulation studies is a power analysis,
+where we manipulate the true effect size of a parameter (independent variable: effect size) and calculate whether or not we observe a significant result for a test of that parameter in the simulated data (dependent variable: significance).
+
+The analysis function in this case would be a simple significance test of the parameter of interest.
+First, we conduct bivariate linear regression (because the DAG indicated that we need to control for the effect of needs):
+
+```{r analysis}
+res <- lm(wellbeing ~ intrinsic_motivation + needs, data = df)
+summary(res)
+```
+
+Then, our outcome of interest is the significance of the effect of `intrinsic_motivation`.
+We can extract the p-value as follows, and compare it to the significance level $\alpha < .05$ to get a binary result (significant: TRUE or FALSE):
+
+```{r eval = FALSE}
+sum_res <- summary(res)
+sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
+```
+
+> Run the code yourself, and answer true or false: In this one dataset, the result was significant. `r webexercises::torf(TRUE)`
+
+# Using `worcs` with `targets`: Sustainable Reproducibility
+
+One of the main tenets of open and reproducible science is the ability to re-run all analyses from raw data to published output, to ensure that results are still valid.
+However, in computationally intensive projects, re-running unchanged code repeatedly can be redundant, slow, and wasteful.
+
+The `targets` package reduces unnecessary compute by breaking down an analysis pipeline into steps that explicitly reference one another, where each step is only re-computed if either the step changed, or its inputs changed.
+Reducing unnecessary computation speeds up the analysis process and reduces the carbon footprint of analyses [@guptaChasingCarbonElusive2021].
+
+By combining `worcs` with `targets`, we get the best of both worlds:
+
+* `worcs` is used to create a fully reproducible research archive;
+* `targets` ensures that redundant steps in a reproducible analysis pipeline are not unnecessarily re-computed.
+
+## 6. Add `targets` to the WORCS Project
+
+**Interactive:** Let's install the packages required for this next section:
+
+```{r install_targets, results='hide', eval = FALSE}
+install.packages("targets")
+install.packages("tarchetypes")
+```
+**Interactive:** Then, add `targets` integration to the `worcs` project by running:
+
+```{r eval = FALSE}
+worcs::add_targets()
+```
+
+Note the status messages. The newly created `_targets.R` file specifies the steps in the reproducible workflow.
+The newly created `"./R/"` directory should contain functions that are used in that workflow.
+
+## 7. Try Running the Pipeline
+
+Open the file `_targets.R`. Note that the default pipeline (which will look something like the code below) consists of a few placeholder steps:
+
+1. Create `data`
+1. Run a `model`
+1. Render the `manuscript.Rmd`
+
+```{r eval = FALSE}
+list(
+  tar_target(
+    name = data,
+    command = tibble(x = rnorm(100), y = rnorm(100))
+  ),
+  tar_target(
+    name = model,
+    command = coefficients(lm(y ~ x, data = data))
+  ),
+  tarchetypes::tar_render(manuscript, "manuscript/manuscript.Rmd")
+)
+```
+
+**Interactive:** You can run this pipeline by executing the command `targets::tar_make()`. *If it fails the first time, try re-running `targets::tar_make()` a second time.*
+
+## 8. Create Your Own Functions
+
+Now, let's create our own functions for the steps we need in our computational simulation study (power analysis).
+
+### Function to Generate Data
+
+First, we need a function to generate synthetic data, which allows us to manipulate the true effect size.
+
+The `simulate_data()` function we used previously to create a single synthetic dataset can also generate a script for synthetic data generation:
+
+```{r simulate_data}
+theorytools::simulate_data(sdt_pruned, n = 100, run = FALSE)
+```
+
+Let's write this script to a new file in `./R/`, and edit it.
+
+**Interactive:** Run the following code:
+
+```{r eval = FALSE}
+writeLines(
+  theorytools::simulate_data(sdt_pruned, n = 100, run = FALSE),
+  "R/generate_data.R"
+)
+```
+
+Open the file `R/generate_data.R`, and edit it as follows (or in any other way you please):
+
+* Wrap the code in a `fuction()` call with arguments `beta, n`
+* Comment out the random seed, so that each run will be different
+* Comment out `n <- 100` so that `n` is controlled via the function arguments
+* Replace the fixed effect size for `intrinsic_motivation` with the argument `beta`, so that effect size is controlled via the function arguments
+
+```
+generate_data <- function(beta, n){
+# Set random seed
+# set.seed(442008606)
+# Set simulation parameters
+# n <- 100
+# Simulate exogenous nodes
+needs <- rnorm(n = n)
+# Simulate endogenous nodes
+intrinsic_motivation <- -(0.19 * needs) + rnorm(n = n)
+wellbeing <- beta * intrinsic_motivation - 0.42 * needs + rnorm(n = n)
+df <- data.frame(
+intrinsic_motivation = intrinsic_motivation,
+needs = needs,
+wellbeing = wellbeing
+)
+return(df)
+}
+```
+
+### *Optional*: The Effect of Needs
+
+Note that the effect of `needs` on `intrinsic_motivation` and `wellbeing` is hard-coded in the code snippet above.
+It is possible to draw a random value for these effects each time.
+To do so, you could (for example) replace the fixed values with `runif(1, min = -.4, max = .4)`.
+
+### Function to Analyze Data
+
+Now, create another file called `analyze_data.R` to contain a function to perform the analysis procedure we defined in step 5:
+
+```
+analyze_data <- function(df){
+# Conduct linear regression
+res <- lm(wellbeing ~ intrinsic_motivation + needs, data = df)
+# Obtain a model summary
+sum_res <- summary(res)
+# Compare p-value of our coefficient of interest to the significance level, .05
+sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
+}
+```
+
+### Function to Conduct the Study
+
+We will also need a function to conduct the computational simulation study itself. Create a file called `perform_study.R`, containing a function like this (feel free to develop your own):
+
+```
+perform_study <- function(study_design, reps = 100){
+  # For each row of the study design, execute a function
+  pwr <- apply(study_design, 1, function(thisrow){
+    # Replicate the row of the study design reps times
+    out <- replicate(n = reps, expr = {
+      # Simulate data with the beta and n from thisrow
+      df <- with(as.list(thisrow), generate_data(beta = beta, n = n))
+      # Analyze those data
+      analyze_data(df)
+    })
+    # Calculate the proportion of significant results using mean()
+    mean(out)
+  })
+  # Make a data frame containing the study design and study results (pwr)
+  data.frame(study_design, power = pwr)
+}
+```
+
+## 9. Create Your Own Pipeline
+
+In the file `_targets.R`, we can now define our own pipeline for our computational simulation study.
+
+For each step in the pipeline, we define a `tar_target()`, naming the output with `name`.
+
+Our goal is to create a list that looks something like this:
+
+```
+list(
+  tar_target(
+    name = study_design,
+    command = ...
+  ),
+  tar_target(
+    name = study_results,
+    command = ...
+  ),
+  tarchetypes::tar_render(manuscript, "manuscript/manuscript.Rmd")
+)
+```
+
+### Create Study Design
+
+For a power analysis, we can manipulate the true effect size and sample size.
+
+Let's say we want to design a study where the true effect size $\beta \in [.1, .2, .4]$ and the sample size $n \in [50, 100, 200]$ (for convenience's sake, we omit an analysis of false-positive results where $\beta = 0$ now).
+
+We can use the R-function `expand.grid()` to create all possible combinations:
+
+```{r}
+expand.grid(
+  beta = c(.1, .2, .4),
+  n = c(50, 100, 200)
+)
+```
+
+Add this to the pipeline as follows:
+
+```
+tar_target(
+    name = study_design,
+    command = expand.grid(
+      beta = c(.1, .2, .4),
+      n = c(50, 100, 200)
+    )
+  )
+```
+
+Now, add another target to conduct the study, based on `study_design`. Explicitly referencing an object with this `name` will ensure that the code is re-run if `study_design` changes (verify this yourself).
+
+```
+tar_target(
+    name = study_results,
+    command = perform_study(study_design = study_design, reps = 100)
+  )
+```
+
+## 10. Edit `manuscript.Rmd`
+
+Now, open `manuscript.Rmd` and edit it to load `study_results` and tabulate or plot them.
+To load the study results, replace the default line `tar_load(model)` (from the mock pipeline created earlier) with `tar_load(study_results)`.
+Using `tar_load()` inside of `manuscript.Rmd` makes the latter dependent on the former.
+Thus, if `study_results` changes, the manuscript should be automatically re-run.
+
+**Interactive:** To verify that the interdependencies between pipeline steps are properly tracked, you can run:
+
+```{r eval = FALSE}
+install.packages("visNetwork")
+targets::tar_visnetwork()
+```
+```{r echo = FALSE}
+knitr::include_graphics("visnetwork.png")
+```
+
+Add the following code to the manuscript to tabulate the results:
+
+```{r eval = FALSE}
+knitr::kable(study_results, digits = 2)
+```
+
+```{r echo = FALSE}
+study_results = structure(list(beta = c(0, 0.2, 0.4, 0, 0.2, 0.4, 0, 0.2, 0.4
+), n = c(50, 50, 50, 100, 100, 100, 200, 200, 200), power = c(0.09, 
+0.22, 0.77, 0.06, 0.56, 0.98, 0.03, 0.74, 1)), class = "data.frame", row.names = c(NA, 
+-9L))
+knitr::kable(study_results, digits = 2)
+```
+
+Or alternatively, add the  following code to plot the study results (this requires running `install.packages("ggplot2")`).
+
+
+```{r}
+library(ggplot2)
+df_plot <- study_results
+df_plot$beta <- ordered(df_plot$beta)
+ggplot(df_plot, aes(x = n, y = power, color = beta, shape = beta)) +
+  geom_point() +
+  geom_line() +
+  theme_bw()
+```
+
+
+## 11. Run the Pipeline
+
+**Interactive:** If you were successful, you should be able to run the pipeline by calling `targets::tar_make()`.
+
+## 12. Add Endpoints
+
+The `worcs` package allows you to specify endpoints for your analysis; this makes it possible to check whether analysis results are identical upon repeated evaluation.
+
+If your analysis is/should be fully deterministic, with any random numbers controlled by `set.seed()` to ensure identical results upon repeated evaluation, then it's possible to specify the entire output document (e.g., `manuscript.html`) as an endpoint.
+
+Alternatively, if your document does depend non-deterministically on random numbers (e.g., you plot the results with some random jitter), then it cannot be exactly reproduced.
+In this case, you can either remove all non-deterministic sources of randomness, or simply track deterministic intermediate outputs as endpoints.
+For example, you could write the analysis results to a `.csv` file, and track that as an endpoint.
+
+You can add an endpoint by calling `worcs::add_endpoint("manuscript/manuscript.html")`.
+If the endpoint is intentionally changed (e.g., because you updated your analysis code),
+you can update its record by calling `worcs::snapshot_endpoints()`.
+
+You can call `worcs::reproduce()`, which (in a project with `targets`) calls `tar_make()` and then calls `worcs::check_endpoints()` to verify that the endpoints reproduce after re-running the analysis.
+
+Be very mindful of the fact that `targets` does not re-run pipeline steps when the step, or the inputs of the step, have not changed.
+That means that it might look like your code reproduces upon repeat evaluation - but only because the code was not actually re-evaluated, because `targets` retrieved the results from its cache.
+
+To properly evaluate whether your code reproduces, you must first destroy the cache of pipeline results before running `worcs::reproduce()`.
+That causes targets to re-run every step of the pipeline.
+This might look like:
+
+```{r eval = FALSE}
+# Snapshot the current state of the endpoints
+worcs::snapshot_endpoints()
+# Destroy the cache of targets results
+targets::tar_destroy()
+# worcs::reproduce() calls targets::tar_make(), then worcs::check_endpoints()
+worcs::reproduce()
+```
+
+# *Optional:* Use Parallel Computation
+
+Computational studies, like power analyses via Monte Carlo simulation,
+often require repeating computations many times, which can be time-consuming.
+Modern computers (CPUs) usually have multiple "cores"; by default, a program like Rstudio uses one core - but it's possible to assign a task to multiple cores.
+Parallel computing is the practice of distributing a computational task across multiple CPU cores, significantly speeding up execution.
+
+In this section, you’ll learn how to parallelize your simulation study using the `future` package.
+This package has a simple interface and can be implemented in your `perform_study()` function with minimal code changes.
+
+## 1. Install and Load Required Packages
+
+There are various ways to implement parallel computing, and some methods are specific to different operating systems. The method below works (at least) on Windows.
+
+**Interactive:** First, install the required packages:
+
+```{r eval = FALSE}
+install.packages("future")
+install.packages("future.apply")
+```
+
+
+## 2. Adding Paralellization to `perform_study()`
+
+Paralellization in R requires registering a parallel backend:
+essentially, starting an R-session on each of the cores you want to use, and loading the required functions and packages there. 
+These cores do not have access to the main R-session you are using interactively; they do not see what variables and functions you have loaded.
+
+To register a parallel backend, you can add the following code to `perform_study()`:
+
+```{r eval = FALSE}
+library(future)
+plan(multisession, workers = 4L)
+```
+
+Instead of hard-coding the number of workers (cores) to `4L` (integer 4),
+you should choose the number based on your computer's actual number of cores.
+You can determine the number of cores by running `parallelly::availableCores()`.
+While you can use all cores for parallel computing,
+people often use one or two fewer so they can keep using their computer while the simulation is running.
+
+To do so, you could adapt the code as follows:
+
+```{r eval = FALSE}
+library(future)
+plan(multisession, workers = parallelly::availableCores()-2L)
+```
+
+Note that on Mac or Linux, you might be able to use a more efficient backend by 'forking' processes.
+To do so, use `plan(multicore)` instead of `plan(multisession)`.
+
+The package `future.apply` contains parallel equivalents to base R functions like `lapply()`, `sapply()`, and importantly, `replicate()`.
+To paralellize the inner loop of our simulation, we can use:
+
+```{r eval = FALSE}
+future.apply::future_replicate(n = reps, expr = {
+      df <- with(as.list(thisrow), generate_data(beta = beta, n = n))
+      analyze_data(df)
+    },
+    future.seed = TRUE)
+```
+
+The argument `future.seed` ensures that random seeds are properly handled so the results will be replicable.
+For more information on seeds in parallel computation, see [this blog post](https://www.jottr.org/2020/09/22/push-for-statistical-sound-rng/).
+
+### What to Paralellize?
+
+Computational simulation studies often consist of loops-within-loops.
+Deciding *which loop* to paralellize is a bit of an art form, and an area of specialization.
+Considerations that weigh in to the decision are:
+
+* What is the overhead (in terms of processing time) to set up the parallel backend?
+* Where is the bottleneck: does the simulation fill up working memory, or does it max out your processor? You can [use code profiling](https://support.posit.co/hc/en-us/articles/218221837-Profiling-R-code-with-the-RStudio-IDE) to assess CPU and memory bottlenecks, but this is beyond the scope of the present tutorial.
+
+In this case, we could paralellize across the 9 conditions of the study, or across the 100 replications of those conditions.
+I chose to paralellize across the 9 study conditions, having each core execute one condition 100 times.
+Compare the function `perform_study()` with and without paralellization:
+
+#### Without Paralellization
+
+```{r eval = FALSE}
+perform_study <- function(study_design, reps = 100){
+  # For each row of the study design, execute a function
+  pwr <- apply(study_design, 1, function(thisrow){
+    # Replicate the row of the study design reps times
+    out <- replicate(n = reps, expr = {
+      # Simulate data with the beta and n from thisrow
+      df <- with(as.list(thisrow), generate_data(beta = beta, n = n))
+      # Analyze those data
+      analyze_data(df)
+    })
+    # Calculate the proportion of significant results using mean()
+    mean(out)
+  })
+  # Make a data frame containing the study design and study results (pwr)
+  data.frame(study_design, power = pwr)
+}
+```
+
+#### With Paralellization
+
+```{r eval = FALSE}
+perform_study <- function(study_design, reps = 100){
+  library(future)
+  # Sets up clusters from number of cores
+  plan(multisession, workers = parallelly::availableCores()-2L)
+  pwr <- apply(study_design, 1, function(thisrow){
+    # Replicate the row of the study design reps times
+    out <- future.apply::future_replicate(n = reps, expr = {
+      # Simulate data with the beta and n from thisrow
+      df <- with(as.list(thisrow), generate_data(beta = beta, n = n))
+      # Analyze those data
+      analyze_data(df)
+    },
+    future.seed = TRUE)
+    # Calculate the proportion of significant results using mean()
+    mean(out)
+  })
+  data.frame(study_design, power = pwr)
+}
+```
+
+### 3. Re-run the Pipeline
+
+Now rerun your simulation with:
+
+```{r eval = FALSE}
+targets::tar_make()
+```
+
+Do you notice a speedup? Probably not,
+because the overhead associated with setting up the parallel back-end outweighs the time saved by paralellization.
+When you are running many repetitions or conducting large computational simulation studies,
+there will be time saved.
+You can [benchmark your code](https://www.alexejgossmann.com/benchmarking_r/) to estimate how much time will be saved (but this is beyond the scope of the present tutorial).
+
+
+# Additional Resources
+
+* **WORCS documentation:** [https://cjvanlissa.github.io/worcs/](https://cjvanlissa.github.io/worcs/)
+* **theorytools documentation:** [https://cjvanlissa.github.io/theorytools/](https://cjvanlissa.github.io/theorytools/)
+* **FAIR Principles:** [https://www.go-fair.org/fair-principles/](https://www.go-fair.org/fair-principles/)
+* **TOP Guidelines:** [https://www.cos.io/initiatives/top-guidelines](https://www.cos.io/initiatives/top-guidelines)
+* **Paralellizing your Code:** [SCF Dask and Future Tutorial](https://computing.stat.berkeley.edu/tutorial-dask-future/R-future.html)
+
+# References
