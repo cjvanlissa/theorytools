@@ -4,12 +4,13 @@ pkgdown_sha: ~
 articles:
   augmented_dags: augmented_dags.html
   causal-inference: causal-inference.html
+  computational_social_science: computational_social_science.html
   dunning-kruger: dunning-kruger.html
   fair-theory: fair-theory.html
   formalizing_sdt: formalizing_sdt.html
   readme: readme.html
   updating_theory: updating_theory.html
-last_built: 2025-07-09T05:40Z
+last_built: 2025-07-12T05:54Z
 urls:
   reference: https://cjvanlissa.github.io/theorytools/reference
   article: https://cjvanlissa.github.io/theorytools/articles
