@@ -2,6 +2,7 @@
 
 * Minor bugfixes
 * Add prune_dag()
+* Add vignette computational_social_science.Rmd
 
 # theorytools 0.1.1
 

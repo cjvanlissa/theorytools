@@ -14,8 +14,8 @@ Van Lissa further adapted the theory specification, as documented in [this vigne
 
 ## Interoperability
 
-`sdt.txt`	This file contains the main theory, specified as a DAG. It is interoperable for causal inference and data simulaiton in R, as explained in [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html).
-`definitions.csv`	This file contains definitions of the constructs in `sdt.txt`, inasfar as we could find them. At present, this file is not very interoperable. We urgently invite domain experts to propose more concrete definitions of the constructs (as our attempt to identify the intended definitions likely fell short), or to propose new and better definitions.
+`sdt.txt`	This file contains the main theory, specified as a DAG. It is interoperable for causal inference and data simulation in R, as explained in [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html).
+`definitions.csv`	This file contains the definitions of the constructs in `sdt.txt` we were able to find. At present, this file is not very interoperable. We urgently invite domain experts to propose more concrete definitions of the constructs (as our attempt to identify the intended definitions likely fell short), or to propose new and better definitions.
 
 ## Contributing
 

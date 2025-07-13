@@ -20,11 +20,20 @@ The `theorytools` R-package is designed to make and work with *FAIR theories*: t
 
 In this tutorial, we combine `worcs` and `theorytools` to conduct a fully reproducible, theory-driven computational simulation study.
 
-The learning goals are to:
+### Before Starting This Tutorial
+
+- [ ] You must have [Set up your computer for WORCS](https://cjvanlissa.github.io/worcs/articles/setup)
+- [ ] Running `worcs::check_worcs_installation()` should return all green checkmarks
+
+### Learning Goals
+
+In this tutorial, you will learn how to:
 
 - [ ] Create a reproducible research project using WORCS.
-- [ ] Import a FAIR theory structured as an augmented DAG.
-- [ ] Simulate data based on the FAIR theory.
+- [ ] Import a "FAIR theory", specified as an augmented DAG.
+- [ ] Create a computational simulation study based on the FAIR theory.
+- [ ] Add `targets` to your simulation study to reduce redundant compute
+- [ ] Add integration testing to your study to ensure your functions work as intended
 
 # Setting up a Reproducible Project with WORCS
 
@@ -89,6 +98,8 @@ Note that these definitions require further specification;
 as explained [in the Vignette on formalizing SDT](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html)),
 the book chapter describing the theory does not explicitly define any of the constructs involved.
 
+> Why is the FAIR theory downloaded into a separate `theory/` subfolder? `r webexercises::mcq(sample(c(answer = "To prevent overwriting the WORCS project's README and LICENSE files", "To avoid downloading unnecessary files", "Because theorytools only works inside a 'theory/' directory", "Because dagitty requires theory files to be placed in a specific folder")))`
+
 ## 3. Load the FAIR Theory
 
 This FAIR theory is an augmented DAG, which can be read using the `dagitty` package.
@@ -127,8 +138,6 @@ if(!file.exists('sdt.png')){
 knitr::include_graphics("sdt.png")
 ```
 
-
-
 > According to the DAG, what are the causes of `wellbeing`? `r webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))`
 
 
@@ -162,6 +171,8 @@ knitr::kable(theorytools::simulate_data(sdt, n = 5), digits = 2)
 ```
 
 This synthetic dataset is consistent with the structure encoded in our FAIR SDT, though the parameter values are arbitrary.
+
+> Which of the following is **not a reason** to use computational simulation studies? `r webexercises::mcq(sample(c(answer = "Fitting a model to real-world data", "Exploring what-if scenarios", "Conducting power analysis", "Preregistering a reproducible analysis pipeline")))`
 
 ### Simplifying the Model
 
@@ -289,7 +300,7 @@ To set a seed, add the command `set.seed(1)` above the `targets` pipeline. You c
 
 Running `targets::tar_make()` might fail; I have observed two modes of failure:
 
-1. It fails because it cannot find the file at `../theory/sdt.txt`; changing this to `theory/sdt.txt` seems to work. Perhaps `targets::tar_make()` evaluates code chunks in the parent directory?
+1. It cannot find the file at `../theory/sdt.txt`; changing this to `theory/sdt.txt` seems to work. Perhaps `targets::tar_make()` evaluates code chunks in the parent directory?
 1. `targets::tar_make()` fails the first time, but succeeds when re-running it a second time.
 
 ## 8. Create Your Own Functions
@@ -598,7 +609,7 @@ Deciding *which loop* to paralellize is a bit of an art form, and an area of spe
 Considerations that weigh in to the decision are:
 
 * What is the overhead (in terms of processing time) to set up the parallel backend?
-* Where is the bottleneck: does the simulation fill up working memory, or does it max out your processor? You can [use code profiling](https://support.posit.co/hc/en-us/articles/218221837-Profiling-R-code-with-the-RStudio-IDE) to assess CPU and memory bottlenecks, but this is beyond the scope of the present tutorial.
+* Where is the bottleneck: does the simulation fill up working memory, or does it max out your processor? You can [use code profiling](https://adv-r.hadley.nz/perf-measure.html) to assess CPU and memory bottlenecks, but this is beyond the scope of the present tutorial.
 
 In this case, we could paralellize across the 9 conditions of the study, or across the 100 replications of those conditions.
 I chose to paralellize across the 9 study conditions, having each core execute one condition 100 times.
@@ -842,13 +853,20 @@ You should see the action running. If all is good, it will show you a green dot 
 
 Integration testing gives you peace of mind - you know that your code works as expected, and via GitHub actions, can show it to the world too.
 
+## 6. Reproducing your Analysis Online
+
+The `worcs` package also includes functionality to reproduce your entire analysis online via GitHub actions.
+However, running a full simulation study is probably not fair use of GitHub's servers, and might raise some eyebrows.
+
+For other, smaller scale studies, [the vignette on endpoints](https://cjvanlissa.github.io/worcs/articles/endpoints.html) explains how to create a GitHub action to reproduce your analyses in the cloud.
 
 # Additional Resources
 
-* **WORCS documentation:** [https://cjvanlissa.github.io/worcs/](https://cjvanlissa.github.io/worcs/)
-* **theorytools documentation:** [https://cjvanlissa.github.io/theorytools/](https://cjvanlissa.github.io/theorytools/)
-* **FAIR Principles:** [https://www.go-fair.org/fair-principles/](https://www.go-fair.org/fair-principles/)
-* **TOP Guidelines:** [https://www.cos.io/initiatives/top-guidelines](https://www.cos.io/initiatives/top-guidelines)
-* **Paralellizing your Code:** [SCF Dask and Future Tutorial](https://computing.stat.berkeley.edu/tutorial-dask-future/R-future.html)
+* [Using targets to Reduce Redundant Computations](https://cjvanlissa.github.io/worcs/articles/targets.html)
+* [WORCS documentation](https://cjvanlissa.github.io/worcs/)
+* [theorytools documentation](https://cjvanlissa.github.io/theorytools/)
+* [FAIR Principles](https://www.go-fair.org/fair-principles/)
+* [TOP Guidelines](https://www.cos.io/initiatives/top-guidelines)
+* [Paralellizing your Code](https://computing.stat.berkeley.edu/tutorial-dask-future/R-future.html)
 
 # References

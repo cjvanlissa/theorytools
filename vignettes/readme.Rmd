@@ -67,7 +67,7 @@ This section should refer to the work that the FAIR theory is derived from, or d
 
 # Example: The Empirical Cycle
 
-Below, we break down the README file of our implementation of De Groot's empirical cycle as a FAIR theor:
+Below, we break down the README file of our implementation of De Groot's empirical cycle as a FAIR theory:
 
 
 The title is prefaced with `FAIR theory`:

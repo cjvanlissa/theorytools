@@ -334,7 +334,7 @@ For this tutorial, please download my version of the Tripartite Model using `dow
 
 Interoperability pertains to the ability to use a theory in scientific workflows.
 X-interoperability refers to the ability to use a theory for *specific operations* in scientific workflows.
-When we go through the remainder of the turorial, we are demonstrating that our FAIR tripartite model is X-interoperable for visualization in R, for selecting control variables, for performing causal inference, et cetera.
+When we go through the remainder of the tutorial, we are demonstrating that our FAIR tripartite model is X-interoperable for visualization in R, for selecting control variables, for performing causal inference, et cetera.
 That is to say: we can directly ingest the FAIR theory in R, and interact with it in our analysis environment and use it to construct fully reproducible analysis workflows, including for causal inference.
 
 First, let's ingest the theory into our R environment:
@@ -475,7 +475,7 @@ theorytools:::quizz(
 
 When working with real data, causal inference quickly becomes more complicated.
 Therefore, we provide a "real data" example here, to practice the relevant skills.
-The `theorytools` package includes a dataset that is based on ["Growing Up in Australia - the Longitudinal Study of Australian Children" (LSAC)](https://aifs.gov.au/growing-up-in-australia).
+The `theorytools` package includes a dataset that takes inspiration from "Growing Up in Australia - the Longitudinal Study of Australian Children" [LSAC, @australianinstituteoffamilystudiesGrowingAustralia2020].
 As the LSAC dataset is accessible by explicit permission only,
 this is a synthetic dataset with similar properties to the real data.
 Let's access the data:
@@ -513,7 +513,7 @@ df_real <- readRDS("df_real.RData")
 Note that one variable is missing: Observation (O).
 This is unfortunate, as for the previous example we used O as our exposure variable. 
 For the remainder of the examples, we will use Parenting Practices as our exposure variable.
-Obtain the adjusment set for the effect of Parenting Practices on Emotion Regulation:
+Obtain the adjustment set for the effect of Parenting Practices on Emotion Regulation:
 
 ```{r}
 adjustmentSets(tripartite, exposure = "EC", outcome = "ER")

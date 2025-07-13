@@ -55,7 +55,7 @@ Estimated time to complete: 45-60 minutes.
 
 - [ ] Translate a theory described in prose to a series of IF-THEN propositions
 - [ ] Document construct definitions and operationalizations of a theory
-- [ ] Translate IF-THEN proposions to a Directed Acyclic Graph
+- [ ] Translate IF-THEN propositions to a Directed Acyclic Graph
 - [ ] Publish the resulting theory as a FAIR Theory on Zenodo
 
 
@@ -304,8 +304,8 @@ and asked to specify it and document the process.
 Van Lissa further adapted the theory specification, as documented in [this vignette](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html).
 
 > **Interoperability**  
-`sdt.txt`	This file contains the main theory, specified as a DAG. It is interoperable for causal inference and data simulaiton in R, as explained in [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html).  
-`definitions.csv`	This file contains definitions of the constructs in `sdt.txt`, inasfar as we could find them. At present, this file is not very interoperable. We urgently invite domain experts to propose more concrete definitions of the constructs (as our attempt to identify the intended definitions likely fell short), or to propose new and better definitions.
+`sdt.txt`	This file contains the main theory, specified as a DAG. It is interoperable for causal inference and data simulation in R, as explained in [this vignette](https://cjvanlissa.github.io/theorytools/articles/causal-inference.html).  
+`definitions.csv`	This file contains the definitions of the constructs in `sdt.txt` we were able to find. At present, this file is not very interoperable. We urgently invite domain experts to propose more concrete definitions of the constructs (as our attempt to identify the intended definitions likely fell short), or to propose new and better definitions.
 
 > **Related works**
 
@@ -314,7 +314,7 @@ Van Lissa further adapted the theory specification, as documented in [this vigne
 ## Authorize 'GitHub' to connect with 'Zenodo'
 
 On the 'Zenodo' website navigate to the ['GitHub' repository listing page](https://zenodo.org/account/settings/github/) and simply "flip the switch" next to your repository.
-If your repository **does not show up** in the list, you may need to press the 'Syncronize now' button.
+If your repository **does not show up** in the list, you may need to press the 'Synchronize now' button.
 At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
 If so, take a break or come back to this last step tomorrow!
 

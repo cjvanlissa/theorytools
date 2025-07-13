@@ -157,7 +157,7 @@ cat(theory, file = file.path(project_path, "empirical_cycle.dot"), sep = "\n")
 ## Documenting Reusability with a LICENSE
 
 A license ensures that others know how they can legally reuse your work.
-We recommend a CC0 (Creative Commons Zero) license for FAIR theory, which waives all copryright protection and places your work in the public domain.
+We recommend a CC0 (Creative Commons Zero) license for FAIR theory, which waives all copyright protection and places your work in the public domain.
 This recommendation is based on the fact that copyright protection does not cover ideas,
 and the assumption that FAIR theory is created to maximize reuse.
 Other licenses are available, see [https://choosealicense.com](https://choosealicense.com/non-software/).
@@ -293,7 +293,7 @@ knitr::include_graphics("https://github.com/OpenScienceMOOC/Module-5-Open-Resear
 ## Select the Repository to Archive
 
 If you have got this far, this means that 'Zenodo' is now authorized to configure the repository webhooks that it needs to archive the repository and issue it a DOI. To do this, on the 'Zenodo' website navigate to the ['GitHub' repository listing page](https://zenodo.org/account/settings/github/) and simply "flip the switch" next to your repository.
-If your repository **does not show up** in the list, you may need to press the 'Syncronize now' button.
+If your repository **does not show up** in the list, you may need to press the 'Synchronize now' button.
 At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
 If so, take a break or come back to this last step tomorrow!
 

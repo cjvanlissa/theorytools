@@ -77,7 +77,7 @@ cat(definitions, file="definitions.md")
 
 ## Relationships
 
-We can visualise the originally proposed relationships between the concepts as a graph:
+We can visualize the originally proposed relationships between the concepts as a graph:
 
 ```{tikz, echo=FALSE, out.width="40%", fig.align = 'center', eval = FALSE}
 \usetikzlibrary{arrows}
@@ -422,7 +422,7 @@ You should now have a folder containing the following files:
 
 ## Documenting Reusability with a LICENSE
 
-We will add a CC0 (Creative Commons Zero) license to the repository, to waive all copryright protection
+We will add a CC0 (Creative Commons Zero) license to the repository, to waive all copyright protection
 
 ```{r}
 worcs::add_license_file(path = ".", license = "cc0")
@@ -503,10 +503,10 @@ worcs::git_update("First commit of my theory", repo = ".")
 # 4. Archive the Theory on 'Zenodo'
 
 Head over to [zenodo.org](https://zenodo.org).
-Uuthorize Zenodo to connect to your 'GitHub' account in the '[Using 'GitHub'](https://zenodo.org/account/settings/github/)' section. Here, 'Zenodo' will redirect you to 'GitHub' to ask for permissions to use '[webhooks](https://developer.github.com/webhooks/)' on your repositories. You want to authorize 'Zenodo' here with the permissions it needs to form those links.
+Authorize Zenodo to connect to your 'GitHub' account in the '[Using 'GitHub'](https://zenodo.org/account/settings/github/)' section. Here, 'Zenodo' will redirect you to 'GitHub' to ask for permissions to use '[webhooks](https://developer.github.com/webhooks/)' on your repositories. You want to authorize 'Zenodo' here with the permissions it needs to form those links.
 
 Navigate to the ['GitHub' repository listing page](https://zenodo.org/account/settings/github/) and "flip the switch" next to your repository.
-If your repository **does not show up** in the list, you may need to press the 'Syncronize now' button.
+If your repository **does not show up** in the list, you may need to press the 'Synchronize now' button.
 At the time of writing, we noticed that it can take quite a while (hours?) for 'Zenodo' to detect new 'GitHub' repositories.
 If so, take a break or come back to this last step tomorrow!
 
