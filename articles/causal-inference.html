@@ -363,7 +363,7 @@ using <code>download_zenodo()</code>.</p>
 <p>Interoperability pertains to the ability to use a theory in
 scientific workflows. X-interoperability refers to the ability to use a
 theory for <em>specific operations</em> in scientific workflows. When we
-go through the remainder of the turorial, we are demonstrating that our
+go through the remainder of the tutorial, we are demonstrating that our
 FAIR tripartite model is X-interoperable for visualization in R, for
 selecting control variables, for performing causal inference, et cetera.
 That is to say: we can directly ingest the FAIR theory in R, and
@@ -618,11 +618,10 @@ unbiased estimate of the effect of Observation on Emotion Regulation.
 <p>When working with real data, causal inference quickly becomes more
 complicated. Therefore, we provide a “real data” example here, to
 practice the relevant skills. The <code>theorytools</code> package
-includes a dataset that is based on <a href="https://aifs.gov.au/growing-up-in-australia" class="external-link">“Growing Up in
-Australia - the Longitudinal Study of Australian Children” (LSAC)</a>.
-As the LSAC dataset is accessible by explicit permission only, this is a
-synthetic dataset with similar properties to the real data. Let’s access
-the data:</p>
+includes a dataset that takes inspiration from “Growing Up in Australia
+- the Longitudinal Study of Australian Children” <span class="citation">(LSAC, Family Studies 2020)</span>. As the LSAC dataset
+is accessible by explicit permission only, this is a synthetic dataset
+with similar properties to the real data. Let’s access the data:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lsac</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     warmth relationship_quality temperament_negreact emotion_regulation</span></span>
@@ -661,7 +660,7 @@ pragmatic reasons.</p>
 <p>Note that one variable is missing: Observation (O). This is
 unfortunate, as for the previous example we used O as our exposure
 variable. For the remainder of the examples, we will use Parenting
-Practices as our exposure variable. Obtain the adjusment set for the
+Practices as our exposure variable. Obtain the adjustment set for the
 effect of Parenting Practices on Emotion Regulation:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html" class="external-link">adjustmentSets</a></span><span class="op">(</span><span class="va">tripartite</span>, exposure <span class="op">=</span> <span class="st">"EC"</span>, outcome <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span>
@@ -794,6 +793,10 @@ Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. <span>“A
 <span>Crash Course</span> in <span>Good</span> and <span>Bad
 Controls</span>.”</span> <em>Sociological Methods &amp; Research</em>,
 May, 00491241221099552. <a href="https://doi.org/10.1177/00491241221099552" class="external-link">https://doi.org/10.1177/00491241221099552</a>.
+</div>
+<div id="ref-australianinstituteoffamilystudiesGrowingAustralia2020" class="csl-entry">
+Family Studies, Australian Institute of. 2020. <span>“Growing
+<span>Up</span> in <span>Australia</span>.”</span> March 23, 2020.
 </div>
 <div id="ref-morrisRoleFamilyContext2007" class="csl-entry">
 Morris, Amanda Sheffield, Jennifer S. Silk, Laurence Steinberg, Sonya S.

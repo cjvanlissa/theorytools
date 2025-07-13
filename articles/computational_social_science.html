@@ -87,15 +87,34 @@ original author).</p>
 <p>In this tutorial, we combine <code>worcs</code> and
 <code>theorytools</code> to conduct a fully reproducible, theory-driven
 computational simulation study.</p>
-<p>The learning goals are to:</p>
+<div class="section level4">
+<h4 id="before-starting-this-tutorial">Before Starting This Tutorial<a class="anchor" aria-label="anchor" href="#before-starting-this-tutorial"></a>
+</h4>
+<ul class="task-list">
+<li><label><input type="checkbox">You must have <a href="https://cjvanlissa.github.io/worcs/articles/setup" class="external-link">Set up your
+computer for WORCS</a></label></li>
+<li><label><input type="checkbox">Running
+<code><a href="https://cjvanlissa.github.io/worcs/reference/check_worcs_installation.html" class="external-link">worcs::check_worcs_installation()</a></code> should return all green
+checkmarks</label></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="learning-goals">Learning Goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
+<p>In this tutorial, you will learn how to:</p>
 <ul class="task-list">
 <li><label><input type="checkbox">Create a reproducible research
 project using WORCS.</label></li>
-<li><label><input type="checkbox">Import a FAIR theory structured as
+<li><label><input type="checkbox">Import a “FAIR theory”, specified as
 an augmented DAG.</label></li>
-<li><label><input type="checkbox">Simulate data based on the FAIR
-theory.</label></li>
+<li><label><input type="checkbox">Create a computational simulation
+study based on the FAIR theory.</label></li>
+<li><label><input type="checkbox">Add <code>targets</code> to your
+simulation study to reduce redundant compute</label></li>
+<li><label><input type="checkbox">Add integration testing to your
+study to ensure your functions work as intended</label></li>
 </ul>
+</div>
 <div class="section level2">
 <h2 id="setting-up-a-reproducible-project-with-worcs">Setting up a Reproducible Project with WORCS<a class="anchor" aria-label="anchor" href="#setting-up-a-reproducible-project-with-worcs"></a>
 </h2>
@@ -191,6 +210,21 @@ called <code>sdt.txt</code> containing the DAG, and
 that these definitions require further specification; as explained <a href="https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html">in
 the Vignette on formalizing SDT</a>), the book chapter describing the
 theory does not explicitly define any of the constructs involved.</p>
+<blockquote>
+<p>Why is the FAIR theory downloaded into a separate
+<code>theory/</code> subfolder?
+<select class="webex-select"><option value="blank"></option>
+<option value="">Because
+theorytools only works inside a ‘theory/’
+directory</option>
+<option value="answer">To prevent overwriting the
+WORCS project’s README and LICENSE files</option>
+<option value="">To
+avoid downloading unnecessary files</option>
+<option value="">Because
+dagitty requires theory files to be placed in a specific
+folder</option></select></p>
+</blockquote>
 </div>
 <div class="section level3">
 <h3 id="load-the-fair-theory">3. Load the FAIR Theory<a class="anchor" aria-label="anchor" href="#load-the-fair-theory"></a>
@@ -328,6 +362,19 @@ functional forms and (error) distributions.</p>
 </table>
 <p>This synthetic dataset is consistent with the structure encoded in
 our FAIR SDT, though the parameter values are arbitrary.</p>
+<blockquote>
+<p>Which of the following is <strong>not a reason</strong> to use
+computational simulation studies?
+<select class="webex-select"><option value="blank"></option>
+<option value="">Exploring
+what-if scenarios</option>
+<option value="answer">Fitting a model to
+real-world data</option>
+<option value="">Preregistering a reproducible
+analysis pipeline</option>
+<option value="">Conducting power
+analysis</option></select></p>
+</blockquote>
 <div class="section level4">
 <h4 id="simplifying-the-model">Simplifying the Model<a class="anchor" aria-label="anchor" href="#simplifying-the-model"></a>
 </h4>
@@ -546,9 +593,8 @@ the same “random” numbers over and over.</p>
 <p>Running <code>targets::tar_make()</code> might fail; I have observed
 two modes of failure:</p>
 <ol style="list-style-type: decimal">
-<li>It fails because it cannot find the file at
-<code>../theory/sdt.txt</code>; changing this to
-<code>theory/sdt.txt</code> seems to work. Perhaps
+<li>It cannot find the file at <code>../theory/sdt.txt</code>; changing
+this to <code>theory/sdt.txt</code> seems to work. Perhaps
 <code>targets::tar_make()</code> evaluates code chunks in the parent
 directory?</li>
 <li>
@@ -960,9 +1006,9 @@ are:</p>
 <li>What is the overhead (in terms of processing time) to set up the
 parallel backend?</li>
 <li>Where is the bottleneck: does the simulation fill up working memory,
-or does it max out your processor? You can <a href="https://support.posit.co/hc/en-us/articles/218221837-Profiling-R-code-with-the-RStudio-IDE" class="external-link">use
-code profiling</a> to assess CPU and memory bottlenecks, but this is
-beyond the scope of the present tutorial.</li>
+or does it max out your processor? You can <a href="https://adv-r.hadley.nz/perf-measure.html" class="external-link">use code profiling</a>
+to assess CPU and memory bottlenecks, but this is beyond the scope of
+the present tutorial.</li>
 </ul>
 <p>In this case, we could paralellize across the 9 conditions of the
 study, or across the 100 replications of those conditions. I chose to
@@ -1220,27 +1266,34 @@ green dot (red if there are errors).</p>
 works as expected, and via GitHub actions, can show it to the world
 too.</p>
 </div>
+<div class="section level3">
+<h3 id="reproducing-your-analysis-online">6. Reproducing your Analysis Online<a class="anchor" aria-label="anchor" href="#reproducing-your-analysis-online"></a>
+</h3>
+<p>The <code>worcs</code> package also includes functionality to
+reproduce your entire analysis online via GitHub actions. However,
+running a full simulation study is probably not fair use of GitHub’s
+servers, and might raise some eyebrows.</p>
+<p>For other, smaller scale studies, <a href="https://cjvanlissa.github.io/worcs/articles/endpoints.html" class="external-link">the
+vignette on endpoints</a> explains how to create a GitHub action to
+reproduce your analyses in the cloud.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="additional-resources">Additional Resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a>
 </h2>
 <ul>
-<li>
-<strong>WORCS documentation:</strong> <a href="https://cjvanlissa.github.io/worcs/" class="external-link">https://cjvanlissa.github.io/worcs/</a>
-</li>
-<li>
-<strong>theorytools documentation:</strong> <a href="https://cjvanlissa.github.io/theorytools/">https://cjvanlissa.github.io/theorytools/</a>
-</li>
-<li>
-<strong>FAIR Principles:</strong> <a href="https://www.go-fair.org/fair-principles/" class="external-link">https://www.go-fair.org/fair-principles/</a>
-</li>
-<li>
-<strong>TOP Guidelines:</strong> <a href="https://www.cos.io/initiatives/top-guidelines" class="external-link">https://www.cos.io/initiatives/top-guidelines</a>
-</li>
-<li>
-<strong>Paralellizing your Code:</strong> <a href="https://computing.stat.berkeley.edu/tutorial-dask-future/R-future.html" class="external-link">SCF
-Dask and Future Tutorial</a>
-</li>
+<li><a href="https://cjvanlissa.github.io/worcs/articles/targets.html" class="external-link">Using
+targets to Reduce Redundant Computations</a></li>
+<li><a href="https://cjvanlissa.github.io/worcs/" class="external-link">WORCS
+documentation</a></li>
+<li><a href="https://cjvanlissa.github.io/theorytools/">theorytools
+documentation</a></li>
+<li><a href="https://www.go-fair.org/fair-principles/" class="external-link">FAIR
+Principles</a></li>
+<li><a href="https://www.cos.io/initiatives/top-guidelines" class="external-link">TOP
+Guidelines</a></li>
+<li><a href="https://computing.stat.berkeley.edu/tutorial-dask-future/R-future.html" class="external-link">Paralellizing
+your Code</a></li>
 </ul>
 </div>
 <div class="section level2">
