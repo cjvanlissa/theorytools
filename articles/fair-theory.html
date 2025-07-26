@@ -429,7 +429,7 @@ Check that webhooks are enabled for your ‘GitHub’ repository.
 <p>To archive a repository on ‘Zenodo’, you must create a new release.
 You can do this using the following code:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_release_publish.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 <p>If you have not previously published any releases, this function will
 assume that you want to use semantic versioning for both the release tag
 and the release title. This means that the first release will be labeled
@@ -438,7 +438,7 @@ increment the trailing digit, i.e.: “0.1.1”, “0.1.2”. If you make a
 major change to the theory, you may want to manually increment the
 middle digit like so:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_release_publish.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
 <span>                           tag_name <span class="op">=</span> <span class="st">"0.2.0"</span>,</span>
 <span>                           release_name <span class="op">=</span> <span class="st">"0.2.0"</span><span class="op">)</span></span></code></pre></div>
 </div>

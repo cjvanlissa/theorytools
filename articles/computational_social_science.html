@@ -1118,13 +1118,13 @@ expected?</p>
 <p><strong>Interactive</strong>: In your WORCS project, run the
 following code:</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">add_testthat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_testthat.html" class="external-link">add_testthat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This creates a <code>tests/testthat/</code> folder to hold your
 tests. Note the two suggestions printed in the console:</p>
 <ul>
 <li>Run <code><a href="https://usethis.r-lib.org/reference/use_r.html" class="external-link">usethis::use_test()</a></code> to initialize a basic test file
 and open it for editing.</li>
-<li>Run <code>worcs::github_action_testthat()</code> to add a GitHub
+<li>Run <code><a href="https://cjvanlissa.github.io/worcs/reference/github_action_check_endpoints.html" class="external-link">worcs::github_action_testthat()</a></code> to add a GitHub
 action that evaluates the integration tests.</li>
 </ul>
 </div>
@@ -1156,7 +1156,7 @@ be saved in <code>tests/testthat/</code>.</p>
 </h3>
 <p>In your console or script, you can run:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">test_worcs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_testthat.html" class="external-link">test_worcs</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or, to test a single file:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_file.html" class="external-link">test_file</a></span><span class="op">(</span><span class="st">"tests/testthat/test-generate_data.R"</span><span class="op">)</span></span></code></pre></div>
@@ -1238,7 +1238,7 @@ code updates to GitHub.</p>
 integration tests:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Add the appropriate GitHub action:</span></span>
-<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu">github_action_testthat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/github_action_check_endpoints.html" class="external-link">github_action_testthat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> The virtual computer environment on
 GitHub actions will attempt to recreate your local environment based on
 the <code>renv</code> dependency manager. To ensure that your
