@@ -27,7 +27,7 @@ URL: https://cjvanlissa.github.io/theorytools/
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Imports:
-    worcs (>= 0.1.16),
+    worcs (>= 0.1.19),
     gert,
     gh,
     cli,
@@ -36,7 +36,7 @@ Imports:
     knitr,
     dagitty,
     yaml,
-    tidySEM (>= 0.2.8),
+    tidySEM (>= 0.2.9),
     methods,
     Deriv
 Suggests:

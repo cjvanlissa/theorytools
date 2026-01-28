@@ -7,6 +7,7 @@
 #' @importFrom gert git_clone
 #' @importFrom jsonlite fromJSON
 #' @importFrom tools md5sum
+#' @importFrom httr GET
 #' @export
 #' @examples
 #' download_theory(id = "https://github.com/cjvanlissa/tripartite_model.git",
@@ -22,11 +23,13 @@ download_theory <- function(id,
       dir.create(path)
     })
   }
+
   record_type <- git_or_zenodo(id)
 
   switch(record_type,
          "git" = {
            with_cli_try("Cloning repository from 'Git' remote", {
+             git_remote_exists(id)
              tmp <- gert::git_clone(url = id, path = path, verbose = FALSE)
              if(!dir.exists(path)) stop()
            })
@@ -71,7 +74,7 @@ git_or_zenodo <- function(x){
   if(grepl("10.5281/zenodo.", x, fixed = TRUE)){
     return("zenodo")
   }
-  if(git_remote_exists(x)){
+  if(grepl("git", x, fixed = TRUE)){
       return("git")
   }
   stop("Not a valid 'Git' or 'Zenodo' archive.")
