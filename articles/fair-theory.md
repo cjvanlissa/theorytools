@@ -1,0 +1,559 @@
+# Making a Theory FAIR
+
+## Creating a FAIR Theory
+
+This tutorial takes the user through distinct steps involved in making a
+theory FAIR. It uses the R-package `theorytools` and other specific
+software and platforms. As open science infrastructure is an area of
+active development, the approach proposed here should not be considered
+definitive, but rather, as one proposal for a FAIR-compliant
+implementation of theory using infrastructure available at the time of
+writing. The steps described in this tutorial are largely automated by
+the function
+[`theorytools::create_fair_theory()`](https://cjvanlissa.github.io/theorytools/reference/create_fair_theory.md);
+expert users might use this function directly.
+
+``` r
+library(theorytools)
+```
+
+#### Time to Complete
+
+Estimated time to complete: 45-60 minutes.
+
+#### Learning Goals
+
+Create a project folder for your theory
+
+Put this folder under version control with ‘Git’
+
+Connect the local repository to a remote (‘GitHub’) repository
+
+Add a shareable theory file to the repository
+
+Add a LICENSE file to the repository (we recommend CC0)
+
+Add a README file to the repository
+
+Add a ‘Zenodo’ metadata to the repository
+
+Push these changes to the remote repository
+
+Turn on ‘Zenodo’ archiving for the remote repository
+
+Publish a release of your theory
+
+Verify that ‘Zenodo’ mints a DOI for your theory and its latest release
+
+![Conceptual workflow for this
+task.](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/Task2.png?raw=true)
+
+Conceptual workflow for this task.
+
+### Running Example: the Empirical Cycle
+
+Given that we based our argument for the importance of FAIR theory on
+the *empirical cycle*, we use it as an example for this tutorial. The
+empirical cycle is a model of cumulative knowledge production through
+scientific research, described in De Groot and Spiekerman (1969)
+(p. 28):
+
+> *Phase 1:* ‘Observation’: collection and grouping of empirical
+> materials; (tentative) formation of hypotheses.  
+> *Phase 2:* ‘Induction’: formulation of hypotheses.  
+> *Phase 3:* ‘Deduction’: derivation of specific consequences from the
+> hypotheses, in the form of testable predictions.  
+> *Phase 4:* ‘Testing’: of the hypotheses against new empirical
+> materials, by way of checking whether or not the predictions are
+> fulfilled.  
+> *Phase 5:* ‘Evaluation’: of the outcome of the testing procedure with
+> respect to the hypotheses or theories stated, as well as with a view
+> to subsequent, continued or related, investigations.
+
+## Completing All Steps Manually
+
+### Creating a Project Folder
+
+In the spirit of modular publishing, this tutorial assumes that you’re
+creating your FAIR theory as a standalone project. While it is possible
+for a theory to be implemented in a programming language like R, it
+often is not - the empirical cycle described above is implemented in
+plain text. Therefore, we will not create an R project (with an `.Rproj`
+file et cetera), but just a regular nondescript project. This starts
+with creating an empty project folder, which will become the theory
+archive. If we want to create a new folder called `empirical_cycle` in
+the existing folder `c:/theories/`, we can call:
+
+``` r
+project_path <- file.path("c:/theories", "empirical_cycle")
+dir.create(project_path)
+```
+
+### Adding a Shareable Theory File to the Repository
+
+Your theory should be represented as a digital artifact, such as a
+structured plain-text document or a machine-readable file (e.g., ‘DOT’,
+‘JSON’, ‘YAML’, ‘R’ code). At this point, we offer two alternatives.
+
+#### Theory as Plain Text
+
+You could simply copy De Groot’s implementation of the empirical cycle
+into a plain text file, like so:
+
+``` r
+writeLines(
+  c("*Phase 1:* 'Observation': collection and grouping of empirical materials;
+    (tentative) formation of hypotheses.",
+    "*Phase 2:* 'Induction': formulation of hypotheses.", 
+    "*Phase 3:* 'Deduction': derivation of specific consequences
+    from the hypotheses, in the form of testable predictions.",
+    "*Phase 4:* 'Testing': of the hypotheses against new empirical materials,
+    by way of checking whether or not the predictions are fulfilled.",
+    "*Phase 5:* 'Evaluation': of the outcome of the testing procedure
+    with respect to the hypotheses or theories stated, as well as
+    with a view to subsequent, continued or related, investigations."
+), file.path(project_path, "theory.txt"))
+```
+
+#### Implementing the Theory in a Formal Language
+
+If we compare it to the levels of theory formalization (Guest and Martin
+2021), De Groot’s theory is either at the “theory” or “specification”
+level. It consists of a series of natural language statements. We can
+increase the level of formalization, and present an “implementation” in
+the human- and machine-readable DOT language, thereby meeting criterion
+I1 of the FAIR principles (*“using a formal language for knowledge
+representation”*):
+
+``` r
+theory <- 
+"digraph {
+
+  observation;
+  induction;
+  deduction;
+  test;
+  evaluation;
+  
+  observation -> induction;
+  induction -> deduction;
+  deduction -> test;
+  test -> evaluation;
+  evaluation -> observation;
+  
+}"
+```
+
+This language describes the model as a directed graph. Note that the
+code has been organized so that the first half describes an ontology of
+the entities the theory postulates, and the second half describes their
+proposed interrelations. This follows the first two properties of good
+theory according to Meehl (Meehl 1990). Because Git tracks changes on a
+line-by-line basis, separating the ontology and structural parts of the
+theory facilitates tracking changes to either of them. We can now write
+this implementation of the empirical cycle to a text file, say
+`empirical_cycle.dot`.
+
+``` r
+cat(theory, file = file.path(project_path, "empirical_cycle.dot"), sep = "\n")
+```
+
+### Documenting Reusability with a LICENSE
+
+A license ensures that others know how they can legally reuse your work.
+We recommend a CC0 (Creative Commons Zero) license for FAIR theory,
+which waives all copyright protection and places your work in the public
+domain. This recommendation is based on the fact that copyright
+protection does not cover ideas, and the assumption that FAIR theory is
+created to maximize reuse. Other licenses are available, see
+[https://choosealicense.com](https://choosealicense.com/non-software/).
+You can add a license file to your repository like so:
+
+``` r
+worcs::add_license_file(path = project_path, license = "cc0")
+```
+
+### Documenting Interoperability with a README File
+
+A README file describes the repository’s contents and purpose, making it
+easier for others to understand your theory’s potential for
+interoperability and reuse. The `theorytools` package contains a
+function to generate a README file with appropriate sections for FAIR
+theory, which can be used like so:
+
+``` r
+theorytools::add_readme_fair_theory(title = "The Empirical Cycle",
+                                    path = project_path)
+```
+
+We encourage users to edit the resulting `README.md` file, in
+particular, to add relevant information about X-interoperability. For
+guidance on writing a README file for theory, see [this
+vignette](https://cjvanlissa.github.io/theorytools/articles/readme.html).
+
+### Adding ‘Zenodo’ Metadata to the Repository
+
+In a later step, we will archive the theory on ‘Zenodo’. Creating a
+`.zenodo.json` file with metadata about your theory allows the project
+to be indexed automatically. This can be done by running:
+
+``` r
+add_zenodo_json_theory(
+  path = project_path,
+  title = "The Empirical Cycle",
+  keywords = c("philosophy of science", "methodology")
+)
+```
+
+### Version Controlling The Project Folder
+
+We use ‘Git’ to version control the project folder. If you do not
+already have ‘Git’ installed on your computer, [install it
+now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). You
+can verify that ‘Git’ is installed and working by running:
+
+``` r
+worcs::check_git()
+```
+
+If this function shows a green checkmark, you can initialize version
+control in your project repository by running:
+
+``` r
+gert::git_init(path = project_path)
+```
+
+### Connecting to a Remote (‘GitHub’) Repository
+
+To make your FAIR theory accessible to collaborators and discoverable by
+the wider community, you must connect your local ‘Git’ repository to a
+remote repository on a platform like ‘GitHub’.
+
+Before proceeding, ensure you [have a ‘GitHub’
+account](https://github.com/). Academics may qualify for a [free
+upgrade](https://github.com/education/teachers). To authorize ‘R’ to
+interact with your ‘GitHub’ account, run
+[`usethis::create_github_token()`](https://usethis.r-lib.org/reference/github-token.html),
+which takes you to a website to create a personal access token (PAT).
+Copy it, then run
+[`gitcreds::gitcreds_set()`](https://gitcreds.r-lib.org/reference/gitcreds_get.html)
+and paste the PAT when asked. If you still experience problems try
+[`usethis::gh_token_help()`](https://usethis.r-lib.org/reference/github-token.html)
+for help.
+
+To check that you are ready to proceed, run:
+
+``` r
+worcs::check_github()
+```
+
+If you see a green checkmark, you can create a new repository on
+‘GitHub’ directly from ‘R’:
+
+``` r
+worcs::git_remote_create("empirical_cycle", private = FALSE)
+```
+
+This command will create a new public repository on ‘GitHub’ and link it
+to your local repository. The `private = FALSE` argument ensures the
+repository is public by default.
+
+Alternatively, you may have already created a remote repository on the
+‘GitHub’ website. Either way, assuming the name of that repository is
+`empirical_cycle`, you can connect it to your project folder as follows:
+
+``` r
+worcs::git_remote_connect(project_path, remote_repo = "empirical_cycle")
+```
+
+### Pushing These Changes to the Remote Repository
+
+Version control requires adding files to be tracked to the repository
+([`gert::git_add()`](https://docs.ropensci.org/gert/reference/git_commit.html)),
+committing changes to those files
+([`gert::git_commit()`](https://docs.ropensci.org/gert/reference/git_commit.html)),
+and pushing them to the remote repository
+([`gert::git_push()`](https://docs.ropensci.org/gert/reference/git_fetch.html)).
+The `worcs` function
+[`worcs::git_update()`](https://cjvanlissa.github.io/worcs/reference/git_update.html)
+combines these three actions, acting like a kind of “quick-save”
+function:
+
+``` r
+worcs::git_update("First commit of my theory", repo = project_path)
+```
+
+### Check Your ‘GitHub’ Repository
+
+Navigate to your repository on ‘GitHub’ and check that all committed
+files, including the theory file, license, README, and ‘Zenodo’
+metadata, are now visible in the remote repository (green box in the
+image below).
+
+![Front Page of a 'GitHub'
+Repository](https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true)
+
+Front Page of a ‘GitHub’ Repository
+
+Furthermore, the repository visibility must be set to “Public” to ensure
+that ‘Zenodo’ can discover and archive it. If you created the repository
+programmatically as shown above, it should already be public (see red
+box in the image above). If necessary, change the visibility setting to
+Public by clicking on “Settings” \> “General” \> “Change repository
+visibility.”
+
+### Login to ‘Zenodo’
+
+Head over to [zenodo.org](https://zenodo.org). ‘Zenodo’ is a platform
+where you can permanently archive your code and other project elements.
+‘Zenodo’ does this by assigning projects a **Digital Object Identifier**
+(DOI), which also helps to make the work more citable. This is different
+to ‘GitHub’, which acts as a place where the actual work on a project
+takes place, rather than long-term archiving of it. At ‘GitHub’, content
+can be modified, deleted, rewritten, and irreversibly changed, which
+makes it a bit concerning to be used for longer lasting referencing
+purposes. ‘Zenodo’ offers more security and permanence for research
+outputs.
+
+![Sign up for
+'Zenodo'](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true)
+
+Sign up for ‘Zenodo’
+
+If you already have a ‘Zenodo’ account, this is easy. If not, follow the
+steps to create one — you can **login using your ‘GitHub’ account**.
+
+### Authorize ‘GitHub’ to connect with ‘Zenodo’
+
+On the ‘Zenodo’ website authorize it to connect to your ‘GitHub’ account
+in the ‘[Using ’GitHub’](https://zenodo.org/account/settings/github/)’
+section. Here, ‘Zenodo’ will redirect you to ‘GitHub’ to ask for
+permissions to use ‘[webhooks](https://developer.github.com/webhooks/)’
+on your repositories. You want to authorize ‘Zenodo’ here with the
+permissions it needs to form those links.
+
+![Authorize to connect with
+'GitHub'](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/_github.png?raw=true)
+
+Authorize to connect with ‘GitHub’
+
+### Select the Repository to Archive
+
+If you have got this far, this means that ‘Zenodo’ is now authorized to
+configure the repository webhooks that it needs to archive the
+repository and issue it a DOI. To do this, on the ‘Zenodo’ website
+navigate to the [‘GitHub’ repository listing
+page](https://zenodo.org/account/settings/github/) and simply “flip the
+switch” next to your repository. If your repository **does not show up**
+in the list, you may need to press the ‘Synchronize now’ button. At the
+time of writing, we noticed that it can take quite a while (hours?) for
+‘Zenodo’ to detect new ‘GitHub’ repositories. If so, take a break or
+come back to this last step tomorrow!
+
+![Enable individual 'GitHub' repositories to be archived in
+'Zenodo'](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true)
+
+Enable individual ‘GitHub’ repositories to be archived in ‘Zenodo’
+
+### *Optional:* Check repository settings
+
+If you were successful, you have now set up a new webhook between
+‘Zenodo’ and your repository.
+
+Optionally, you can verify this. In ‘GitHub’, click on the settings for
+your repository, and the Webhooks tab on the left hand side menu. This
+should display the new ‘Zenodo’ webhook configured to ‘Zenodo’. Note, it
+may take a little time for the webhook listing to show up.
+
+![Check that webhooks are enabled for your 'GitHub'
+repository.](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true)
+
+Check that webhooks are enabled for your ‘GitHub’ repository.
+
+### Create a New Release
+
+To archive a repository on ‘Zenodo’, you must create a new release. You
+can do this using the following code:
+
+``` r
+worcs::git_release_publish(repo = project_path)
+```
+
+If you have not previously published any releases, this function will
+assume that you want to use semantic versioning for both the release tag
+and the release title. This means that the first release will be labeled
+with version number “0.1.0”. Each subsequent release will automatically
+increment the trailing digit, i.e.: “0.1.1”, “0.1.2”. If you make a
+major change to the theory, you may want to manually increment the
+middle digit like so:
+
+``` r
+worcs::git_release_publish(repo = project_path,
+                           tag_name = "0.2.0",
+                           release_name = "0.2.0")
+```
+
+### Verify on ‘Zenodo’
+
+To verify that your release was archived on ‘Zenodo’ and assigned a DOI,
+you need to visit the [Uploads](https://zenodo.org/deposit) tab.
+
+![Check the new release has been
+uploaded.](https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true)
+
+Check the new release has been uploaded.
+
+### Updating Meta-Data
+
+We can further document our ‘Zenodo’ archive as a FAIR theory by adding
+some extra information on ‘Zenodo’. Note that, if you created a
+`.zenodo.json` file in a previous step, some of these metadata will be
+populated automatically. On ‘Zenodo’ click the
+[Upload](https://zenodo.org/deposit) tab in the main menu, where you
+should find your newly uploaded repository.
+
+![Click the orange Edit
+button.](https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true)
+
+Click the orange Edit button.
+
+Click the orange `Edit` button, and verify/supply the following
+information:
+
+Resource type: Should be set to `Model`
+
+Title: Should be prefaced with `FAIR theory:`
+
+Keywords and subjects: The first keyword should be `fairtheory`
+
+Related works: Add the DOIs/identifiers of related (print) works. Use
+the `Relation` field as appropriate. For example:
+
+- `Is documented by` a theory paper you wrote, in which you introduce
+  this FAIR theory
+- `Is derived from` an existing theory, which was published in print
+  (paper, book chapter) but not made FAIR
+
+References: Optionally, cite related works in plain text. For example,
+here we can provide the full citation of De Groot and Spiekerman:
+
+> De Groot, A. D., & Spiekerman, J. A. A. (1969). Methodology:
+> Foundations of inference and research in the behavioral sciences. De
+> Gruyter Mouton. <https://doi.org/10.1515/9783112313121>
+
+To save these changes, click ‘Publish’.
+
+### Verifying That ‘Zenodo’ Mints a DOI for Your Theory
+
+After publishing a release, ‘Zenodo’ will archive the repository and
+mint a DOI. Verify this by checking the ‘Zenodo’ entry for your
+repository, where the DOI will be displayed. Include this DOI in any
+citations or references to your theory to enhance its discoverability
+and reusability.
+
+The ‘GitHub’/‘Zenodo’ integration will assign one “mother-DOI” to the
+project, which will always resolve to the latest version, as well as a
+unique DOI to each version/release of the FAIR theory. This enables
+users to refer to and cite either the theory in general or specific
+versions of the theory. The list of authors for the citation is
+automatically determined by the ‘GitHub’ user account names used by the
+repository - this can be edited on ‘Zenodo’, as explained above. DOIs
+used in ‘Zenodo’ are registered through the
+[DataCite](https://www.datacite.org/) service.
+
+> **Pro-tip**: Check the `Citation` field on the ‘Zenodo’ page, and
+> copy-paste it into the README file of your ‘GitHub’ repo to make
+> cross-linking even easier (or refer users to the ‘Zenodo’ page to find
+> the citation, which obviates the need to manually update this
+> information). Click the DOI badge in the `Details` field to get
+> instructions on how to add a clear highlighted DOI badge to your
+> ‘GitHub’ repository, for users to see and make use of your DOI:
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14552329.svg)](https://doi.org/10.5281/zenodo.14552329)
+
+### CONGRATULATIONS!
+
+Your FAIR theory is now archived in ‘Zenodo’, and with a DOI that can be
+versioned to reflect updates to the repository version through time. You
+should be able to see details of this on the ‘GitHub’ ‘Zenodo’ page for
+your repository. This also means that your archived projects can get
+picked up by other indexing services and search engines that use DOIs
+too.
+
+Providing a long-term archive and a DOI for your work is required for
+others to be able to properly cite it, as this provides basic citation
+metadata. For Open Science, it is important to be able to
+comprehensively cite the resources that you use in your research,
+including theory, and this workflow enables that to happen, in line with
+best practices. Making theory FAIR also helps elevate the standard of
+theory to that of the standard of other research outputs, like papers
+and software.
+
+> **Pro-tip**: Is your research funded by an EU grant? Now you can
+> directly connect your FAIR theory to your grant by updating the grant
+> section of the metadata on the project’s ‘Zenodo’ record. This
+> massively helps to increase its discoverability!
+
+### Checklist for citing your project
+
+So now you have a sustainably archived ‘GitHub’ repository in ‘Zenodo’
+that is ready to be re-used and cited! Before continuing, make sure that
+you have:
+
+Linked your ‘GitHub’ project to ‘Zenodo’. If you see a complete copy of
+your ‘GitHub’ repository in ‘Zenodo’ then things are working.
+
+‘Zenodo’ and ‘GitHub’ integrated setup works nicely. For example have
+all the author names, and correct project title come across to ‘Zenodo’.
+If not, or if authors just have nicknames you can edit these details in
+‘Zenodo’.
+
+Project has a first release, with a DOI. You should have a DOI displayed
+on your projects ‘Zenodo’ page. This first DOI is called the ‘concept
+DOI’ and is the master DOI linking to all subsequent release DOIs. Copy
+this DOI link and embed it in your ‘GitHub’ projects README page. You’re
+done!
+
+## Automating FAIR Theory Creation
+
+The function
+[`theorytools::create_fair_theory()`](https://cjvanlissa.github.io/theorytools/reference/create_fair_theory.md)
+automates most of the preceding steps, up to step 2.8. Assuming you have
+already created a shareable theory file called `theory.txt` which
+resides in the currently active directory
+([`getwd()`](https://rdrr.io/r/base/getwd.html)), you can create your
+FAIR theory as follows:
+
+``` r
+create_fair_theory(
+  path = file.path("c:/theories", "empirical_cycle"),
+  title = "The Empirical Cycle, Again",
+  theory_file = "theory.txt",
+  remote_repo = "empirical_cycle2",
+  add_license = "cc0")
+```
+
+You should still complete steps 2.12 - 2.17 manually.
+
+## References
+
+This tutorial is partly adapted from Module 5, Task 2 of Tennant et al.
+(2018).
+
+De Groot, Adriaan D., and J. A. A. Spiekerman. 1969. *Methodology:
+Foundations of Inference and Research in the Behavioral Sciences*. De
+Gruyter Mouton. <https://doi.org/10.1515/9783112313121>.
+
+Guest, Olivia, and Andrea E. Martin. 2021. “How Computational Modeling
+Can Force Theory Building in Psychological Science.” *Perspectives on
+Psychological Science* 16 (4): 789–802.
+<https://doi.org/10.1177/1745691620970585>.
+
+Meehl, Paul E. 1990. “Appraising and Amending Theories: The Strategy of
+Lakatosian Defense and Two Principles That Warrant It.” *Psychological
+Inquiry* 1 (2): 108–41. <https://doi.org/10.1207/s15327965pli0102_1>.
+
+Tennant, Jon, Simon Worthington, Tania Allard, Philipp Zumstein, Daniel
+S. Katz, Alexander Morley, Stephan Druskat, et al. 2018.
+“OpenScienceMOOC/Module-5-Open-Research-Software- and-Open-Source:
+Second Release.” Zenodo. <https://doi.org/10.5281/zenodo.1434288>.

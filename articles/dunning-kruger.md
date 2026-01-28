@@ -1,0 +1,476 @@
+# FAIRifying the Dunning-Kruger Effect
+
+### 0.1 Introduction
+
+In this example, we implement the Dunning-Kruger (DK) effect, following
+the formalization by Feld, Sauermann, and De Grip (2017). The DK effect
+is defined as follows: “low performers vastly overestimate their
+performance while high performers more accurately assess their
+performance”. The paper by Feld and colleagues restates the DK effect in
+terms of skill and overconfidence to show that measurement error can
+cause significant bias in the relationship between performance and
+overestimation. Statistical methods that can be used to correct for this
+bias are also discussed. Since this theory contains definitions of
+abstract concepts, relationships between the concepts, mathematical
+derivations as well as commonly used statistical models and experimental
+paradigms, it serves as a nice illustration on how to formalize and then
+FAIRify all these different aspects.[¹](#fn1)
+
+#### 0.1.1 Learning Goals
+
+Once you have completed this tutorial, you will know how to:
+
+Implement a theory consisting of multiple aspects that can not all be
+represented in the same format
+
+Learn how to FAIRify equations / proofs
+
+## 1 1. Implement the Theory
+
+Begin by creating an empty folder to hold all files associated with the
+theory - this folder will become the theory archive. For example, create
+a folder:
+
+``` r
+dir.create("dunning_kruger")
+setwd("dunning_kruger")
+```
+
+We begin by implementing the theory; by far the greatest challenge of
+this tutorial.
+
+### 1.1 Definitions
+
+Let’s start with collecting all definitions the theory makes use of:
+
+- **performance** as a test score
+- **performance estimation** as the difference between the expected and
+  the actual test score
+- **skill** as the ability to perform well on a given test
+- **overconfidence** as the difference between self-assessed and actual
+  skill
+- **measurement error** as luck on a test
+
+Since these are verbal definitions, we can track them as a markdown
+file:
+
+``` r
+definitions <- 
+"
+## Definitions
+
+- **performance** as a test score
+- **performance estimation** as the difference between the expected and
+the actual test score
+- **skill** as the ability to perform well on a given test
+- **overconfidence** as the difference between self-assessed and actual skill
+- **measurement error** as luck on a test
+"
+
+cat(definitions, file="definitions.md")
+```
+
+### 1.2 Relationships
+
+We can visualize the originally proposed relationships between the
+concepts as a graph:
+
+As well as the reformulation of Feld, Sauermann, and De Grip (2017):
+
+With \\-\\ signifying a negative association, \\\simeq\\ signifying
+“measured by” and \\:=\\ signifying “defined as”.
+
+To FAIRify this graph, we can use a graph specification library such as
+igraph (Csárdi et al. 2025):
+
+``` r
+library(igraph, warn.conflicts=FALSE)
+
+g <- graph_from_literal(
+    skill -- overconfidence,
+    skill -- performance,
+    overconfidence -- overestimation,
+    performance -- overestimation,
+    "skill + error" -- "overconfidence - error",
+    "skill + error" -- performance,
+    "expected performance - performance" -- overestimation,
+    "expected performance - performance" -- "overconfidence - error"
+)
+
+E(g)$relationship <- c(
+ "negative association",
+ "~",
+ "~",
+ "negative association",
+ ":=",
+ ":=",
+ "negative association",
+ "= (Theorem 1)"
+)
+```
+
+We can visualize this graph with
+
+``` r
+plot(
+  g,
+  vertex.size = 20,
+  vertex.color = "white",
+  edge.label = E(g)$relationship,
+)
+```
+
+![](dk.svg)
+
+Finally, we save the graph in a standardized format such as
+[GraphML](http://graphml.graphdrawing.org/):
+
+``` r
+write_graph(
+  g,
+  "relationship_graph.txt",
+  format = "graphml"
+)
+```
+
+### 1.3 Mathematical formulation
+
+#### 1.3.1 Definitions
+
+We define the random variables
+
+- \\s^\*\\ denoting skill
+- \\\varepsilon\\ denoting measurement error, with
+  \\\mathbb{E}\[\varepsilon\] = 0\\, \\\varepsilon\\ independent of all
+  other random variables included in the model
+- \\s^\*\_s\\ denoting self-assessed skill
+
+And further performance \\p\\ as \\\begin{equation} \tag{1.1} p = s^\* +
+\epsilon \end{equation}\\ overconfidence \\oc^\*\\ as \\\begin{equation}
+\tag{1.2} oc^\* = s^\*\_s-s^\* \end{equation}\\ expected performance
+\\p_e\\ as \\\begin{equation} \tag{1.3} p_e = s^\* + oc^\*
+\end{equation}\\ Overconfidence \\oc^\*\\ is measured by overestimation
+\\oe\\ defined as \\\begin{equation} \tag{1.2} oe = p_e - p
+\end{equation}\\
+
+#### 1.3.2 Theorems
+
+Theorem 1: \\\begin{equation} oe = oc^\* - \epsilon \end{equation}\\
+
+Proof:
+
+From eq. [(1.2)](#eq:oc) and [(1.3)](#eq:ep) it follows that \\p_e =
+s^\*\_s\\ and further from eq. [(1.3)](#eq:ep) and [(1.1)](#eq:p) we see
+\\\begin{align} \tag{1.4} oe &= p_e - p \\ &= (s^\* + oc^\*) - (s^\* +
+\epsilon) \\ &= oc^\* - \epsilon \end{align}\\
+
+Since there is no accepted standard on how to represent mathematical
+knowledge as a digital object (see also this
+[whitepaper](https://www.wolframfoundation.org/programs/SemanticWorkshopWhitePaper.pdf)),
+there are many possible routes to FAIRify equations. Here we opt for a
+representation as latex code as a widely used and known way of
+typesetting equations. First, we create a file “equations.tex”
+containing the actual derivations:
+
+``` default
+\section{Definitions}
+Define random variables
+\begin{itemize}
+ \item $s^*$ denoting skill
+ \item $\epsilon$ denoting measurement error, with $\Exp[\epsilon] = 0$, $\epsilon$ independent of all other random variables included in the model
+ \item $s^*_s$ denoting self-assessed skill
+\end{itemize}
+
+\noindent Then we define performance $p$ as
+\begin{equation} \label{p}
+  p \coloneq s^* + \epsilon
+\end{equation}
+and overconfidence $oc^*$ as
+\begin{equation} \label{oc}
+  oc^* \coloneq s^*_s-s^*
+\end{equation}
+and expected performance $p_e$ as
+\begin{equation} \label{ep}
+  p_e \coloneq s^* + oc^*
+\end{equation}
+Overconfidence $oc^*$ is measured by overestimation $oe$ defined as
+\begin{equation}
+  oe \coloneq p_e - p
+\end{equation}
+
+\section{Theorems}
+
+Theorem 1:
+
+\begin{equation}
+  oe = oc^* - \epsilon
+\end{equation}
+
+Proof 1:
+\noindent From eq. \ref{oc} and \ref{ep} it follows that $p_e = s^*_s$ and further from eq. \ref{ep} and \ref{p} we see
+\begin{align} \label{dd}
+  oe &= p_e - p \\
+  &= (s^* + oc^*) - (s^* + \epsilon) \\
+  &= oc^* - \epsilon
+\end{align}
+```
+
+Then, we create a file “render.tex” containing the necessary information
+(document format, packages, commands) that can be used to render the
+equations:
+
+``` default
+\documentclass[a4paper,11pt]{article}
+
+% load packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+% Statistics
+\newcommand{\Var}{\mathbb{V}}
+\newcommand{\Exp}{\mathbb{E}}
+
+% commands
+\renewcommand*{\epsilon}{\varepsilon}
+
+% operators
+\DeclareMathOperator{\cov}{cov}
+
+\begin{document}
+
+\input{equations.tex}
+
+\end{document}
+```
+
+As you can see, we use `\input{equations.tex}` to insert the equations
+into the document. This way, the mathematical theory is version
+controlled separately from the LaTex code required to render it. This
+way, it is clear when changes are made to the theory (i.e.,
+`equations.tex` is edited), and when changes are made to the formatting
+of the theory (i.e., `render.tex` is edited).
+
+### 1.4 Statistical Models
+
+Using a linear regression model, the Dunning-Kruger effect can be stated
+as
+
+\\\begin{equation} oc^\* = \alpha + \beta_1 s^\* + u \end{equation}\\
+with \\\beta_1 \< 0\\. Substituting the observable variables and
+rearranging according to eq. [(1.1)](#eq:p) and [(1.4)](#eq:dd):
+\\\begin{equation} oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
+\end{equation}\\
+
+#### 1.4.1 Correction
+
+There are different ways to correct for the bias introduced by
+measurement error:
+
+- Bias correction: use a bias correction formula that takes into account
+  the correlation between performance and the error term
+- IV approach: measure performance on a second test (\\p_2\\) and
+  compute \\\beta_1 = \frac{\mathrm{cov}(oe, p_2)}{\mathrm{cov}(p,
+  p_2)}\\.
+
+Let’s add this model again as latex code by adding a new file
+“linear_model.tex”:
+
+``` default
+\subsection{Linear Model}
+Using a linear regression model, the Dunning-Kruger effect can be stated as
+\begin{equation}
+ oc^* = \alpha + \beta_1 s^* + u
+\end{equation}
+with $\beta_1 < 0$.
+Substituting the observable variables and rearranging according to eq. \ref{p} and \ref{dd}:
+\begin{equation}
+  oe = \alpha + \beta_1 p + u - \epsilon(1 + \beta_1)
+\end{equation}
+
+\subsubsection{Correction}
+There are different ways to correct for the bias introduced by measurement error:
+\begin{itemize}
+ \item Bias correction: use a bias correction formula that takes into account the correlation between performance and the error term
+ \item IV approach: measure performance on a second test ($p_2$) and compute $\beta_1 = \frac{\cov(oe, p_2)}{\cov(p, p_2)}$.
+\end{itemize}
+```
+
+and adding to `render.tex`:
+
+``` default
+...
+\section{Statistical Models}
+\input{linear_model.tex}
+...
+```
+
+If we now render `render.tex`, the resulting document looks like this:
+
+Rendered Document
+
+### 1.5 Overview
+
+You should now have a folder containing the following files:
+
+- `definitions.md`
+- `relationship_graph.txt`
+- `render.tex`
+- `equations.tex`
+- `linear_model.tex`
+- (Optionally:) `render.pdf`
+
+## 2 2. Document the Theory
+
+### 2.1 Documenting Reusability with a LICENSE
+
+We will add a CC0 (Creative Commons Zero) license to the repository, to
+waive all copyright protection
+
+``` r
+worcs::add_license_file(path = ".", license = "cc0")
+```
+
+### 2.2 Documenting Interoperability with a README File
+
+We will add a README file describes the repository’s contents and
+purpose, making it easier for others to understand the theory’s
+potential for interoperability and reuse. First, we include a draft
+README file using:
+
+``` r
+theorytools::add_readme_fair_theory(title = "Dunning-Kruger Effect",
+                                    path = ".")
+```
+
+We encourage users to edit the resulting `README.md` file, in
+particular, to add relevant information about X-interoperability. In
+this case, X-interoperability is limited: the definitions in
+`definitions.txt` are not yet well-defined (future work could be done
+here), the equations in `equations.tex` and `linear_model.tex` are
+interoperable through formal mathematical operations, and the
+`relationship_graph.txt` can be plotted using the `igraph` R-package.
+Importantly, we should add references to the original paper by Dunning
+and Kruger, and to the specification paper by Feld and colleagues:
+
+> Feld, J., Sauermann, J., & De Grip, Andreas. 2017. “Estimating the
+> Relationship Between Skill and Overconfidence.” Journal of Behavioral
+> and Experimental Economics 68: 18–24.
+
+> Kruger, J., & Dunning, D. (1999). Unskilled and unaware of it: how
+> difficulties in recognizing one’s own incompetence lead to inflated
+> self-assessments. Journal of personality and social psychology, 77(6),
+> 1121.
+
+For guidance on writing a README file for theory, see [this
+vignette](https://cjvanlissa.github.io/theorytools/articles/readme.html).
+
+### 2.3 Add Zenodo Metadata
+
+Create a `.zenodo.json` file with metadata about the theory, to allow it
+to be indexed automatically when we archive it on Zenodo:
+
+``` r
+theorytools::add_zenodo_json_theory(
+  path = ".",
+  title = "Dunning-Kruger Effect",
+  keywords = c("Dunning–Kruger", "Overconfidence", "Judgment error", "Measurement error")
+)
+```
+
+## 3 3. Version Control the Theory
+
+### 3.1 Using Git for Version Control
+
+We use ‘Git’ to version control the project folder. If you have not yet
+set up Git and GitHub integration on your computer, reference the basic
+[FAIR theory
+tutorial](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html).
+
+Initialize version control in your project repository by running:
+
+``` r
+gert::git_init(path = ".")
+```
+
+### 3.2 Connecting to a Remote (‘GitHub’) Repository
+
+To make your FAIR theory accessible to collaborators and discoverable by
+the wider community, you must connect your local ‘Git’ repository to a
+remote repository on a platform like ‘GitHub’:
+
+``` r
+worcs::git_remote_create("dunning_kruger", private = FALSE)
+```
+
+This command will create a new public repository on ‘GitHub’ and link it
+to your local repository. The `private = FALSE` argument ensures the
+repository is public by default.
+
+Connect this repository to your FAIR theory folder as follows:
+
+``` r
+worcs::git_remote_connect(".", remote_repo = "dunning_kruger")
+```
+
+Finally, push the local files to the remote repository:
+
+``` r
+worcs::git_update("First commit of my theory", repo = ".")
+```
+
+## 4 4. Archive the Theory on ‘Zenodo’
+
+Head over to [zenodo.org](https://zenodo.org). Authorize Zenodo to
+connect to your ‘GitHub’ account in the ‘[Using
+’GitHub’](https://zenodo.org/account/settings/github/)’ section. Here,
+‘Zenodo’ will redirect you to ‘GitHub’ to ask for permissions to use
+‘[webhooks](https://developer.github.com/webhooks/)’ on your
+repositories. You want to authorize ‘Zenodo’ here with the permissions
+it needs to form those links.
+
+Navigate to the [‘GitHub’ repository listing
+page](https://zenodo.org/account/settings/github/) and “flip the switch”
+next to your repository. If your repository **does not show up** in the
+list, you may need to press the ‘Synchronize now’ button. At the time of
+writing, we noticed that it can take quite a while (hours?) for ‘Zenodo’
+to detect new ‘GitHub’ repositories. If so, take a break or come back to
+this last step tomorrow!
+
+## 5 5. Entering Meta-Data
+
+We can further document our ‘Zenodo’ archive as a FAIR theory by adding
+some extra information on ‘Zenodo’. On ‘Zenodo’ click the
+[Upload](https://zenodo.org/deposit) tab in the main menu, where you
+should find your newly uploaded repository.
+
+Some metadata are pre-populated by the `.zenodo.json` file. We will
+additionally add several related works.
+
+For example: + `Is derived from` Journal article:
+10.1016/j.socec.2017.03.002 (DOI) + `Is derived from` Journal article:
+10.1037/0022-3514.77.6.1121 (DOI)
+
+Finally, click “Publish” to update these metadata.
+
+The end result of this tutorial should be a FAIR theory like this one:
+<https://doi.org/10.5281/zenodo.15633859>
+
+### References
+
+Csárdi, Gábor, Tamás Nepusz, Vincent Traag, Szabolcs Horvát, Fabio
+Zanini, Daniel Noom, Kirill Müller, David Schoch, and Maëlle Salmon.
+2025. *igraph: Network Analysis and Visualization in r*.
+<https://doi.org/10.5281/zenodo.7682609>.
+
+Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. “Estimating the
+Relationship Between Skill and Overconfidence.” *Journal of Behavioral
+and Experimental Economics* 68: 18–24.
+
+------------------------------------------------------------------------
+
+1.  Note that since we are trying to formalize this theory as close to
+    the paper as possible, many descriptions are (almost) verbatim
+    quotes from the paper.

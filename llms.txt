@@ -1,0 +1,119 @@
+# theorytools
+
+The `theorytools` package offers an integrated suite of tools for
+creating, maintaining, and reusing FAIR (Findable, Accessible,
+Interoperable, Reusable) theories in R. Designed to support transparent
+and collaborative theory development, the package enables users to
+formalize theories, track changes with version control, assess
+pre-empirical coherence, and derive testable hypotheses. Aligning with
+open science principles and workflows, theorytools facilitates the
+systematic improvement of theoretical frameworks and enhances their
+discoverability and usability.
+
+## Installation
+
+You can install the development version of theorytools from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("cjvanlissa/theorytools")
+```
+
+## Documentation
+
+[View the package website
+here.](https://cjvanlissa.github.io/theorytools/)
+
+Every user-facing function in the package is documented, and the
+documentation can be accessed by running `?function_name` in the R
+console, e.g.,
+[`?create_fair_theory`](https://cjvanlissa.github.io/theorytools/reference/create_fair_theory.md).
+
+Moreover, you can check the package vignettes by running
+`vignette(package = "theorytools")`, and read specific vignettes by
+running, e.g., `vignette("fairtheory", package = "theorytools")`.
+
+## Citing `theorytools`
+
+You can cite the R-package with the following citation:
+
+> Van Lissa, C. J. (2024). FAIR Theory Construction Toolkit (0.1.0) \[R
+> package\]. <https://github.com/cjvanlissa/theorytools>
+
+## Contributing and Contact Information
+
+If you have ideas, please get involved. You can contribute by opening an
+issue on GitHub, or sending a pull request with proposed features.
+Contributions in code must adhere to the [tidyverse style
+guide](https://style.tidyverse.org/).
+
+- File a GitHub issue
+  [here](https://github.com/cjvanlissa/theorytools/issues)
+- Make a pull request
+  [here](https://github.com/cjvanlissa/theorytools/pulls)
+
+By participating in this project, you agree to abide by the [Contributor
+Code of Conduct
+v2.0](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).
+
+# Package index
+
+## All functions
+
+- [`add_readme_fair_theory()`](https://cjvanlissa.github.io/theorytools/reference/add_readme_fair_theory.md)
+  : Add Readme File
+- [`add_significance()`](https://cjvanlissa.github.io/theorytools/reference/add_significance.md)
+  : Add Significance Asterisks
+- [`add_theory_file()`](https://cjvanlissa.github.io/theorytools/reference/add_theory_file.md)
+  : Add Theory File
+- [`add_to_pkgdown()`](https://cjvanlissa.github.io/theorytools/reference/add_to_pkgdown.md)
+  : Add webexercises helper files to pkgdown
+- [`add_zenodo_json()`](https://cjvanlissa.github.io/theorytools/reference/add_zenodo_json.md)
+  [`add_zenodo_json_theory()`](https://cjvanlissa.github.io/theorytools/reference/add_zenodo_json.md)
+  : Add 'Zenodo' JSON File
+- [`create_fair_theory()`](https://cjvanlissa.github.io/theorytools/reference/create_fair_theory.md)
+  : Create FAIR Theory Repository
+- [`derive_formula()`](https://cjvanlissa.github.io/theorytools/reference/derive_formula.md)
+  : Derive Formulae From Augmented DAG
+- [`download_theory()`](https://cjvanlissa.github.io/theorytools/reference/download_theory.md)
+  : Download FAIR Theory
+- [`filter_conditional_independencies()`](https://cjvanlissa.github.io/theorytools/reference/filter_conditional_independencies.md)
+  : Filter Conditional Independencies
+- [`lsac`](https://cjvanlissa.github.io/theorytools/reference/lsac.md) :
+  Synthetic Data: Longitudinal Study of Australian Children
+- [`mottistefanidi2012`](https://cjvanlissa.github.io/theorytools/reference/mottistefanidi2012.md)
+  : Adaptation of Adolescent Immigrants in Greece
+- [`prune_dag()`](https://cjvanlissa.github.io/theorytools/reference/prune_dag.md)
+  : Prune DAG Based on Adjustment Sets
+- [`quizz()`](https://cjvanlissa.github.io/theorytools/reference/quizz.md)
+  : Create a Quiz
+- [`select_controls()`](https://cjvanlissa.github.io/theorytools/reference/select_controls.md)
+  : Select Covariate Adjustment Sets from Data
+- [`simulate_data()`](https://cjvanlissa.github.io/theorytools/reference/simulate_data.md)
+  : Simulate Data from DAG
+- [`use_webex_vignette()`](https://cjvanlissa.github.io/theorytools/reference/use_webex_vignette.md)
+  : Create a webexercises vignette
+- [`webex_vignette()`](https://cjvanlissa.github.io/theorytools/reference/webex_vignette.md)
+  : Create Vignette with webexercises Support
+
+# Articles
+
+### All vignettes
+
+- [Specifying Augmented Directed Acyclic
+  Graphs](https://cjvanlissa.github.io/theorytools/articles/augmented_dags.md):
+- [Using FAIR Theory for Causal
+  Inference](https://cjvanlissa.github.io/theorytools/articles/causal-inference.md):
+- [Conducting Theory-Based Reproducible Simulation
+  Studies](https://cjvanlissa.github.io/theorytools/articles/computational_social_science.md):
+- [FAIRifying the Dunning-Kruger
+  Effect](https://cjvanlissa.github.io/theorytools/articles/dunning-kruger.md):
+- [Making a Theory
+  FAIR](https://cjvanlissa.github.io/theorytools/articles/fair-theory.md):
+- [Formalizing Self-Determination
+  Theory](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.md):
+- [What to Include in a
+  README?](https://cjvanlissa.github.io/theorytools/articles/readme.md):
+- [Updating a
+  Theory](https://cjvanlissa.github.io/theorytools/articles/updating_theory.md):

@@ -178,7 +178,7 @@ nodes and edges:</p>
 <span><span class="st">  X -&gt; Y [label="effect"]</span></span>
 <span><span class="st">}'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">g</span>, text_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="dag_basic.png" width="60%"></p>
+<p><img src="dag_basic.png" class="r-plt" alt="" width="60%"></p>
 </div>
 </div>
 <div class="section level3">
@@ -274,7 +274,7 @@ residuals.s</li>
 <span><span class="st">  Z -&gt; Y [label="indirect", form="2*Z"]</span></span>
 <span><span class="st">}'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">g</span>, text_size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="dag_three.png" width="60%"></p>
+<p><img src="dag_three.png" class="r-plt" alt="" width="60%"></p>
 <div class="section level3">
 <h3 id="parsing-dag-properties">Parsing DAG Properties<a class="anchor" aria-label="anchor" href="#parsing-dag-properties"></a>
 </h3>
@@ -346,7 +346,7 @@ code:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">g</span>, run <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">X</span>,y<span class="op">=</span><span class="va">Y</span>,color<span class="op">=</span><span class="va">Z</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="augmented_dags_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="augmented_dags_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
 <p>You can use this script, for example, to generate synthetic data and
 build a reproducible analysis pipeline for a Preregistration-As-Code
 <span class="citation">(Peikert, Van Lissa, and Brandmaier 2021; Van
@@ -413,7 +413,7 @@ Machine Learning.”</span> <em>Religion, Brain &amp; Behavior</em> 0 (0):
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
