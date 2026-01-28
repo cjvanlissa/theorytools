@@ -76,11 +76,13 @@ once, in the Console window. All other code can be inserted in code
 chunks in your `"manuscript.Rmd"` file; knit it regularly to verify that
 everything runs as expected.
 
-> What does it mean to run R code *interactively*? Executing code
-> immediately in an R session that a human user is interacting with.
-> Evaluating code by placing it in an Rmarkdown document, and knitting
-> that document. Having one function call another function; these
-> functions are said to be ‘interacting’
+> What does it mean to run R code *interactively*?
+
+``` r
+webexercises::mcq(sample(c(answer = "Executing code immediately in an R session that a human user is interacting with.", "Having one function call another function; these functions are said to be 'interacting'", "Evaluating code by placing it in an Rmarkdown document, and knitting that document.")))
+```
+
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value='answer'>Executing code immediately in an R session that a human user is interacting with.</option><option value=''>Evaluating code by placing it in an Rmarkdown document, and knitting that document.</option><option value=''>Having one function call another function; these functions are said to be 'interacting'</option></select>"
 
 ### 2. Download a FAIR Theory
 
@@ -133,10 +135,12 @@ the book chapter describing the theory does not explicitly define any of
 the constructs involved.
 
 > Why is the FAIR theory downloaded into a separate `theory/` subfolder?
-> Because theorytools only works inside a ‘theory/’ directory To prevent
-> overwriting the WORCS project’s README and LICENSE files To avoid
-> downloading unnecessary files Because dagitty requires theory files to
-> be placed in a specific folder
+
+``` r
+webexercises::mcq(sample(c(answer = "To prevent overwriting the WORCS project's README and LICENSE files", "To avoid downloading unnecessary files", "Because theorytools only works inside a 'theory/' directory", "Because dagitty requires theory files to be placed in a specific folder")))
+```
+
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value=''>Because theorytools only works inside a 'theory/' directory</option><option value='answer'>To prevent overwriting the WORCS project's README and LICENSE files</option><option value=''>To avoid downloading unnecessary files</option><option value=''>Because dagitty requires theory files to be placed in a specific folder</option></select>"
 
 ### 3. Load the FAIR Theory
 
@@ -171,9 +175,13 @@ tidySEM::graph_sem(sdt)
 
 ![](sdt.png)
 
-> According to the DAG, what are the causes of `wellbeing`? needs,
-> intrinsic\_ \_motivation integration, intrinsic_motivation, needs
-> integration, intrinsic_motivation
+> According to the DAG, what are the causes of `wellbeing`?
+
+``` r
+webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))
+```
+
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value=''>needs, intrinsic_ _motivation</option><option value='answer'>integration, intrinsic_motivation, needs</option><option value=''>integration, intrinsic_motivation</option></select>"
 
 ### 4. Creating a Computational Model
 
@@ -222,9 +230,13 @@ This synthetic dataset is consistent with the structure encoded in our
 FAIR SDT, though the parameter values are arbitrary.
 
 > Which of the following is **not a reason** to use computational
-> simulation studies? Exploring what-if scenarios Fitting a model to
-> real-world data Preregistering a reproducible analysis pipeline
-> Conducting power analysis
+> simulation studies?
+
+``` r
+webexercises::mcq(sample(c(answer = "Fitting a model to real-world data", "Exploring what-if scenarios", "Conducting power analysis", "Preregistering a reproducible analysis pipeline")))
+```
+
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value=''>Exploring what-if scenarios</option><option value='answer'>Fitting a model to real-world data</option><option value=''>Preregistering a reproducible analysis pipeline</option><option value=''>Conducting power analysis</option></select>"
 
 #### Simplifying the Model
 
@@ -323,7 +335,13 @@ sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
 ```
 
 > Run the code yourself, and answer true or false: In this one dataset,
-> the result was significant. TRUE FALSE
+> the result was significant.
+
+``` r
+webexercises::torf(TRUE)
+```
+
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select>"
 
 ## Using `worcs` with `targets`: Sustainable Reproducibility
 
@@ -668,7 +686,7 @@ ggplot(df_plot, aes(x = n, y = power, color = beta, shape = beta)) +
   theme_bw()
 ```
 
-![](computational_social_science_files/figure-html/unnamed-chunk-19-1.png)
+![](computational_social_science_files/figure-html/unnamed-chunk-24-1.png)
 
 ### 11. Run the Pipeline
 

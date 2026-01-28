@@ -159,31 +159,24 @@ window. All other code can be inserted in code chunks in your
 <code>"manuscript.Rmd"</code> file; knit it regularly to verify that
 everything runs as expected.</p>
 <blockquote>
-<p>What does it mean to run R code <em>interactively</em>?
-<select class="webex-select"><option value="blank"></option>
-<option value="answer">Executing
-code immediately in an R session that a human user is interacting
-with.</option>
-<option value="">Evaluating code by placing it in an
-Rmarkdown document, and knitting that
-document.</option>
-<option value="">Having one function call another
-function; these functions are said to be
-‘interacting’</option></select></p>
+<p>What does it mean to run R code <em>interactively</em>?</p>
 </blockquote>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/mcq.html" class="external-link">mcq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="st">"Executing code immediately in an R session that a human user is interacting with."</span>, <span class="st">"Having one function call another function; these functions are said to be 'interacting'"</span>, <span class="st">"Evaluating code by placing it in an Rmarkdown document, and knitting that document."</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value='answer'&gt;Executing code immediately in an R session that a human user is interacting with.&lt;/option&gt;&lt;option value=''&gt;Evaluating code by placing it in an Rmarkdown document, and knitting that document.&lt;/option&gt;&lt;option value=''&gt;Having one function call another function; these functions are said to be 'interacting'&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="download-a-fair-theory">2. Download a FAIR Theory<a class="anchor" aria-label="anchor" href="#download-a-fair-theory"></a>
 </h3>
 <p><strong>Interactive:</strong> You’ll need to install some packages to
 run this tutorial. Run this code:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"theorytools"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dagitty"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidySEM"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>To your <code>"manuscript.Rmd"</code> file, add the following lines
 in the setup chunk:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/theorytools/">theorytools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.dagitty.net" class="external-link">dagitty</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/" class="external-link">tidySEM</a></span><span class="op">)</span></span></code></pre></div>
@@ -201,7 +194,7 @@ subfolder called <code>"theory/"</code> for these files, because the
 theory repository has its own README and LICENSE files; you don’t want
 to overwrite those files from your WORCS repository. Optionally, you can
 have a look at the archived version by opening the URL <a href="https://doi.org/10.5281/zenodo.15648655" class="external-link uri">https://doi.org/10.5281/zenodo.15648655</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/download_theory.html">download_theory</a></span><span class="op">(</span><span class="st">"10.5281/zenodo.15648655"</span>, path <span class="op">=</span> <span class="st">"theory"</span><span class="op">)</span></span></code></pre></div>
 <p>The theory includes a README file, describing the contents of the
 other files, a LICENSE describing how the theory can be reused, a file
@@ -212,19 +205,11 @@ the Vignette on formalizing SDT</a>), the book chapter describing the
 theory does not explicitly define any of the constructs involved.</p>
 <blockquote>
 <p>Why is the FAIR theory downloaded into a separate
-<code>theory/</code> subfolder?
-<select class="webex-select"><option value="blank"></option>
-<option value="">Because
-theorytools only works inside a ‘theory/’
-directory</option>
-<option value="answer">To prevent overwriting the
-WORCS project’s README and LICENSE files</option>
-<option value="">To
-avoid downloading unnecessary files</option>
-<option value="">Because
-dagitty requires theory files to be placed in a specific
-folder</option></select></p>
+<code>theory/</code> subfolder?</p>
 </blockquote>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/mcq.html" class="external-link">mcq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="st">"To prevent overwriting the WORCS project's README and LICENSE files"</span>, <span class="st">"To avoid downloading unnecessary files"</span>, <span class="st">"Because theorytools only works inside a 'theory/' directory"</span>, <span class="st">"Because dagitty requires theory files to be placed in a specific folder"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value=''&gt;Because theorytools only works inside a 'theory/' directory&lt;/option&gt;&lt;option value='answer'&gt;To prevent overwriting the WORCS project's README and LICENSE files&lt;/option&gt;&lt;option value=''&gt;To avoid downloading unnecessary files&lt;/option&gt;&lt;option value=''&gt;Because dagitty requires theory files to be placed in a specific folder&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="load-the-fair-theory">3. Load the FAIR Theory<a class="anchor" aria-label="anchor" href="#load-the-fair-theory"></a>
@@ -244,23 +229,20 @@ directory, because the manuscript and the theory are both in different
 subdirectories. If you run it interactively instead, you are already
 inside the parent directory, and you can use the path
 <code>theory/sdt.txt</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sdt</span> <span class="op">&lt;-</span> <span class="fu">dagitty</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html" class="external-link">dagitty</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"../theory/sdt.txt"</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we can plot the model using the tidySEM package. Get a basic
 plot by running <code>graph_sem(sdt)</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidySEM</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">sdt</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sdt.png" class="r-plt" alt="" width="60%"></p>
 <blockquote>
-<p>According to the DAG, what are the causes of <code>wellbeing</code>?
-<select class="webex-select"><option value="blank"></option>
-<option value="">needs,
-intrinsic_ _motivation</option>
-<option value="answer">integration,
-intrinsic_motivation, needs</option>
-<option value="">integration,
-intrinsic_motivation</option></select></p>
+<p>According to the DAG, what are the causes of
+<code>wellbeing</code>?</p>
 </blockquote>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/mcq.html" class="external-link">mcq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="st">"integration, intrinsic_motivation, needs"</span>, <span class="st">"integration, intrinsic_motivation"</span>, <span class="st">"needs, intrinsic_ _motivation"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value=''&gt;needs, intrinsic_ _motivation&lt;/option&gt;&lt;option value='answer'&gt;integration, intrinsic_motivation, needs&lt;/option&gt;&lt;option value=''&gt;integration, intrinsic_motivation&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="creating-a-computational-model">4. Creating a Computational Model<a class="anchor" aria-label="anchor" href="#creating-a-computational-model"></a>
@@ -290,7 +272,7 @@ for simulating data exist, and some may be better suited to particular
 use cases. The tutorial on <a href="https://cjvanlissa.github.io/theorytools/articles/augmented_dags.html">Specifying
 Augmented DAGS</a> contains more information about user-defined
 functional forms and (error) distributions.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -364,17 +346,11 @@ functional forms and (error) distributions.</p>
 our FAIR SDT, though the parameter values are arbitrary.</p>
 <blockquote>
 <p>Which of the following is <strong>not a reason</strong> to use
-computational simulation studies?
-<select class="webex-select"><option value="blank"></option>
-<option value="">Exploring
-what-if scenarios</option>
-<option value="answer">Fitting a model to
-real-world data</option>
-<option value="">Preregistering a reproducible
-analysis pipeline</option>
-<option value="">Conducting power
-analysis</option></select></p>
+computational simulation studies?</p>
 </blockquote>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/mcq.html" class="external-link">mcq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="st">"Fitting a model to real-world data"</span>, <span class="st">"Exploring what-if scenarios"</span>, <span class="st">"Conducting power analysis"</span>, <span class="st">"Preregistering a reproducible analysis pipeline"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value=''&gt;Exploring what-if scenarios&lt;/option&gt;&lt;option value='answer'&gt;Fitting a model to real-world data&lt;/option&gt;&lt;option value=''&gt;Preregistering a reproducible analysis pipeline&lt;/option&gt;&lt;option value=''&gt;Conducting power analysis&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 <div class="section level4">
 <h4 id="simplifying-the-model">Simplifying the Model<a class="anchor" aria-label="anchor" href="#simplifying-the-model"></a>
 </h4>
@@ -384,7 +360,7 @@ not need the entire theory to hypothesize about this specific
 relationship. We can use the DAG to derive a restricted version of the
 theory that includes all variables that might confound the relationship
 of interest between intrinsic motivation and well-being:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sdt_pruned</span> <span class="op">&lt;-</span> <span class="fu">theorytools</span><span class="fu">:::</span><span class="fu"><a href="../reference/prune_dag.html">prune_dag</a></span><span class="op">(</span><span class="va">sdt</span>,</span>
 <span>                                      exposure <span class="op">=</span> <span class="st">"intrinsic_motivation"</span>,</span>
 <span>                                      outcome <span class="op">=</span> <span class="st">"wellbeing"</span><span class="op">)</span></span>
@@ -399,7 +375,7 @@ of interest between intrinsic motivation and well-being:</p>
 <span><span class="co">## }</span></span></code></pre>
 <p>We can now generate a synthetic dataset based on this simplified
 DAG:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
@@ -461,7 +437,7 @@ simulated data (dependent variable: significance).</p>
 test of the parameter of interest. First, we conduct bivariate linear
 regression (because the DAG indicated that we need to control for the
 effect of needs):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wellbeing</span> <span class="op">~</span> <span class="va">intrinsic_motivation</span> <span class="op">+</span> <span class="va">needs</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -488,16 +464,16 @@ effect of needs):</p>
 follows, and compare it to the significance level
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>&lt;</mo><mn>.05</mn></mrow><annotation encoding="application/x-tex">\alpha &lt; .05</annotation></semantics></math>
 to get a binary result (significant: TRUE or FALSE):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sum_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">sum_res</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"intrinsic_motivation"</span>, <span class="st">"Pr(&gt;|t|)"</span><span class="op">]</span> <span class="op">&lt;</span> <span class="fl">.05</span></span></code></pre></div>
 <blockquote>
 <p>Run the code yourself, and answer true or false: In this one dataset,
-the result was significant.
-<select class="webex-select"><option value="blank"></option>
-<option value="answer">TRUE</option>
-<option value="">FALSE</option></select></p>
+the result was significant.</p>
 </blockquote>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/torf.html" class="external-link">torf</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value='answer'&gt;TRUE&lt;/option&gt;&lt;option value=''&gt;FALSE&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -530,12 +506,12 @@ analysis pipeline are not unnecessarily re-computed.</li>
 </h3>
 <p><strong>Interactive:</strong> Let’s install the packages required for
 this next section:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"targets"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tarchetypes"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> Then, add <code>targets</code>
 integration to the <code>worcs</code> project by running:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_targets.html" class="external-link">add_targets</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Note the status messages. The newly created <code>_targets.R</code>
 file specifies the steps in the reproducible workflow. The newly created
@@ -556,7 +532,7 @@ placeholder steps:</p>
 <li>Render the <code>manuscript.Rmd</code>
 </li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu">tar_target</span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="va">data</span>,</span>
@@ -616,7 +592,7 @@ to manipulate the true effect size.</p>
 <p>The <code><a href="../reference/simulate_data.html">simulate_data()</a></code> function we used previously to
 create a single synthetic dataset can also generate a script for
 synthetic data generation:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "# Set random seed"                                                     </span></span>
 <span><span class="co">##  [2] "set.seed(644938424)"                                                   </span></span>
@@ -635,7 +611,7 @@ synthetic data generation:</p>
 <p>Let’s write this script to a new file in <code>./R/</code>, and edit
 it.</p>
 <p><strong>Interactive:</strong> Run the following code:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span></span>
 <span>  <span class="fu">theorytools</span><span class="fu">::</span><span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  <span class="st">"R/generate_data.R"</span></span>
@@ -755,7 +731,7 @@ where
 now).</p>
 <p>We can use the R-function <code><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid()</a></code> to create all
 possible combinations:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
 <span>  beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.4</span><span class="op">)</span>,</span>
 <span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span>
@@ -801,12 +777,12 @@ former. Thus, if <code>study_results</code> changes, the manuscript
 should be automatically re-run.</p>
 <p><strong>Interactive:</strong> To verify that the interdependencies
 between pipeline steps are properly tracked, you can run:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"visNetwork"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">targets</span><span class="fu">::</span><span class="fu">tar_visnetwork</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visnetwork.png"><!-- --></p>
 <p>Add the following code to the manuscript to tabulate the results:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">study_results</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -865,7 +841,7 @@ between pipeline steps are properly tracked, you can run:</p>
 <p>Or alternatively, add the following code to plot the study results
 (this requires running
 <code>install.packages("ggplot2", prompt = FALSE)</code>).</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">df_plot</span> <span class="op">&lt;-</span> <span class="va">study_results</span></span>
 <span><span class="va">df_plot</span><span class="op">$</span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="va">df_plot</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span>
@@ -873,7 +849,7 @@ between pipeline steps are properly tracked, you can run:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="computational_social_science_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="computational_social_science_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="run-the-pipeline">11. Run the Pipeline<a class="anchor" aria-label="anchor" href="#run-the-pipeline"></a>
@@ -919,7 +895,7 @@ its cache.</p>
 destroy the cache of pipeline results before running
 <code><a href="https://cjvanlissa.github.io/worcs/reference/reproduce.html" class="external-link">worcs::reproduce()</a></code>. That causes targets to re-run every
 step of the pipeline. This might look like:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Snapshot the current state of the endpoints</span></span>
 <span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/snapshot_endpoints.html" class="external-link">snapshot_endpoints</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Destroy the cache of targets results</span></span>
@@ -951,7 +927,7 @@ methods are specific to different operating systems. The method below
 works (at least) on Windows.</p>
 <p><strong>Interactive:</strong> First, install the required
 packages:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span>, prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -964,7 +940,7 @@ not have access to the main R-session you are using interactively; they
 do not see what variables and functions you have loaded.</p>
 <p>To register a parallel backend, you can add the following code to
 <code>perform_study()</code>:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></code></pre></div>
 <p>Instead of hard-coding the number of workers (cores) to
@@ -974,7 +950,7 @@ by running <code><a href="https://parallelly.futureverse.org/reference/available
 all cores for parallel computing, people often use one or two fewer so
 they can keep using their computer while the simulation is running.</p>
 <p>To do so, you could adapt the code as follows:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">-</span><span class="fl">2L</span><span class="op">)</span></span></code></pre></div>
 <p>Note that on Mac or Linux, you might be able to use a more efficient
@@ -985,7 +961,7 @@ backend by ‘forking’ processes. To do so, use
 to base R functions like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>, <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply()</a></code>,
 and importantly, <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate()</a></code>. To paralellize the inner loop
 of our simulation, we can use:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">future.apply</span><span class="fu">::</span><span class="fu"><a href="https://future.apply.futureverse.org/reference/future_lapply.html" class="external-link">future_replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">reps</span>, expr <span class="op">=</span> <span class="op">{</span></span>
 <span>      <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">thisrow</span><span class="op">)</span>, <span class="fu">generate_data</span><span class="op">(</span>beta <span class="op">=</span> <span class="va">beta</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span>      <span class="fu">analyze_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -1018,7 +994,7 @@ with and without paralellization:</p>
 <div class="section level5">
 <h5 id="without-paralellization">Without Paralellization<a class="anchor" aria-label="anchor" href="#without-paralellization"></a>
 </h5>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perform_study</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">study_design</span>, <span class="va">reps</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="co"># For each row of the study design, execute a function</span></span>
 <span>  <span class="va">pwr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">study_design</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">thisrow</span><span class="op">)</span><span class="op">{</span></span>
@@ -1039,7 +1015,7 @@ with and without paralellization:</p>
 <div class="section level5">
 <h5 id="with-paralellization">With Paralellization<a class="anchor" aria-label="anchor" href="#with-paralellization"></a>
 </h5>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perform_study</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">study_design</span>, <span class="va">reps</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
 <span>  <span class="co"># Sets up clusters from number of cores</span></span>
@@ -1064,7 +1040,7 @@ with and without paralellization:</p>
 <h4 id="re-run-the-pipeline">3. Re-run the Pipeline<a class="anchor" aria-label="anchor" href="#re-run-the-pipeline"></a>
 </h4>
 <p>Now rerun your simulation with:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">targets</span><span class="fu">::</span><span class="fu">tar_make</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Do you notice a speedup? Probably not, because the overhead
 associated with setting up the parallel back-end outweighs the time
@@ -1117,7 +1093,7 @@ expected?</p>
 </h3>
 <p><strong>Interactive</strong>: In your WORCS project, run the
 following code:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_testthat.html" class="external-link">add_testthat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This creates a <code>tests/testthat/</code> folder to hold your
 tests. Note the two suggestions printed in the console:</p>
@@ -1155,10 +1131,10 @@ be saved in <code>tests/testthat/</code>.</p>
 <h3 id="run-tests">3. Run Tests<a class="anchor" aria-label="anchor" href="#run-tests"></a>
 </h3>
 <p>In your console or script, you can run:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/add_testthat.html" class="external-link">test_worcs</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or, to test a single file:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_file.html" class="external-link">test_file</a></span><span class="op">(</span><span class="st">"tests/testthat/test-generate_data.R"</span><span class="op">)</span></span></code></pre></div>
 <p>The output should tell you which tests passed or failed, and why they
 failed.</p>
@@ -1184,7 +1160,7 @@ approaches <code>beta</code> within a certain tolerance</li>
 </ul>
 <p>What would these assumptions look like when tested? For example,
 like:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"generate_data works"</span>, <span class="op">{</span></span>
 <span>  <span class="co"># Run generate_data()</span></span>
 <span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100</span><span class="op">)</span></span>
@@ -1203,7 +1179,7 @@ like:</p>
 <p>Copy-paste any of these tests, or write your own. Note that, instead
 of grouping all tests, you could also break them up into separate
 <code>test_that()</code> commands:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"generate_data generates a data.frame"</span>, <span class="op">{</span></span>
 <span>  <span class="co"># Run generate_data()</span></span>
 <span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">generate_data</span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">100</span><span class="op">)</span></span>
@@ -1236,7 +1212,7 @@ integration, continuous deployment, testing, and code reviews.</p>
 code updates to GitHub.</p>
 <p><strong>Interactive:</strong> Let’s set up a GitHub action to run our
 integration tests:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Add the appropriate GitHub action:</span></span>
 <span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/github_action_check_endpoints.html" class="external-link">github_action_testthat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> The virtual computer environment on
@@ -1247,18 +1223,18 @@ important to always snapshot your dependencies before reproducing your
 analyses on another system; so run <code><a href="https://rstudio.github.io/renv/reference/snapshot.html" class="external-link">renv::snapshot()</a></code> before
 publishing your code, before triggering a GitHub action, before sharing
 your code with a collaborator, et cetera.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/snapshot.html" class="external-link">snapshot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Interactive:</strong> Now, push your code to GitHub. Among
 the files that will be updated are instructions for GitHub actions in
 the <code>.github/</code> folder, and your updated
 <code>renv.lock</code> file.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_update.html" class="external-link">git_update</a></span><span class="op">(</span><span class="st">"add testthat"</span><span class="op">)</span></span></code></pre></div>
 <p>Since this GitHub action is triggered by pushing code to GitHub, if
 you now navigate to your GitHub repository. If you don’t remember your
 GitHub URL, run:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">".git"</span>, <span class="st">"/actions"</span>, <span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_remote.html" class="external-link">git_remote_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">url</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>You should see the action running. If all is good, it will show you a
 green dot (red if there are errors).</p>
