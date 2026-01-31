@@ -59,8 +59,11 @@ When working through the next sections, add the code chunks to your `"manuscript
 Code labeled with  **Interactive:** should be run only once, in the Console window.
 All other code can be inserted in code chunks in your `"manuscript.Rmd"` file; knit it regularly to verify that everything runs as expected.
 
-> What does it mean to run R code *interactively*? `r webexercises::mcq(sample(c(answer = "Executing code immediately in an R session that a human user is interacting with.", "Having one function call another function; these functions are said to be 'interacting'", "Evaluating code by placing it in an Rmarkdown document, and knitting that document.")))`
+> What does it mean to run R code *interactively*? 
 
+```{r eval = requireNamespace("webexercises", quietly = TRUE)}
+webexercises::mcq(sample(c(answer = "Executing code immediately in an R session that a human user is interacting with.", "Having one function call another function; these functions are said to be 'interacting'", "Evaluating code by placing it in an Rmarkdown document, and knitting that document.")))
+```
 
 ## 2. Download a FAIR Theory
 
@@ -98,7 +101,11 @@ Note that these definitions require further specification;
 as explained [in the Vignette on formalizing SDT](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html)),
 the book chapter describing the theory does not explicitly define any of the constructs involved.
 
-> Why is the FAIR theory downloaded into a separate `theory/` subfolder? `r webexercises::mcq(sample(c(answer = "To prevent overwriting the WORCS project's README and LICENSE files", "To avoid downloading unnecessary files", "Because theorytools only works inside a 'theory/' directory", "Because dagitty requires theory files to be placed in a specific folder")))`
+> Why is the FAIR theory downloaded into a separate `theory/` subfolder? 
+
+```{r eval = requireNamespace("webexercises", quietly = TRUE)}
+webexercises::mcq(sample(c(answer = "To prevent overwriting the WORCS project's README and LICENSE files", "To avoid downloading unnecessary files", "Because theorytools only works inside a 'theory/' directory", "Because dagitty requires theory files to be placed in a specific folder")))
+```
 
 ## 3. Load the FAIR Theory
 
@@ -138,7 +145,11 @@ if(!file.exists('sdt.png')){
 knitr::include_graphics("sdt.png")
 ```
 
-> According to the DAG, what are the causes of `wellbeing`? `r webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))`
+> According to the DAG, what are the causes of `wellbeing`?
+
+```{r eval = requireNamespace("webexercises", quietly = TRUE)}
+webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))
+```
 
 
 ## 4. Creating a Computational Model
@@ -172,7 +183,11 @@ knitr::kable(theorytools::simulate_data(sdt, n = 5), digits = 2)
 
 This synthetic dataset is consistent with the structure encoded in our FAIR SDT, though the parameter values are arbitrary.
 
-> Which of the following is **not a reason** to use computational simulation studies? `r webexercises::mcq(sample(c(answer = "Fitting a model to real-world data", "Exploring what-if scenarios", "Conducting power analysis", "Preregistering a reproducible analysis pipeline")))`
+> Which of the following is **not a reason** to use computational simulation studies? 
+
+```{r eval = requireNamespace("webexercises", quietly = TRUE)}
+webexercises::mcq(sample(c(answer = "Fitting a model to real-world data", "Exploring what-if scenarios", "Conducting power analysis", "Preregistering a reproducible analysis pipeline")))
+```
 
 ### Simplifying the Model
 
@@ -226,7 +241,11 @@ sum_res <- summary(res)
 sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
 ```
 
-> Run the code yourself, and answer true or false: In this one dataset, the result was significant. `r webexercises::torf(TRUE)`
+> Run the code yourself, and answer true or false: In this one dataset, the result was significant.
+
+```{r eval = requireNamespace("webexercises", quietly = TRUE)}
+webexercises::torf(TRUE)
+```
 
 # Using `worcs` with `targets`: Sustainable Reproducibility
 
