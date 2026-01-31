@@ -2,14 +2,13 @@ test_that("create_fair_theory() creates github repo", {
   ownr <- try(gh::gh_whoami()$login)
   testthat::skip_if_not(condition = isTRUE(ownr == "cjvanlissa"), message = "Skipped test that requires GitHub")
   # Create a theory with no remote repository (for safe testing)
-  the_path <- fs::file_temp(pattern = "theory_github")
-  scoped_temporary_project(dir = the_path)
 
-  # 2. Initialize Git repo
+  theorytools:::scoped_tempdir({
+    the_path = "."
     theorytools:::with_cli_try("Initialize 'Git' repository", {
       gert::git_init(path = the_path)
     })
-    remote_repo <- "test_delete"
+    remote_repo <- basename(getwd())
     # Connect remote repo -----------------------------------------------------
     repo_properties <- worcs:::git_connect_or_create(the_path, remote_repo)
     repo_url <- repo_properties$repo_url
@@ -18,6 +17,7 @@ test_that("create_fair_theory() creates github repo", {
     # Push local repo to remote -----------------------------------------------
 
     if(repo_exists & isFALSE(prior_commits)){
+      writeLines("some text", "readme.md")
       worcs::git_update(message = "Initial commit", repo = the_path, files = ".")
     }
 
@@ -25,9 +25,11 @@ test_that("create_fair_theory() creates github repo", {
     expect_true(startsWith(repo_url, "https://"))
     out <- gert::git_remote_ls(repo_url)
     expect_true(nrow(out) > 0)
-    gh::gh("DELETE /repos/{owner}/{repo}", owner = ownr, repo = remote_repo)
+    worcs:::git_remote_delete(remote_repo)
     out <- try(gert::git_remote_ls(repo_url), silent = TRUE)
     expect_true(any(grepl("404", out))) # Test to make sure the github repo is cleanly deleted
+  })
+
 })
 
 

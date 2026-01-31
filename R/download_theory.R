@@ -7,7 +7,6 @@
 #' @importFrom gert git_clone
 #' @importFrom jsonlite fromJSON
 #' @importFrom tools md5sum
-#' @importFrom httr GET
 #' @export
 #' @examples
 #' download_theory(id = "https://github.com/cjvanlissa/tripartite_model.git",
