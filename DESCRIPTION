@@ -38,7 +38,8 @@ Imports:
     yaml,
     tidySEM (>= 0.2.9),
     methods,
-    Deriv
+    Deriv,
+    stringdist
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),

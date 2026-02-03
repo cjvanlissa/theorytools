@@ -27,21 +27,6 @@ get_embeddings <- function(x, model_path = NULL) {
   return(sim_py)
 }
 
-#' @title Cosine Similarity
-#' @description Compute cosine similarity between rows of matrix.
-#' @param x Numeric matrix, where rows are cases and columns are
-#' features.
-#' @return Matrix.
-#' @examples
-#' set.seed(1)
-#' cosine_similarity(matrix(runif(30), nrow = 3))
-#' @rdname cosine_similarity
-#' @export
-cosine_similarity <- function(x){
-  ss_x <- rowSums(x^2)
-  x%*%t(x)/(sqrt(ss_x %*% t(ss_x)))
-}
-
 #' @title Download 'Hugging Face' Model
 #' @description Download a model from 'Hugging Face' to a local folder, to be
 #' used in e.g. \link[theorytools]{get_embeddings}.
