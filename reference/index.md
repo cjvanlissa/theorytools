@@ -13,14 +13,21 @@
 - [`add_zenodo_json()`](https://cjvanlissa.github.io/theorytools/reference/add_zenodo_json.md)
   [`add_zenodo_json_theory()`](https://cjvanlissa.github.io/theorytools/reference/add_zenodo_json.md)
   : Add 'Zenodo' JSON File
+- [`code()`](https://cjvanlissa.github.io/theorytools/reference/code.md)
+  [`add_level()`](https://cjvanlissa.github.io/theorytools/reference/code.md)
+  : Code Text Data
 - [`create_fair_theory()`](https://cjvanlissa.github.io/theorytools/reference/create_fair_theory.md)
   : Create FAIR Theory Repository
 - [`derive_formula()`](https://cjvanlissa.github.io/theorytools/reference/derive_formula.md)
   : Derive Formulae From Augmented DAG
+- [`download_huggingface()`](https://cjvanlissa.github.io/theorytools/reference/download_huggingface.md)
+  : Download 'Hugging Face' Model
 - [`download_theory()`](https://cjvanlissa.github.io/theorytools/reference/download_theory.md)
   : Download FAIR Theory
 - [`filter_conditional_independencies()`](https://cjvanlissa.github.io/theorytools/reference/filter_conditional_independencies.md)
   : Filter Conditional Independencies
+- [`get_embeddings()`](https://cjvanlissa.github.io/theorytools/reference/get_embeddings.md)
+  : Get Vector Embeddings (uses Python)
 - [`lsac`](https://cjvanlissa.github.io/theorytools/reference/lsac.md) :
   Synthetic Data: Longitudinal Study of Australian Children
 - [`mottistefanidi2012`](https://cjvanlissa.github.io/theorytools/reference/mottistefanidi2012.md)
@@ -31,6 +38,10 @@
   : Create a Quiz
 - [`select_controls()`](https://cjvanlissa.github.io/theorytools/reference/select_controls.md)
   : Select Covariate Adjustment Sets from Data
+- [`similarity_cosine()`](https://cjvanlissa.github.io/theorytools/reference/similarity_cosine.md)
+  : Cosine Similarity
+- [`similarity_stringdist()`](https://cjvanlissa.github.io/theorytools/reference/similarity_stringdist.md)
+  : String Similarity
 - [`simulate_data()`](https://cjvanlissa.github.io/theorytools/reference/simulate_data.md)
   : Simulate Data from DAG
 - [`use_webex_vignette()`](https://cjvanlissa.github.io/theorytools/reference/use_webex_vignette.md)
