@@ -16,7 +16,7 @@ installed.}
 \item{...}{Arguments passed to and from functions.}
 }
 \value{
-On succes: Atomic character, with the path to the local model.
+On success: Atomic character, with the path to the local model.
 On failure: \code{NULL}.
 }
 \description{

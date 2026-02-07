@@ -35,7 +35,7 @@ get_embeddings <- function(x, model_path = NULL) {
 #' @param path Atomic character, referencing a local folder where the model is
 #' installed.
 #' @param ... Arguments passed to and from functions.
-#' @return On succes: Atomic character, with the path to the local model.
+#' @return On success: Atomic character, with the path to the local model.
 #' On failure: `NULL`.
 #' @rdname download_huggingface
 #' @export

@@ -249,7 +249,7 @@ out <- knitr::kable(definitions[-1, ], caption = "Operationalizations of constru
 cat(gsub('\\bNA\\b', '  ', out), sep='\n')
 ```
 
-As can be seen fom this overview - none of the definitions were given in the theory chapter.
+As can be seen in this overview - none of the definitions were given in the theory chapter.
 We were able to trace some definitions to empirical papers cited in the chapter,
 but these definitions appeared to fall short of proper "theoretical definitions".
 For example, **intrinsic motivation** was defined as "number of seconds spent working on a puzzle".
