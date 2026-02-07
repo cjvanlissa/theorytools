@@ -24,7 +24,7 @@ Description: An integrated suite of tools for creating, maintaining, and reusing
 License: GPL (>= 3)
 Encoding: UTF-8
 URL: https://cjvanlissa.github.io/theorytools/
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Imports:
     worcs (>= 0.1.19),
@@ -38,7 +38,8 @@ Imports:
     yaml,
     tidySEM (>= 0.2.9),
     methods,
-    Deriv
+    Deriv,
+    stringdist
 Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
@@ -49,7 +50,9 @@ Suggests:
     fs,
     ggplot2,
     igraph,
-    bookdown
+    bookdown,
+    reticulate
+SystemRequirements: Python (>= 3.8)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 

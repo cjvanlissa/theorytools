@@ -8,5 +8,11 @@
 
 library(testthat)
 library(theorytools)
-
+skip_if_no_python <- function() {
+  if (!reticulate::py_module_available("transformers") |
+      !reticulate::py_module_available("numpy") |
+      !reticulate::py_module_available("torch")){
+    skip("Python dependencies not available for testing")
+  }
+}
 test_check("theorytools")
