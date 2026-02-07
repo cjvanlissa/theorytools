@@ -144,7 +144,7 @@ This would be fine if we wished to specify the model as a structural equation mo
 However, since our goal is to perform causal inference, we need a **directed** acyclic graph.
 This means we have to assume a direction of causality for all bidirectional arrows.
 Reading the text helps us direct some arrows: we read that *"children __learn__ about ER through [Observation]"*, *"parenting practices __affect__ ER"*, and *"ER __is affected by__ the emotional climate"*.
-This is all causal language [@norouziCapturingCausalClaims2024].
+This is all causal language [@norouzi_capturing_2025].
 Even though we later read that *"ER and familial influences are bidirectional processes in our model"*,
 and even though some recent publications have argued that child effects on parents outweigh parents' effects on children in emotional development [@vanlissaMothersFathersQuantitative2020],
 for the purpose of this tutorial, we will assume only parent effects on children.
