@@ -8,12 +8,12 @@
 ## Citation
 
 Van Lissa CJ (2026). *theorytools: FAIR Theory Construction*. R package
-version 0.1.2, <https://cjvanlissa.github.io/theorytools/>.
+version 0.1.3, <https://cjvanlissa.github.io/theorytools/>.
 
     @Manual{,
       title = {theorytools: FAIR Theory Construction},
       author = {Caspar J. {Van Lissa}},
       year = {2026},
-      note = {R package version 0.1.2},
+      note = {R package version 0.1.3},
       url = {https://cjvanlissa.github.io/theorytools/},
     }

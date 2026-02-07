@@ -23,8 +23,11 @@ download_theory(id, path = ".")
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
+# These examples require internet access and may fail if resources are unavailable
 download_theory(id = "https://github.com/cjvanlissa/tripartite_model.git",
 path = file.path(tempdir(), "tripartite_git"))
 download_theory(id = "10.5281/zenodo.14921521",
 path = file.path(tempdir(), "tripartite_zenodo"))
+} # }
 ```

@@ -106,7 +106,7 @@ have to assume a direction of causality for all bidirectional arrows.
 Reading the text helps us direct some arrows: we read that *“children
 **learn** about ER through \[Observation\]”*, *“parenting practices
 **affect** ER”*, and *“ER **is affected by** the emotional climate”*.
-This is all causal language (Norouzi et al. 2024). Even though we later
+This is all causal language (Norouzi et al. 2025). Even though we later
 read that *“ER and familial influences are bidirectional processes in
 our model”*, and even though some recent publications have argued that
 child effects on parents outweigh parents’ effects on children in
@@ -706,10 +706,11 @@ Myers, and Lara Rachel Robinson. 2007. “The Role of the Family Context
 in the Development of Emotion Regulation.” *Social Development* 16 (2):
 361–88. <https://doi.org/10.1111/j.1467-9507.2007.00389.x>.
 
-Norouzi, Rasoul, Bennett Kleinberg, Jeroen Vermunt, and Caspar J. Van
-Lissa. 2024. “Capturing Causal Claims: A Fine Tuned Text Mining Model
-for Extracting Causal Sentences from Social Science Papers.”
-<https://osf.io/kwtpm/download>.
+Norouzi, Rasoul, Bennett Kleinberg, Jeroen K. Vermunt, and Caspar J. van
+Lissa. 2025. “Capturing Causal Claims: A Fine-Tuned Text Mining Model
+for Extracting Causal Sentences from Social Science Papers.” *Research
+Synthesis Methods* 16 (1): 139–56.
+<https://doi.org/10.1017/rsm.2024.13>.
 
 Pearl, Judea. 1995. “Causal Diagrams for Empirical Research.”
 *Biometrika* 82 (4): 669–88. <https://doi.org/10.2307/2337329>.
