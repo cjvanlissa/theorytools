@@ -24,14 +24,14 @@ Except for "coping", all variables were created by taking the row means
 of several items, omitting missing values. The corresponding item names
 from the LSAC codebook are given below.
 
-|                          |           |                     |                                     |
-|--------------------------|-----------|---------------------|-------------------------------------|
-| **warmth**               | `numeric` | `fpa03m1-fpa03m6`   | Parental warmth scale               |
-| **relationship_quality** | `numeric` | `fre04m1-fre04m7`   | Hendrick relationship quality scale |
-| **temperament_negreact** | `numeric` | `fse13a1-fse13a4`   | Temperament scale for reactivity    |
-| **emotion_regulation**   | `numeric` | `fse03c3a-fse03c3e` | SDQ Emotional problems scale        |
-| **social_functioning**   | `numeric` | `fgd04b2a-fgd04b2e` | Peds QL social functioning          |
-| **coping**               | `numeric` | `fhs26m2`           | Level of coping                     |
+|  |  |  |  |
+|----|----|----|----|
+| **warmth** | `numeric` | `fpa03m1-fpa03m6` | Parental warmth scale |
+| **relationship_quality** | `numeric` | `fre04m1-fre04m7` | Hendrick relationship quality scale |
+| **temperament_negreact** | `numeric` | `fse13a1-fse13a4` | Temperament scale for reactivity |
+| **emotion_regulation** | `numeric` | `fse03c3a-fse03c3e` | SDQ Emotional problems scale |
+| **social_functioning** | `numeric` | `fgd04b2a-fgd04b2e` | Peds QL social functioning |
+| **coping** | `numeric` | `fhs26m2` | Level of coping |
 
 ## References
 

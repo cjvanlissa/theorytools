@@ -1,6 +1,7 @@
 # Updating a Theory
 
 ``` r
+
 library(theorytools)
 ```
 
@@ -25,6 +26,7 @@ Change the `path` to a directory on your hard drive where you want to
 store the theory.
 
 ``` r
+
 download_theory(
   id = "https://doi.org/10.5281/zenodo.14921521",
   path = "c:/theories/tripartite_downloaded")
@@ -46,6 +48,7 @@ running the following code in R ([see here for more
 information](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)):
 
 ``` r
+
 download_theory(
   id = "https://github.com/cjvanlissa/tripartite_model.git",
   path = "c:/theories/tripartite_clone")
@@ -67,6 +70,7 @@ Track your changes using Git, and push these changes to your GitHub
 repository by running:
 
 ``` r
+
 worcs::git_update("Describe your changes to the theory.")
 ```
 

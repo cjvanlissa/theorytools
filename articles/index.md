@@ -14,6 +14,8 @@
   FAIR](https://cjvanlissa.github.io/theorytools/articles/fair-theory.md):
 - [Formalizing Self-Determination
   Theory](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.md):
+- [Paul Meehl Graduate School
+  Hackathon](https://cjvanlissa.github.io/theorytools/articles/pmgs_hackathon.md):
 - [What to Include in a
   README?](https://cjvanlissa.github.io/theorytools/articles/readme.md):
 - [Updating a

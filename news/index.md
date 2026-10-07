@@ -2,6 +2,8 @@
 
 ## theorytools 0.1.3
 
+CRAN release: 2026-02-07
+
 - Fix issue raised by Prof. Brian Ripley: download_theory() examples
   fail if no internet.
 - Add support for Python functions

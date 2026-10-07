@@ -28,5 +28,5 @@ download_huggingface(model, path, ...)
 
 ## Value
 
-On succes: Atomic character, with the path to the local model. On
+On success: Atomic character, with the path to the local model. On
 failure: `NULL`.

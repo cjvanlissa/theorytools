@@ -14,6 +14,7 @@ the function
 expert users might use this function directly.
 
 ``` r
+
 library(theorytools)
 ```
 
@@ -85,6 +86,7 @@ archive. If we want to create a new folder called `empirical_cycle` in
 the existing folder `c:/theories/`, we can call:
 
 ``` r
+
 project_path <- file.path("c:/theories", "empirical_cycle")
 dir.create(project_path)
 ```
@@ -101,6 +103,7 @@ You could simply copy De Groot’s implementation of the empirical cycle
 into a plain text file, like so:
 
 ``` r
+
 writeLines(
   c("*Phase 1:* 'Observation': collection and grouping of empirical materials;
     (tentative) formation of hypotheses.",
@@ -126,6 +129,7 @@ I1 of the FAIR principles (*“using a formal language for knowledge
 representation”*):
 
 ``` r
+
 theory <- 
 "digraph {
 
@@ -155,6 +159,7 @@ this implementation of the empirical cycle to a text file, say
 `empirical_cycle.dot`.
 
 ``` r
+
 cat(theory, file = file.path(project_path, "empirical_cycle.dot"), sep = "\n")
 ```
 
@@ -170,6 +175,7 @@ created to maximize reuse. Other licenses are available, see
 You can add a license file to your repository like so:
 
 ``` r
+
 worcs::add_license_file(path = project_path, license = "cc0")
 ```
 
@@ -182,6 +188,7 @@ function to generate a README file with appropriate sections for FAIR
 theory, which can be used like so:
 
 ``` r
+
 theorytools::add_readme_fair_theory(title = "The Empirical Cycle",
                                     path = project_path)
 ```
@@ -198,6 +205,7 @@ In a later step, we will archive the theory on ‘Zenodo’. Creating a
 to be indexed automatically. This can be done by running:
 
 ``` r
+
 add_zenodo_json_theory(
   path = project_path,
   title = "The Empirical Cycle",
@@ -213,6 +221,7 @@ now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). You
 can verify that ‘Git’ is installed and working by running:
 
 ``` r
+
 worcs::check_git()
 ```
 
@@ -220,6 +229,7 @@ If this function shows a green checkmark, you can initialize version
 control in your project repository by running:
 
 ``` r
+
 gert::git_init(path = project_path)
 ```
 
@@ -244,6 +254,7 @@ for help.
 To check that you are ready to proceed, run:
 
 ``` r
+
 worcs::check_github()
 ```
 
@@ -251,6 +262,7 @@ If you see a green checkmark, you can create a new repository on
 ‘GitHub’ directly from ‘R’:
 
 ``` r
+
 worcs::git_remote_create("empirical_cycle", private = FALSE)
 ```
 
@@ -263,6 +275,7 @@ Alternatively, you may have already created a remote repository on the
 `empirical_cycle`, you can connect it to your project folder as follows:
 
 ``` r
+
 worcs::git_remote_connect(project_path, remote_repo = "empirical_cycle")
 ```
 
@@ -280,6 +293,7 @@ combines these three actions, acting like a kind of “quick-save”
 function:
 
 ``` r
+
 worcs::git_update("First commit of my theory", repo = project_path)
 ```
 
@@ -376,6 +390,7 @@ To archive a repository on ‘Zenodo’, you must create a new release. You
 can do this using the following code:
 
 ``` r
+
 worcs::git_release_publish(repo = project_path)
 ```
 
@@ -388,6 +403,7 @@ major change to the theory, you may want to manually increment the
 middle digit like so:
 
 ``` r
+
 worcs::git_release_publish(repo = project_path,
                            tag_name = "0.2.0",
                            release_name = "0.2.0")
@@ -525,6 +541,7 @@ resides in the currently active directory
 FAIR theory as follows:
 
 ``` r
+
 create_fair_theory(
   path = file.path("c:/theories", "empirical_cycle"),
   title = "The Empirical Cycle, Again",
@@ -553,7 +570,7 @@ Meehl, Paul E. 1990. “Appraising and Amending Theories: The Strategy of
 Lakatosian Defense and Two Principles That Warrant It.” *Psychological
 Inquiry* 1 (2): 108–41. <https://doi.org/10.1207/s15327965pli0102_1>.
 
-Tennant, Jon, Simon Worthington, Tania Allard, Philipp Zumstein, Daniel
-S. Katz, Alexander Morley, Stephan Druskat, et al. 2018.
-“OpenScienceMOOC/Module-5-Open-Research-Software- and-Open-Source:
-Second Release.” Zenodo. <https://doi.org/10.5281/zenodo.1434288>.
+Tennant, Jon, Simon Worthington, Tania Allard, et al. 2018.
+*OpenScienceMOOC/Module-5-Open-Research-Software- and-Open-Source:
+Second Release*. V. 2.0. Zenodo, released September.
+<https://doi.org/10.5281/zenodo.1434288>.

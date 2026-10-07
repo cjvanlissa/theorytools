@@ -5,12 +5,12 @@
 Directed acyclic graphs (DAGs) are a powerful tool for expressing and
 testing causal assumptions. They allow researchers to identify potential
 confounders or colliders, and guide decisions about which variables to
-control for (or not) in statistical analyses (Cinelli, Forney, and Pearl
-2022). DAGs can be implemented as FAIR theories, or can be derived from
-FAIR theories. In this vignette, we’ll illustrate how to use DAGs for
-causal inference in `R`, inspired by the *Tripartite Model* of the
-impact of the family on children’s emotion regulation and adjustment
-(Morris et al. 2007).
+control for (or not) in statistical analyses (Cinelli et al. 2022). DAGs
+can be implemented as FAIR theories, or can be derived from FAIR
+theories. In this vignette, we’ll illustrate how to use DAGs for causal
+inference in `R`, inspired by the *Tripartite Model* of the impact of
+the family on children’s emotion regulation and adjustment (Morris et
+al. 2007).
 
 #### Learning Goals
 
@@ -45,12 +45,14 @@ We’ll use the following packages:
 Only run this code if you haven’t already installed these packages:
 
 ``` r
+
 install.packages("theorytools")
 install.packages("dagitty")
 install.packages("tidySEM")
 ```
 
 ``` r
+
 library(theorytools)
 library(dagitty)
 #> 
@@ -211,6 +213,7 @@ We briefly go over the steps here. First, let’s save the DAG to a text
 file:
 
 ``` r
+
 writeLines(tripartite, "tripartite_model.txt")
 ```
 
@@ -220,6 +223,7 @@ step to work. You can check if everything is set up correctly by
 running:
 
 ``` r
+
 worcs::check_git()
 worcs::check_github()
 ```
@@ -227,6 +231,7 @@ worcs::check_github()
 Next, we can create a FAIR theory repository:
 
 ``` r
+
 create_fair_theory(
   path = file.path("c:/theories", "tripartite_model"),
   title = "Tripartite Model",
@@ -241,6 +246,7 @@ repository](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#s
 Once this is done, run:
 
 ``` r
+
 worcs::git_release_publish(repo = file.path("c:/theories", "tripartite_model"))
 ```
 
@@ -259,6 +265,7 @@ in this tutorial), then we can access the static archived version on
 Zenodo by running:
 
 ``` r
+
 download_theory(
   id = "https://doi.org/10.5281/zenodo.14921521",
   path = "c:/theories/tripartite_downloaded")
@@ -274,6 +281,7 @@ original author’s version. Regardless, the function
 takes a Git remote address too, in which case it clones the theory:
 
 ``` r
+
 download_theory(
   id = "https://github.com/cjvanlissa/tripartite_model.git",
   path = "c:/theories/tripartite_clone")
@@ -302,12 +310,14 @@ workflows, including for causal inference.
 First, let’s ingest the theory into our R environment:
 
 ``` r
+
 tripartite <- dagitty(paste(readLines("c:/theories/tripartite_downloaded/tripartite_model.txt"), collapse = "\n"))
 ```
 
 Then, we can plot the model using the `tidySEM` package:
 
 ``` r
+
 graph_sem(tripartite)
 ```
 
@@ -317,6 +327,7 @@ We can optionally specify a layout for the graph, so that it resembles
 the model as visualized by Morris and colleagues:
 
 ``` r
+
 lo <- get_layout(
   "",   "O",  "",   "", "",
   "",   "PP", "",   "ER",   "A",
@@ -350,8 +361,8 @@ strangers? GitHub Zenodo RStudio
 Simulation studies allow us to explore the implications of model
 assumptions, to plan our analyses before data collection, to conduct
 power analysis and plan our sample size, and to preregister a fully
-reproducible analysis pipeline (Preregistration-As-Code, Peikert, Van
-Lissa, and Brandmaier 2021; Van Lissa 2022).
+reproducible analysis pipeline (Preregistration-As-Code, Peikert et al.
+2021; Van Lissa 2022).
 
 Below is a simple code snippet to generate synthetic data using the
 [`theorytools::simulate_data()`](https://cjvanlissa.github.io/theorytools/reference/simulate_data.md)
@@ -362,6 +373,7 @@ many other functions for simulating data exist, and some may be better
 suited to particular use cases.
 
 ``` r
+
 set.seed(1)
 df_sim <- simulate_data(tripartite, n = 497)
 head(df_sim)
@@ -389,6 +401,7 @@ values, and assign zero (0), small (.2), or medium (.4) effect sizes to
 the paths in our DAG:
 
 ``` r
+
 tripartite_coef <- dagitty('dag {
 O
 PP
@@ -433,6 +446,7 @@ For instance, let’s say we want to examine the causal effect of
 Observation on Emotion Regulation. We can run:
 
 ``` r
+
 adjustmentSets(tripartite, exposure="O", outcome="ER")
 #> { CC, EC, PP }
 #> { EC, PC, PP }
@@ -470,6 +484,7 @@ appropriate control variables, as you can just use the model formula
 `outcome ~ .` to obtain the causal estimate.
 
 ``` r
+
 df_controls <- select_controls(tripartite, df_sim, exposure = "O", outcome = "ER")
 model_bivariate <- lm(ER ~ O, df_controls)
 model_causal <- lm(ER ~., df_controls)
@@ -536,6 +551,7 @@ synthetic dataset with similar properties to the real data. Let’s access
 the data:
 
 ``` r
+
 head(lsac)
 #>     warmth relationship_quality temperament_negreact emotion_regulation
 #> 1 3.500000             2.285714                 1.75                2.4
@@ -562,6 +578,7 @@ the data, we can conclude that the most likely mapping of constructs to
 variables is:
 
 ``` r
+
 operationalizations <- c(PP = "warmth", EC = "relationship_quality", CC = "temperament_negreact", ER = "emotion_regulation", A = "social_functioning", PC = "coping")
 ```
 
@@ -572,6 +589,7 @@ practices in handling missing data; here, we use single imputation for
 pragmatic reasons.
 
 ``` r
+
 # Impute missing data
 df_real <- VIM::kNN(lsac, numFun = median)
 names(df_real) <- names(operationalizations)[match(operationalizations, names(df_real))]
@@ -584,6 +602,7 @@ exposure variable. Obtain the adjustment set for the effect of Parenting
 Practices on Emotion Regulation:
 
 ``` r
+
 adjustmentSets(tripartite, exposure = "EC", outcome = "ER")
 #> { PC, PP }
 ```
@@ -614,6 +633,7 @@ bootstrapped confidence intervals for testing, as demonstrated in the
 following code block:
 
 ``` r
+
 # Get all DAG-implied conditional independencies
 cis <- impliedConditionalIndependencies(tripartite)
 # Bonferroni-corrected confidence interval
@@ -653,6 +673,7 @@ different Bonferroni correction for the resulting (smaller number of)
 tests!
 
 ``` r
+
 cis_real <- filter_conditional_independencies(cis, df_real)
 bonferroni <- 1-(.05/length(cis_real))
 # Conduct the tests
@@ -695,11 +716,11 @@ answers in the previous two questions? No Yes
 ## References
 
 Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. “A Crash Course
-in Good and Bad Controls.” *Sociological Methods & Research*, May,
+in Good and Bad Controls.” *Sociological Methods & Research*, May 20,
 00491241221099552. <https://doi.org/10.1177/00491241221099552>.
 
 Family Studies, Australian Institute of. 2020. “Growing Up in
-Australia.” March 23, 2020.
+Australia.” March 23.
 
 Morris, Amanda Sheffield, Jennifer S. Silk, Laurence Steinberg, Sonya S.
 Myers, and Lara Rachel Robinson. 2007. “The Role of the Family Context

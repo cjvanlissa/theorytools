@@ -3,18 +3,18 @@
 ### 0.1 Introduction
 
 In this example, we implement the Dunning-Kruger (DK) effect, following
-the formalization by Feld, Sauermann, and De Grip (2017). The DK effect
-is defined as follows: “low performers vastly overestimate their
-performance while high performers more accurately assess their
-performance”. The paper by Feld and colleagues restates the DK effect in
-terms of skill and overconfidence to show that measurement error can
-cause significant bias in the relationship between performance and
-overestimation. Statistical methods that can be used to correct for this
-bias are also discussed. Since this theory contains definitions of
-abstract concepts, relationships between the concepts, mathematical
-derivations as well as commonly used statistical models and experimental
-paradigms, it serves as a nice illustration on how to formalize and then
-FAIRify all these different aspects.[¹](#fn1)
+the formalization by Feld et al. (2017). The DK effect is defined as
+follows: “low performers vastly overestimate their performance while
+high performers more accurately assess their performance”. The paper by
+Feld and colleagues restates the DK effect in terms of skill and
+overconfidence to show that measurement error can cause significant bias
+in the relationship between performance and overestimation. Statistical
+methods that can be used to correct for this bias are also discussed.
+Since this theory contains definitions of abstract concepts,
+relationships between the concepts, mathematical derivations as well as
+commonly used statistical models and experimental paradigms, it serves
+as a nice illustration on how to formalize and then FAIRify all these
+different aspects.[^1]
 
 #### 0.1.1 Learning Goals
 
@@ -32,6 +32,7 @@ theory - this folder will become the theory archive. For example, create
 a folder:
 
 ``` r
+
 dir.create("dunning_kruger")
 setwd("dunning_kruger")
 ```
@@ -55,6 +56,7 @@ Since these are verbal definitions, we can track them as a markdown
 file:
 
 ``` r
+
 definitions <- 
 "
 ## Definitions
@@ -75,7 +77,7 @@ cat(definitions, file="definitions.md")
 We can visualize the originally proposed relationships between the
 concepts as a graph:
 
-As well as the reformulation of Feld, Sauermann, and De Grip (2017):
+As well as the reformulation of Feld et al. (2017):
 
 With \\-\\ signifying a negative association, \\\simeq\\ signifying
 “measured by” and \\:=\\ signifying “defined as”.
@@ -84,6 +86,7 @@ To FAIRify this graph, we can use a graph specification library such as
 igraph (Csárdi et al. 2025):
 
 ``` r
+
 library(igraph, warn.conflicts=FALSE)
 
 g <- graph_from_literal(
@@ -112,6 +115,7 @@ E(g)$relationship <- c(
 We can visualize this graph with
 
 ``` r
+
 plot(
   g,
   vertex.size = 20,
@@ -126,6 +130,7 @@ Finally, we save the graph in a standardized format such as
 [GraphML](http://graphml.graphdrawing.org/):
 
 ``` r
+
 write_graph(
   g,
   "relationship_graph.txt",
@@ -330,6 +335,7 @@ We will add a CC0 (Creative Commons Zero) license to the repository, to
 waive all copyright protection
 
 ``` r
+
 worcs::add_license_file(path = ".", license = "cc0")
 ```
 
@@ -341,6 +347,7 @@ potential for interoperability and reuse. First, we include a draft
 README file using:
 
 ``` r
+
 theorytools::add_readme_fair_theory(title = "Dunning-Kruger Effect",
                                     path = ".")
 ```
@@ -373,6 +380,7 @@ Create a `.zenodo.json` file with metadata about the theory, to allow it
 to be indexed automatically when we archive it on Zenodo:
 
 ``` r
+
 theorytools::add_zenodo_json_theory(
   path = ".",
   title = "Dunning-Kruger Effect",
@@ -392,6 +400,7 @@ tutorial](https://cjvanlissa.github.io/theorytools/articles/fair-theory.html).
 Initialize version control in your project repository by running:
 
 ``` r
+
 gert::git_init(path = ".")
 ```
 
@@ -402,6 +411,7 @@ the wider community, you must connect your local ‘Git’ repository to a
 remote repository on a platform like ‘GitHub’:
 
 ``` r
+
 worcs::git_remote_create("dunning_kruger", private = FALSE)
 ```
 
@@ -412,12 +422,14 @@ repository is public by default.
 Connect this repository to your FAIR theory folder as follows:
 
 ``` r
+
 worcs::git_remote_connect(".", remote_repo = "dunning_kruger")
 ```
 
 Finally, push the local files to the remote repository:
 
 ``` r
+
 worcs::git_update("First commit of my theory", repo = ".")
 ```
 
@@ -460,17 +472,14 @@ The end result of this tutorial should be a FAIR theory like this one:
 
 ### References
 
-Csárdi, Gábor, Tamás Nepusz, Vincent Traag, Szabolcs Horvát, Fabio
-Zanini, Daniel Noom, Kirill Müller, David Schoch, and Maëlle Salmon.
-2025. *igraph: Network Analysis and Visualization in r*.
+Csárdi, Gábor, Tamás Nepusz, Vincent Traag, et al. 2025. *igraph:
+Network Analysis and Visualization in r*.
 <https://doi.org/10.5281/zenodo.7682609>.
 
 Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. “Estimating the
 Relationship Between Skill and Overconfidence.” *Journal of Behavioral
 and Experimental Economics* 68: 18–24.
 
-------------------------------------------------------------------------
-
-1.  Note that since we are trying to formalize this theory as close to
+[^1]: Note that since we are trying to formalize this theory as close to
     the paper as possible, many descriptions are (almost) verbatim
     quotes from the paper.

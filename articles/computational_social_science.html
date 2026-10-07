@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Conducting Theory-Based Reproducible Simulation Studies • theorytools</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <script src="../extra.js"></script><meta property="og:title" content="Conducting Theory-Based Reproducible Simulation Studies">
@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
+    <li><a class="dropdown-item" href="../articles/pmgs_hackathon.html">Paul Meehl Graduate School Hackathon</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
     <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
@@ -254,8 +255,8 @@ simulated datasets, for example to:</p>
 <li>Test the implications of model assumptions</li>
 <li>Plan our analyses before data collection</li>
 <li>Conduct power analysis and plan our sample size</li>
-<li>Preregister a fully reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert, Van Lissa, and
-Brandmaier 2021; Van Lissa 2022)</span>.</li>
+<li>Preregister a fully reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert et al. 2021; Van
+Lissa 2022)</span>.</li>
 </ul>
 <p>Below is a simple code snippet to generate synthetic data using the
 <code><a href="../reference/simulate_data.html">theorytools::simulate_data()</a></code> function. This function
@@ -473,7 +474,7 @@ the result was significant.</p>
 </blockquote>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">webexercises</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/webexercises/man/torf.html" class="external-link">torf</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value='answer'&gt;TRUE&lt;/option&gt;&lt;option value=''&gt;FALSE&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "&lt;select class='webex-select'&gt;&lt;option value='blank'&gt;&lt;/option&gt;&lt;option value='answer'&gt;TRUE&lt;/option&gt;&lt;option value='NA'&gt;FALSE&lt;/option&gt;&lt;/select&gt;"</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -722,9 +723,9 @@ naming the output with <code>name</code>.</p>
 <p>For a power analysis, we can manipulate the true effect size and
 sample size.</p>
 <p>Let’s say we want to design a study where the true effect size
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>.1</mn><mo>,</mo><mn>.2</mn><mo>,</mo><mn>.4</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\beta \in [.1, .2, .4]</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>.1</mn><mo>,</mo><mn>.2</mn><mo>,</mo><mn>.4</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\beta \in [.1, .2, .4]</annotation></semantics></math>
 and the sample size
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>50</mn><mo>,</mo><mn>100</mn><mo>,</mo><mn>200</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">n \in [50, 100, 200]</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>50</mn><mo>,</mo><mn>100</mn><mo>,</mo><mn>200</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">n \in [50, 100, 200]</annotation></semantics></math>
 (for convenience’s sake, we omit an analysis of false-positive results
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta = 0</annotation></semantics></math>
@@ -1275,21 +1276,20 @@ your Code</a></li>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-deciSelfDeterminationTheory2012" class="csl-entry">
 Deci, Edward L., and Richard M. Ryan. 2012.
 <span>“Self-<span>Determination Theory</span>.”</span> In <em>Handbook
 of <span>Theories</span> of <span>Social Psychology</span>:
 <span>Volume</span> 1</em>, edited by Paul A. M. Van Lange, Arie
-W.Kruglanski, and E. ToryHiggins, 416–37. SAGE Publications Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link">https://doi.org/10.4135/9781446249215</a>.
+W.Kruglanski, and E. ToryHiggins. SAGE Publications Ltd. <a href="https://doi.org/10.4135/9781446249215" class="external-link">https://doi.org/10.4135/9781446249215</a>.
 </div>
 <div id="ref-guptaChasingCarbonElusive2021" class="csl-entry">
-Gupta, Udit, Young Geun Kim, Sylvia Lee, Jordan Tse, Hsien-Hsin S. Lee,
-Gu-Yeon Wei, David Brooks, and Carole-Jean Wu. 2021. <span>“Chasing
+Gupta, Udit, Young Geun Kim, Sylvia Lee, et al. 2021. <span>“Chasing
 <span>Carbon</span>: <span>The Elusive Environmental Footprint</span> of
-<span>Computing</span>.”</span> In <em>2021 <span>IEEE International
+<span>Computing</span>.”</span> <em>2021 <span>IEEE International
 Symposium</span> on <span>High-Performance Computer Architecture</span>
-(<span>HPCA</span>)</em>, 854–67. <a href="https://doi.org/10.1109/HPCA51647.2021.00076" class="external-link">https://doi.org/10.1109/HPCA51647.2021.00076</a>.
+(<span>HPCA</span>)</em>, February, 854–67. <a href="https://doi.org/10.1109/HPCA51647.2021.00076" class="external-link">https://doi.org/10.1109/HPCA51647.2021.00076</a>.
 </div>
 <div id="ref-peikertReproducibleResearchTutorial2021" class="csl-entry">
 Peikert, Aaron, Caspar J. Van Lissa, and Andreas M. Brandmaier. 2021.
@@ -1316,7 +1316,7 @@ Machine Learning.”</span> <em>Religion, Brain &amp; Behavior</em> 0 (0):
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

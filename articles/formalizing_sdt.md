@@ -4,9 +4,8 @@ This vignette is based on work conducted as part of the “Proposition
 Based Theory Specification” (PBTS) project by Andreas Glöckner, Susann
 Fiedler, Jennifer Biehl, & Jasper Siol (in preparation). In this
 “many-theorists project”, groups of scholars were each assigned a
-chapter of the “Handbook of Theories of Social Psychology” (Van Lange,
-Kruglanski, and Higgins 2012), and asked to specify it and document the
-process.
+chapter of the “Handbook of Theories of Social Psychology” (Van Lange et
+al. 2012), and asked to specify it and document the process.
 
 Van Lissa, Li, and Weber set out to formalize Deci and Ryan’s
 *Self-Determination Theory*, documented in Chapter 20 of the book (Deci
@@ -138,18 +137,18 @@ positive and once in the negative.
 
 Let’s apply the same coding procedure to all snippets:
 
-|   N | IF                                                    | THEN                                                        | Original                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|----:|:------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   1 | nutriments are absent                                 | intrinsic motivation AND integration are impaired           | “For these natural, active processes of intrinsic motivation and integration to operate effectively toward healthy development and psychological well-being, human beings need particular nutriments – both biological and psychological (Ryan, 1995). In the relative absence of such nutriments, these natural processes will be impaired, resulting in experiences, development, and behaviors that are less than optimal. (Deci & Ryan, 2012, p. 417)                                                                                                                                                                                                                                                                                       |
-|   2 | \[intrinsic motivation OR integration\] is present    | healthy development AND psychological well-being take place | “For these natural, active processes of intrinsic motivation and integration to operate effectively toward healthy development and psychological well-being, human beings need particular nutriments – both biological and psychological (Ryan, 1995). In the relative absence of such nutriments, these natural processes will be impaired, resulting in experiences, development, and behaviors that are less than optimal. (Deci & Ryan, 2012, p. 417)                                                                                                                                                                                                                                                                                       |
-|   3 | needs are satisfied or thwarted                       | psychological well-being of all people is affected          | “The three basic psychological needs are universal such that their satisfaction versus thwarting affects the psychological well-being of all people.” (Deci & Ryan, 2012, p. 425)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|   4 | rewards given                                         | intrinsic motivation can decrease                           | “rewards do not always motivate subsequent persistence; indeed they can undermine intrinsic motivation” (Deci & Ryan, 2012, p. 417)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|   5 | external event is expected to thwart the basic needs  | external perceived locus of causality                       | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
-|   6 | external perceived locus of causality                 | undermined intrinsic motivation                             | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
-|   7 | external event is expected to support the basic needs | internal perceived locus of causality                       | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
-|   8 | internal perceived locus of causality                 | enhanced intrinsic motivation                               | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
+| N | IF | THEN | Original |
+|---:|:---|:---|:---|
+| 1 | nutriments are absent | intrinsic motivation AND integration are impaired | “For these natural, active processes of intrinsic motivation and integration to operate effectively toward healthy development and psychological well-being, human beings need particular nutriments – both biological and psychological (Ryan, 1995). In the relative absence of such nutriments, these natural processes will be impaired, resulting in experiences, development, and behaviors that are less than optimal. (Deci & Ryan, 2012, p. 417) |
+| 2 | \[intrinsic motivation OR integration\] is present | healthy development AND psychological well-being take place | “For these natural, active processes of intrinsic motivation and integration to operate effectively toward healthy development and psychological well-being, human beings need particular nutriments – both biological and psychological (Ryan, 1995). In the relative absence of such nutriments, these natural processes will be impaired, resulting in experiences, development, and behaviors that are less than optimal. (Deci & Ryan, 2012, p. 417) |
+| 3 | needs are satisfied or thwarted | psychological well-being of all people is affected | “The three basic psychological needs are universal such that their satisfaction versus thwarting affects the psychological well-being of all people.” (Deci & Ryan, 2012, p. 425) |
+| 4 | rewards given | intrinsic motivation can decrease | “rewards do not always motivate subsequent persistence; indeed they can undermine intrinsic motivation” (Deci & Ryan, 2012, p. 417) |
+| 5 | external event is expected to thwart the basic needs | external perceived locus of causality | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
+| 6 | external perceived locus of causality | undermined intrinsic motivation | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
+| 7 | external event is expected to support the basic needs | internal perceived locus of causality | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
+| 8 | internal perceived locus of causality | enhanced intrinsic motivation | “\[Intrinsic motivation\] could be either undermined or enhanced depending on whether the social environment supported or thwarted the needs for competence and self-determination. If a reward or other external event such as threat of punishment (Deci and Cascio, 1972), positive feedback (Deci, 1971), competition (Deci and Betley et al., 1981), or choice (Zuckerman et al., 1978) were expected to thwart these basic needs, it was predicted to prompt an external perceived locus of causality and undermine intrinsic motivation; but if the event were expected to support these basic needs, it was predicted to prompt an internal perceived locus of causality and enhance intrinsic motivation.” (Deci & Ryan, 2012, p. 418) |
 
-SDT translated into IF/THEN statements
+SDT translated into IF/THEN statements {.table}
 
 ### From IF-THEN Propositions to Causal Model
 
@@ -172,6 +171,7 @@ associated with the statements are retained, so that it is clear which
 causal links are derived from which IF/THEN statements:
 
 ``` r
+
 SDT <- read.csv(system.file("sdt.txt", package="theorytools"))
 knitr::kable(SDT[, 1:3], caption = "IF/THEN statements translated into causal connections")
 ```
@@ -193,7 +193,7 @@ knitr::kable(SDT[, 1:3], caption = "IF/THEN statements translated into causal co
 |   7 | external_event       | needs                |
 |   8 | locus_of_causality   | intrinsic_motivation |
 
-IF/THEN statements translated into causal connections
+IF/THEN statements translated into causal connections {.table}
 
 This translation reveals some further ambiguities; for example, in
 proposition \#4, we see “rewards” are related to intrinsic motivation.
@@ -222,6 +222,7 @@ reduced to their implied causal connections, the redundancies become
 readily apparent. We can simply remove the redundancies as follows:
 
 ``` r
+
 # Drop statement numbers
 SDT <- SDT[, 2:3]
 # Remove redundant statements
@@ -243,11 +244,12 @@ knitr::kable(SDT, caption = "Unique causal connections")
 | external_event       | locus_of_causality   |
 | locus_of_causality   | intrinsic_motivation |
 
-Unique causal connections
+Unique causal connections {.table}
 
 We can translate this table to a DAG:
 
 ``` r
+
 SDT <- dagitty::dagitty(
   paste0("dag {",
   paste0(SDT$from, " -> ", SDT$to, collapse = "\n"),
@@ -258,6 +260,7 @@ SDT <- dagitty::dagitty(
 We can plot the DAG as follows:
 
 ``` r
+
 library(tidySEM)
 library(ggplot2)
 # Specify plot layout
@@ -301,23 +304,24 @@ definitions are stored inside the `theorytools` package and we can load
 them as follows:
 
 ``` r
+
 definitions <- read.csv(system.file("sdt_definitions.csv",package="theorytools"))
 definitions
 ```
 
-|     | Nr. | Concept                               | Synonym                                                              | Definition                            | Operationalization                                                                                                                                                                                                                                                                                                                                                                      |
-|:----|----:|:--------------------------------------|:---------------------------------------------------------------------|:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 2   |   2 | Intrinsic motivation                  | processes                                                            | Intrinsic motivation                  | Derived from other source: Not given in chapter, but chapter references paper with definition: Mean number of seconds spent working on puzzle during eight-minute free choice period. Reference: <https://doi.org/10.1037/h0030644>                                                                                                                                                     |
-| 3   |   3 | integration                           | processes                                                            | integration                           | Derived from other source: Not given in chapter, But chapter references paper with definition: “ongoing reciprocal assimilation between schemas, such that there tends to be an internal consistency and equilibration among varied functions and structures”. Reference: <https://doi.org/10.1111/j.1467-6494.1995.tb00501.x>                                                          |
-| 4   |   4 | Healthy development                   |                                                                      | Healthy development                   | Missing: Not given in chapter, could not find                                                                                                                                                                                                                                                                                                                                           |
-| 5   |   5 | Psychological wellbeing               |                                                                      | Psychological wellbeing               | Derived from other source: Not given in chapter, chapter cites paper with definition: “positive affect, vitality, and physical symptoms”. Reference: <https://doi.org/10.1177/01461672962212007>                                                                                                                                                                                        |
-| 6   |   6 | external event                        | reward, threat of punishment, positive feedback, competition, choice | Various external events               | Positive feedback (Ryan, 1982), performance-contingent monetary rewards (Ryan et al., 1983), limits set on children (Koestner et al., 1984). References: Ryan, 1982 <https://doi.org/10.1037/0022-3514.43.3.450> Ryan et al., 1983 <https://doi.org/10.1037/0022-3514.45.4.736> Koestner et al., 1984 <https://selfdeterminationtheory.org/SDT/documents/1984_KoestnerRyanBernHolt.pdf> |
-| 7   |   7 | external perceived locus of causality |                                                                      | external perceived locus of causality | Derived from other source: Not given in chapter. Most useful resource is Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> They use structured interviews, and the Multidimensional Measure of Children’s Perceptions of Control (Connell, 1985). Reference: Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749>                                          |
-| 8   |   8 | internal perceived locus of causality |                                                                      | internal perceived locus of causality | Derived from other source: Not given in chapter. Most useful resource is Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> They use structured interviews, and the Multidimensional Measure of Children’s Perceptions of Control (Connell, 1985). Reference: Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749>                                          |
+|  | Nr. | Concept | Synonym | Definition | Operationalization |
+|:---|---:|:---|:---|:---|:---|
+| 2 | 2 | Intrinsic motivation | processes | Intrinsic motivation | Derived from other source: Not given in chapter, but chapter references paper with definition: Mean number of seconds spent working on puzzle during eight-minute free choice period. Reference: <https://doi.org/10.1037/h0030644> |
+| 3 | 3 | integration | processes | integration | Derived from other source: Not given in chapter, But chapter references paper with definition: “ongoing reciprocal assimilation between schemas, such that there tends to be an internal consistency and equilibration among varied functions and structures”. Reference: <https://doi.org/10.1111/j.1467-6494.1995.tb00501.x> |
+| 4 | 4 | Healthy development |  | Healthy development | Missing: Not given in chapter, could not find |
+| 5 | 5 | Psychological wellbeing |  | Psychological wellbeing | Derived from other source: Not given in chapter, chapter cites paper with definition: “positive affect, vitality, and physical symptoms”. Reference: <https://doi.org/10.1177/01461672962212007> |
+| 6 | 6 | external event | reward, threat of punishment, positive feedback, competition, choice | Various external events | Positive feedback (Ryan, 1982), performance-contingent monetary rewards (Ryan et al., 1983), limits set on children (Koestner et al., 1984). References: Ryan, 1982 <https://doi.org/10.1037/0022-3514.43.3.450> Ryan et al., 1983 <https://doi.org/10.1037/0022-3514.45.4.736> Koestner et al., 1984 <https://selfdeterminationtheory.org/SDT/documents/1984_KoestnerRyanBernHolt.pdf> |
+| 7 | 7 | external perceived locus of causality |  | external perceived locus of causality | Derived from other source: Not given in chapter. Most useful resource is Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> They use structured interviews, and the Multidimensional Measure of Children’s Perceptions of Control (Connell, 1985). Reference: Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> |
+| 8 | 8 | internal perceived locus of causality |  | internal perceived locus of causality | Derived from other source: Not given in chapter. Most useful resource is Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> They use structured interviews, and the Multidimensional Measure of Children’s Perceptions of Control (Connell, 1985). Reference: Ryan & Connell, 1989 <https://doi.org/10.1037/0022-3514.57.5.749> |
 
-Operationalizations of constructs in SDT
+Operationalizations of constructs in SDT {.table}
 
-As can be seen fom this overview - none of the definitions were given in
+As can be seen in this overview - none of the definitions were given in
 the theory chapter. We were able to trace some definitions to empirical
 papers cited in the chapter, but these definitions appeared to fall
 short of proper “theoretical definitions”. For example, **intrinsic
@@ -341,6 +345,7 @@ Let’s create two files for our theory: a DAG to specify the causal
 relations, and a spreadsheet containing the definitions.
 
 ``` r
+
 writeLines(SDT, "sdt.txt")
 write.csv(definitions, "definitions.csv", row.names = FALSE)
 ```
@@ -348,6 +353,7 @@ write.csv(definitions, "definitions.csv", row.names = FALSE)
 Next, we can create the FAIR theory as follows:
 
 ``` r
+
 project_path <- file.path("c:/theories", "self_determination_theory")
 create_fair_theory(
   path = project_path,
@@ -382,8 +388,8 @@ We customized the README by adding these sections:
 > Glöckner, Susann Fiedler, Jennifer Biehl, & Jasper Siol (in
 > preparation). In this “many-theorists project”, groups of scholars
 > were each assigned a chapter of the “Handbook of Theories of Social
-> Psychology” (Van Lange, Kruglanski, and Higgins 2012), and asked to
-> specify it and document the process.  
+> Psychology” (Van Lange et al. 2012), and asked to specify it and
+> document the process.  
 > Van Lissa further adapted the theory specification, as documented in
 > [this
 > vignette](https://cjvanlissa.github.io/theorytools/articles/formalizing_sdt.html).
@@ -433,6 +439,7 @@ changes to the remote repository using `git_update()`. Then, publish the
 release using `git_release_publish()`:
 
 ``` r
+
 worcs::git_update(repo = project_path)
 worcs::git_release_publish(repo = project_path)
 ```
@@ -472,10 +479,9 @@ View the final result, FAIR Self-Determination Theory, at
 
 Deci, Edward L., and Richard M. Ryan. 2012. “Self-Determination Theory.”
 In *Handbook of Theories of Social Psychology: Volume 1*, edited by Paul
-A. M. Van Lange, Arie W.Kruglanski, and E. ToryHiggins, 416–37. SAGE
+A. M. Van Lange, Arie W.Kruglanski, and E. ToryHiggins. SAGE
 Publications Ltd. <https://doi.org/10.4135/9781446249215>.
 
 Van Lange, Paul, Arie Kruglanski, and E. Higgins. 2012. *Handbook of
-Theories of Social Psychology: Volume 1*. 1 Oliver’s Yard, 55 City
-Road, London EC1Y 1SP United Kingdom: SAGE Publications Ltd.
+Theories of Social Psychology: Volume 1*. SAGE Publications Ltd.
 <https://doi.org/10.4135/9781446249215>.

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>FAIRifying the Dunning-Kruger Effect • theorytools</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <script src="../extra.js"></script><meta property="og:title" content="FAIRifying the Dunning-Kruger Effect">
@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
+    <li><a class="dropdown-item" href="../articles/pmgs_hackathon.html">Paul Meehl Graduate School Hackathon</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
     <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
@@ -74,7 +75,7 @@
 <h3 id="introduction">
 <span class="header-section-number">0.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>In this example, we implement the Dunning-Kruger (DK) effect, following the formalization by <span class="citation">Feld, Sauermann, and De Grip (2017)</span>.
+<p>In this example, we implement the Dunning-Kruger (DK) effect, following the formalization by <span class="citation">Feld et al. (2017)</span>.
 The DK effect is defined as follows: “low performers vastly overestimate their performance while high
 performers more accurately assess their performance”.
 The paper by Feld and colleagues restates the DK effect in terms of skill and overconfidence to show that measurement error can cause significant bias in the relationship between performance and overestimation.
@@ -140,7 +141,7 @@ the actual test score</li>
 <span class="header-section-number">1.2</span> Relationships<a class="anchor" aria-label="anchor" href="#relationships"></a>
 </h3>
 <p>We can visualize the originally proposed relationships between the concepts as a graph:</p>
-<p>As well as the reformulation of <span class="citation">Feld, Sauermann, and De Grip (2017)</span>:</p>
+<p>As well as the reformulation of <span class="citation">Feld et al. (2017)</span>:</p>
 <p>With <span class="math inline">\(-\)</span> signifying a negative association, <span class="math inline">\(\simeq\)</span> signifying “measured by” and <span class="math inline">\(:=\)</span> signifying “defined as”.</p>
 <p>To FAIRify this graph, we can use a graph specification library such as igraph <span class="citation">(Csárdi et al. 2025)</span>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -485,9 +486,9 @@ We will additionally add several related works.</p>
 <div class="section level3">
 <h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-igraph" class="csl-entry">
-Csárdi, Gábor, Tamás Nepusz, Vincent Traag, Szabolcs Horvát, Fabio Zanini, Daniel Noom, Kirill Müller, David Schoch, and Maëlle Salmon. 2025. <em><span class="nocase">igraph</span>: Network Analysis and Visualization in r</em>. <a href="https://doi.org/10.5281/zenodo.7682609" class="external-link">https://doi.org/10.5281/zenodo.7682609</a>.
+Csárdi, Gábor, Tamás Nepusz, Vincent Traag, et al. 2025. <em><span class="nocase">igraph</span>: Network Analysis and Visualization in r</em>. <a href="https://doi.org/10.5281/zenodo.7682609" class="external-link">https://doi.org/10.5281/zenodo.7682609</a>.
 </div>
 <div id="ref-feld2017estimating" class="csl-entry">
 Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. <span>“Estimating the Relationship Between Skill and Overconfidence.”</span> <em>Journal of Behavioral and Experimental Economics</em> 68: 18–24.
@@ -507,7 +508,7 @@ Feld, Jan, Jan Sauermann, and Andries De Grip. 2017. <span>“Estimating the Rel
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

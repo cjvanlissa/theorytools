@@ -35,6 +35,7 @@ DAG, how to parse and inspect it with `dagitty`, `theorytools`, and
 properties for further modeling or simulation tasks.
 
 ``` r
+
 library(theorytools)
 library(dagitty)
 library(tidySEM)
@@ -51,6 +52,7 @@ The usual syntax for specifying a DAG in the `dagitty` R-package is
 something like:
 
 ``` r
+
 library(dagitty)
 dagitty("dag {
   X -> Y
@@ -64,6 +66,7 @@ quotation marks used in tags **must be** double quotes `"`, so it makes
 sense to wrap the whole DAG syntax in single quotes `'`:
 
 ``` r
+
 library(dagitty)
 dagitty('dag {
   X [exposure, pos="0,1"]
@@ -90,6 +93,7 @@ Below, we detail each new property:
 The label is used, for example, by `tidySEM` to label nodes and edges:
 
 ``` r
+
 library(tidySEM)
 g <- dagitty('dag {
   X [label="Predictor", pos="0,0"]
@@ -120,6 +124,7 @@ graph_sem(g, text_size = 2)
     normally distributed with default arguments.
 
 ``` r
+
 g <- dagitty('dag {
   X [distribution="rbinom(size = 2, prob = .5)"]
   Y [distribution="rnorm()"]
@@ -145,6 +150,7 @@ g <- dagitty('dag {
   function of `X`
 
 ``` r
+
 g <- dagitty('dag {
   X [distribution="rbinom(size = 2, prob = .5)"]
   Y [distribution="rnorm()"]
@@ -165,6 +171,7 @@ This DAG posits:
   normally distributed residuals.s
 
 ``` r
+
 g <- dagitty('dag {
   X [exposure,
      pos="0,0",
@@ -202,6 +209,7 @@ and
 parse the nodes and edges of aDAGs, respectively:
 
 ``` r
+
 get_nodes(g)
 #>   name exposure   x   y            label
 #> 1    X     TRUE 0.0 0.0      Study Hours
@@ -232,6 +240,7 @@ Code to simulate data in line with these metadata can be automatically
 generated:
 
 ``` r
+
 set.seed(1)
 cat(simulate_data(g, run = FALSE), sep = "\n")
 #> # Set random seed
@@ -253,6 +262,7 @@ cat(simulate_data(g, run = FALSE), sep = "\n")
 To illustrate, we show a scatter plot of data simulated using this code:
 
 ``` r
+
 df <- simulate_data(g, run = TRUE)
 ggplot2::ggplot(df, aes(x=X,y=Y,color=Z))+geom_point()
 ```
@@ -261,7 +271,7 @@ ggplot2::ggplot(df, aes(x=X,y=Y,color=Z))+geom_point()
 
 You can use this script, for example, to generate synthetic data and
 build a reproducible analysis pipeline for a Preregistration-As-Code
-(Peikert, Van Lissa, and Brandmaier 2021; Van Lissa 2022).
+(Peikert et al. 2021; Van Lissa 2022).
 
 ### Additional Notes
 

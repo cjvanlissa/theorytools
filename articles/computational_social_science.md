@@ -79,6 +79,7 @@ everything runs as expected.
 > What does it mean to run R code *interactively*?
 
 ``` r
+
 webexercises::mcq(sample(c(answer = "Executing code immediately in an R session that a human user is interacting with.", "Having one function call another function; these functions are said to be 'interacting'", "Evaluating code by placing it in an Rmarkdown document, and knitting that document.")))
 ```
 
@@ -90,6 +91,7 @@ webexercises::mcq(sample(c(answer = "Executing code immediately in an R session 
 tutorial. Run this code:
 
 ``` r
+
 install.packages("theorytools", prompt = FALSE)
 install.packages("dagitty", prompt = FALSE)
 install.packages("tidySEM", prompt = FALSE)
@@ -99,6 +101,7 @@ To your `"manuscript.Rmd"` file, add the following lines in the setup
 chunk:
 
 ``` r
+
 library(theorytools)
 library(dagitty)
 library(tidySEM)
@@ -122,6 +125,7 @@ your WORCS repository. Optionally, you can have a look at the archived
 version by opening the URL <https://doi.org/10.5281/zenodo.15648655>.
 
 ``` r
+
 theorytools::download_theory("10.5281/zenodo.15648655", path = "theory")
 ```
 
@@ -137,6 +141,7 @@ the constructs involved.
 > Why is the FAIR theory downloaded into a separate `theory/` subfolder?
 
 ``` r
+
 webexercises::mcq(sample(c(answer = "To prevent overwriting the WORCS project's README and LICENSE files", "To avoid downloading unnecessary files", "Because theorytools only works inside a 'theory/' directory", "Because dagitty requires theory files to be placed in a specific folder")))
 ```
 
@@ -163,6 +168,7 @@ run it interactively instead, you are already inside the parent
 directory, and you can use the path `theory/sdt.txt`.
 
 ``` r
+
 sdt <- dagitty::dagitty(paste(readLines("../theory/sdt.txt"), collapse = "\n"))
 ```
 
@@ -170,6 +176,7 @@ Then, we can plot the model using the tidySEM package. Get a basic plot
 by running `graph_sem(sdt)`:
 
 ``` r
+
 tidySEM::graph_sem(sdt)
 ```
 
@@ -178,6 +185,7 @@ tidySEM::graph_sem(sdt)
 > According to the DAG, what are the causes of `wellbeing`?
 
 ``` r
+
 webexercises::mcq(sample(c(answer = "integration, intrinsic_motivation, needs", "integration, intrinsic_motivation", "needs, intrinsic_ _motivation")))
 ```
 
@@ -193,8 +201,7 @@ simulated datasets, for example to:
 - Plan our analyses before data collection
 - Conduct power analysis and plan our sample size
 - Preregister a fully reproducible analysis pipeline
-  (Preregistration-As-Code, Peikert, Van Lissa, and Brandmaier 2021; Van
-  Lissa 2022).
+  (Preregistration-As-Code, Peikert et al. 2021; Van Lissa 2022).
 
 Below is a simple code snippet to generate synthetic data using the
 [`theorytools::simulate_data()`](https://cjvanlissa.github.io/theorytools/reference/simulate_data.md)
@@ -214,17 +221,18 @@ contains more information about user-defined functional forms and
 (error) distributions.
 
 ``` r
+
 set.seed(1)
 theorytools::simulate_data(sdt, n = 5)
 ```
 
 | external_event | healthy_development | integration | intrinsic_motivation | locus_of_causality | needs | wellbeing |
-|---------------:|--------------------:|------------:|---------------------:|-------------------:|------:|----------:|
-|          -0.33 |               -1.18 |        0.16 |                 0.12 |              -1.04 |  0.78 |     -0.67 |
-|          -0.41 |                1.52 |       -0.59 |                -0.99 |              -0.30 | -0.98 |      0.41 |
-|          -0.48 |                0.95 |       -0.48 |                -1.77 |               0.51 |  1.07 |      1.77 |
-|          -0.98 |               -1.32 |        1.11 |                -1.16 |              -1.83 | -0.02 |      1.58 |
-|          -0.27 |               -1.10 |       -0.01 |                -0.64 |               1.28 |  1.17 |      0.54 |
+|---:|---:|---:|---:|---:|---:|---:|
+| -0.33 | -1.18 | 0.16 | 0.12 | -1.04 | 0.78 | -0.67 |
+| -0.41 | 1.52 | -0.59 | -0.99 | -0.30 | -0.98 | 0.41 |
+| -0.48 | 0.95 | -0.48 | -1.77 | 0.51 | 1.07 | 1.77 |
+| -0.98 | -1.32 | 1.11 | -1.16 | -1.83 | -0.02 | 1.58 |
+| -0.27 | -1.10 | -0.01 | -0.64 | 1.28 | 1.17 | 0.54 |
 
 This synthetic dataset is consistent with the structure encoded in our
 FAIR SDT, though the parameter values are arbitrary.
@@ -233,6 +241,7 @@ FAIR SDT, though the parameter values are arbitrary.
 > simulation studies?
 
 ``` r
+
 webexercises::mcq(sample(c(answer = "Fitting a model to real-world data", "Exploring what-if scenarios", "Conducting power analysis", "Preregistering a reproducible analysis pipeline")))
 ```
 
@@ -248,6 +257,7 @@ includes all variables that might confound the relationship of interest
 between intrinsic motivation and well-being:
 
 ``` r
+
 sdt_pruned <- theorytools:::prune_dag(sdt,
                                       exposure = "intrinsic_motivation",
                                       outcome = "wellbeing")
@@ -266,6 +276,7 @@ sdt_pruned
 We can now generate a synthetic dataset based on this simplified DAG:
 
 ``` r
+
 set.seed(1)
 df <- theorytools::simulate_data(sdt_pruned, n = 100)
 head(df)
@@ -300,6 +311,7 @@ regression (because the DAG indicated that we need to control for the
 effect of needs):
 
 ``` r
+
 res <- lm(wellbeing ~ intrinsic_motivation + needs, data = df)
 summary(res)
 ```
@@ -326,10 +338,11 @@ summary(res)
 
 Then, our outcome of interest is the significance of the effect of
 `intrinsic_motivation`. We can extract the p-value as follows, and
-compare it to the significance level $\alpha < .05$ to get a binary
+compare it to the significance level $`\alpha < .05`$ to get a binary
 result (significant: TRUE or FALSE):
 
 ``` r
+
 sum_res <- summary(res)
 sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
 ```
@@ -338,10 +351,11 @@ sum_res$coefficients["intrinsic_motivation", "Pr(>|t|)"] < .05
 > the result was significant.
 
 ``` r
+
 webexercises::torf(TRUE)
 ```
 
-    ## [1] "<select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select>"
+    ## [1] "<select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value='NA'>FALSE</option></select>"
 
 ## Using `worcs` with `targets`: Sustainable Reproducibility
 
@@ -370,6 +384,7 @@ By combining `worcs` with `targets`, we get the best of both worlds:
 section:
 
 ``` r
+
 install.packages("targets", prompt = FALSE)
 install.packages("tarchetypes", prompt = FALSE)
 ```
@@ -378,6 +393,7 @@ install.packages("tarchetypes", prompt = FALSE)
 by running:
 
 ``` r
+
 worcs::add_targets()
 ```
 
@@ -395,6 +411,7 @@ look something like the code below) consists of a few placeholder steps:
 3.  Render the `manuscript.Rmd`
 
 ``` r
+
 list(
   tar_target(
     name = data,
@@ -458,6 +475,7 @@ function we used previously to create a single synthetic dataset can
 also generate a script for synthetic data generation:
 
 ``` r
+
 theorytools::simulate_data(sdt_pruned, n = 100, run = FALSE)
 ```
 
@@ -481,6 +499,7 @@ Let’s write this script to a new file in `./R/`, and edit it.
 **Interactive:** Run the following code:
 
 ``` r
+
 writeLines(
   theorytools::simulate_data(sdt_pruned, n = 100, run = FALSE),
   "R/generate_data.R"
@@ -591,15 +610,16 @@ For a power analysis, we can manipulate the true effect size and sample
 size.
 
 Let’s say we want to design a study where the true effect size
-$\beta \in \lbrack.1,.2,.4\rbrack$ and the sample size
-$n \in \lbrack 50,100,200\rbrack$ (for convenience’s sake, we omit an
-analysis of false-positive results where $\beta = 0$ now).
+$`\beta \in [.1, .2, .4]`$ and the sample size $`n \in [50, 100, 200]`$
+(for convenience’s sake, we omit an analysis of false-positive results
+where $`\beta = 0`$ now).
 
 We can use the R-function
 [`expand.grid()`](https://rdrr.io/r/base/expand.grid.html) to create all
 possible combinations:
 
 ``` r
+
 expand.grid(
   beta = c(.1, .2, .4),
   n = c(50, 100, 200)
@@ -649,6 +669,7 @@ changes, the manuscript should be automatically re-run.
 steps are properly tracked, you can run:
 
 ``` r
+
 install.packages("visNetwork", prompt = FALSE)
 targets::tar_visnetwork()
 ```
@@ -658,6 +679,7 @@ targets::tar_visnetwork()
 Add the following code to the manuscript to tabulate the results:
 
 ``` r
+
 knitr::kable(study_results, digits = 2)
 ```
 
@@ -677,6 +699,7 @@ Or alternatively, add the following code to plot the study results (this
 requires running `install.packages("ggplot2", prompt = FALSE)`).
 
 ``` r
+
 library(ggplot2)
 df_plot <- study_results
 df_plot$beta <- ordered(df_plot$beta)
@@ -738,6 +761,7 @@ That causes targets to re-run every step of the pipeline. This might
 look like:
 
 ``` r
+
 # Snapshot the current state of the endpoints
 worcs::snapshot_endpoints()
 # Destroy the cache of targets results
@@ -770,6 +794,7 @@ least) on Windows.
 **Interactive:** First, install the required packages:
 
 ``` r
+
 install.packages("future", prompt = FALSE)
 ```
 
@@ -785,6 +810,7 @@ To register a parallel backend, you can add the following code to
 `perform_study()`:
 
 ``` r
+
 library(future)
 plan(multisession, workers = 4L)
 ```
@@ -800,6 +826,7 @@ is running.
 To do so, you could adapt the code as follows:
 
 ``` r
+
 library(future)
 plan(multisession, workers = parallelly::availableCores()-2L)
 ```
@@ -815,6 +842,7 @@ functions like [`lapply()`](https://rdrr.io/r/base/lapply.html),
 inner loop of our simulation, we can use:
 
 ``` r
+
 future.apply::future_replicate(n = reps, expr = {
       df <- with(as.list(thisrow), generate_data(beta = beta, n = n))
       analyze_data(df)
@@ -851,6 +879,7 @@ without paralellization:
 ##### Without Paralellization
 
 ``` r
+
 perform_study <- function(study_design, reps = 100){
   # For each row of the study design, execute a function
   pwr <- apply(study_design, 1, function(thisrow){
@@ -872,6 +901,7 @@ perform_study <- function(study_design, reps = 100){
 ##### With Paralellization
 
 ``` r
+
 perform_study <- function(study_design, reps = 100){
   library(future)
   # Sets up clusters from number of cores
@@ -897,6 +927,7 @@ perform_study <- function(study_design, reps = 100){
 Now rerun your simulation with:
 
 ``` r
+
 targets::tar_make()
 ```
 
@@ -944,6 +975,7 @@ code? What if functions are used in a different way then you expected?
 **Interactive**: In your WORCS project, run the following code:
 
 ``` r
+
 worcs::add_testthat()
 ```
 
@@ -985,12 +1017,14 @@ Test files’ names must start with `test-`, and they must be saved in
 In your console or script, you can run:
 
 ``` r
+
 worcs::test_worcs()
 ```
 
 Or, to test a single file:
 
 ``` r
+
 testthat::test_file("tests/testthat/test-generate_data.R")
 ```
 
@@ -1016,6 +1050,7 @@ function, for example:
 What would these assumptions look like when tested? For example, like:
 
 ``` r
+
 test_that("generate_data works", {
   # Run generate_data()
   df <- generate_data(.4, 100)
@@ -1038,6 +1073,7 @@ grouping all tests, you could also break them up into separate
 `test_that()` commands:
 
 ``` r
+
 test_that("generate_data generates a data.frame", {
   # Run generate_data()
   df <- generate_data(.4, 100)
@@ -1078,6 +1114,7 @@ updates to GitHub.
 tests:
 
 ``` r
+
 # Add the appropriate GitHub action:
 worcs::github_action_testthat()
 ```
@@ -1092,6 +1129,7 @@ before publishing your code, before triggering a GitHub action, before
 sharing your code with a collaborator, et cetera.
 
 ``` r
+
 renv::snapshot()
 ```
 
@@ -1100,6 +1138,7 @@ will be updated are instructions for GitHub actions in the `.github/`
 folder, and your updated `renv.lock` file.
 
 ``` r
+
 worcs::git_update("add testthat")
 ```
 
@@ -1108,6 +1147,7 @@ now navigate to your GitHub repository. If you don’t remember your
 GitHub URL, run:
 
 ``` r
+
 utils::browseURL(gsub(".git", "/actions", gert::git_remote_list()$url, fixed = TRUE))
 ```
 
@@ -1144,14 +1184,14 @@ cloud.
 
 Deci, Edward L., and Richard M. Ryan. 2012. “Self-Determination Theory.”
 In *Handbook of Theories of Social Psychology: Volume 1*, edited by Paul
-A. M. Van Lange, Arie W.Kruglanski, and E. ToryHiggins, 416–37. SAGE
+A. M. Van Lange, Arie W.Kruglanski, and E. ToryHiggins. SAGE
 Publications Ltd. <https://doi.org/10.4135/9781446249215>.
 
-Gupta, Udit, Young Geun Kim, Sylvia Lee, Jordan Tse, Hsien-Hsin S. Lee,
-Gu-Yeon Wei, David Brooks, and Carole-Jean Wu. 2021. “Chasing Carbon:
-The Elusive Environmental Footprint of Computing.” In *2021 IEEE
+Gupta, Udit, Young Geun Kim, Sylvia Lee, et al. 2021. “Chasing Carbon:
+The Elusive Environmental Footprint of Computing.” *2021 IEEE
 International Symposium on High-Performance Computer Architecture
-(HPCA)*, 854–67. <https://doi.org/10.1109/HPCA51647.2021.00076>.
+(HPCA)*, February, 854–67.
+<https://doi.org/10.1109/HPCA51647.2021.00076>.
 
 Peikert, Aaron, Caspar J. Van Lissa, and Andreas M. Brandmaier. 2021.
 “Reproducible Research in R: A Tutorial on How to Do the Same Thing More
