@@ -150,7 +150,7 @@ With $-$ signifying a negative association, $\simeq$ signifying "measured by" an
 
 To FAIRify this graph, we can use a graph specification library such as igraph [@igraph]:
 
-```{r, results='hide'}
+```{r, results='hide', eval = requireNamespace("igraph", quietly = TRUE)}
 library(igraph, warn.conflicts=FALSE)
 
 g <- graph_from_literal(
@@ -187,7 +187,7 @@ plot(
 )
 ```
 
-```{r echo = FALSE, eval = TRUE, message=FALSE}
+```{r echo = FALSE, eval = requireNamespace("igraph", quietly = TRUE), message=FALSE}
 invisible({
 svg(filename = "dk.svg")
 set.seed(1)
@@ -215,7 +215,7 @@ plot(
 
 Finally, we save the graph in a standardized format such as [GraphML](http://graphml.graphdrawing.org/): 
 
-```{r}
+```{r eval = requireNamespace("igraph", quietly = TRUE)}
 write_graph(
   g,
   "relationship_graph.txt",
@@ -424,7 +424,7 @@ You should now have a folder containing the following files:
 
 We will add a CC0 (Creative Commons Zero) license to the repository, to waive all copyright protection
 
-```{r}
+```{r eval = FALSE}
 worcs::add_license_file(path = ".", license = "cc0")
 ```
 
@@ -433,7 +433,7 @@ worcs::add_license_file(path = ".", license = "cc0")
 We will add a README file describes the repository's contents and purpose, making it easier for others to understand the theory's potential for interoperability and reuse.
 First, we include a draft README file using:
 
-```{r}
+```{r eval = FALSE}
 theorytools::add_readme_fair_theory(title = "Dunning-Kruger Effect",
                                     path = ".")
 ```
@@ -455,7 +455,7 @@ For guidance on writing a README file for theory, see [this vignette](https://cj
 
 Create a `.zenodo.json` file with metadata about the theory, to allow it to be indexed automatically when we archive it on Zenodo:
 
-```{r eval}
+```{r eval = FALSE}
 theorytools::add_zenodo_json_theory(
   path = ".",
   title = "Dunning-Kruger Effect",
@@ -474,7 +474,7 @@ reference the basic [FAIR theory tutorial](https://cjvanlissa.github.io/theoryto
 
 Initialize version control in your project repository by running:
 
-```{r}
+```{r eval = FALSE}
 gert::git_init(path = ".")
 ```
 
@@ -496,7 +496,7 @@ worcs::git_remote_connect(".", remote_repo = "dunning_kruger")
 
 Finally, push the local files to the remote repository:
 
-```{r}
+```{r eval = FALSE}
 worcs::git_update("First commit of my theory", repo = ".")
 ```
 
