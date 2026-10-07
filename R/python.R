@@ -52,6 +52,7 @@ check_python <- function(pkgs){
     cli_msg("!" = "Package 'reticulate' is required. Install it using {.run install.packages('reticulate')}.")
     return(FALSE)
   }
+  reticulate::py_require(pkgs)
   has_pkgs <- sapply(pkgs, function(p){
     isTRUE(reticulate::py_module_available(p))
   })
