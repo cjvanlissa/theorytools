@@ -17,3 +17,5 @@
 ^tikz.*\.log$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+^vignettes/articles/\.quarto$
+^vignettes/articles/*_files$

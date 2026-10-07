@@ -1,9 +1,5 @@
 ---
 title: "Paul Meehl Graduate School Hackathon"
-vignette: >
-  %\VignetteIndexEntry{pmgs_hackathon}
-  %\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
 knitr:
   opts_chunk:
     collapse: true
