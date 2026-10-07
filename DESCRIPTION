@@ -54,7 +54,7 @@ Suggests:
     reticulate,
     quarto
 SystemRequirements: Python (>= 3.8)
-VignetteBuilder: knitr, quarto
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5)

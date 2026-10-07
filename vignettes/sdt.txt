@@ -1,0 +1,21 @@
+dag {
+external_event
+healthy_development
+integration
+intrinsic_motivation
+locus_of_causality
+needs
+wellbeing
+external_event -> intrinsic_motivation
+external_event -> locus_of_causality
+external_event -> needs
+integration -> healthy_development
+integration -> wellbeing
+intrinsic_motivation -> healthy_development
+intrinsic_motivation -> wellbeing
+locus_of_causality -> intrinsic_motivation
+needs -> integration
+needs -> intrinsic_motivation
+needs -> wellbeing
+}
+
