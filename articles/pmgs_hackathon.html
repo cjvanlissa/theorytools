@@ -470,15 +470,15 @@
 <code class="sourceCode R"><span><span class="va">sim_code</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">sdt_pruned</span>, n <span class="op">=</span> <span class="fl">100</span>, run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">sim_code</span></span>
 <span><span class="co">#&gt;  [1] "# Set random seed"                                                          </span></span>
-<span><span class="co">#&gt;  [2] "set.seed(1327222114)"                                                       </span></span>
+<span><span class="co">#&gt;  [2] "set.seed(1597344384)"                                                       </span></span>
 <span><span class="co">#&gt;  [3] "# Set simulation parameters"                                                </span></span>
 <span><span class="co">#&gt;  [4] "n &lt;- 100"                                                                   </span></span>
 <span><span class="co">#&gt;  [5] "# Simulate exogenous nodes"                                                 </span></span>
 <span><span class="co">#&gt;  [6] "external_event &lt;- rnorm(n = n)"                                             </span></span>
 <span><span class="co">#&gt;  [7] "needs &lt;- rnorm(n = n)"                                                      </span></span>
 <span><span class="co">#&gt;  [8] "# Simulate endogenous nodes"                                                </span></span>
-<span><span class="co">#&gt;  [9] "intrinsic_motivation &lt;- 0.34 * external_event - 0.36 * needs + rnorm(n = n)"</span></span>
-<span><span class="co">#&gt; [10] "wellbeing &lt;- 0.38 * intrinsic_motivation - 0.28 * needs + rnorm(n = n)"     </span></span>
+<span><span class="co">#&gt;  [9] "intrinsic_motivation &lt;- 0.08 * needs + 0.14 * external_event + rnorm(n = n)"</span></span>
+<span><span class="co">#&gt; [10] "wellbeing &lt;- -(0.47 * needs + 0.55 * intrinsic_motivation) + rnorm(n = n)"  </span></span>
 <span><span class="co">#&gt; [11] "df &lt;- data.frame("                                                          </span></span>
 <span><span class="co">#&gt; [12] "external_event = external_event,"                                           </span></span>
 <span><span class="co">#&gt; [13] "intrinsic_motivation = intrinsic_motivation,"                               </span></span>
