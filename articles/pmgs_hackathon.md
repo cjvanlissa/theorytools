@@ -485,15 +485,15 @@ data.
 sim_code <- simulate_data(sdt_pruned, n = 100, run = FALSE)
 sim_code
 #>  [1] "# Set random seed"                                                          
-#>  [2] "set.seed(1597344384)"                                                       
+#>  [2] "set.seed(1313014467)"                                                       
 #>  [3] "# Set simulation parameters"                                                
 #>  [4] "n <- 100"                                                                   
 #>  [5] "# Simulate exogenous nodes"                                                 
 #>  [6] "external_event <- rnorm(n = n)"                                             
 #>  [7] "needs <- rnorm(n = n)"                                                      
 #>  [8] "# Simulate endogenous nodes"                                                
-#>  [9] "intrinsic_motivation <- 0.08 * needs + 0.14 * external_event + rnorm(n = n)"
-#> [10] "wellbeing <- -(0.47 * needs + 0.55 * intrinsic_motivation) + rnorm(n = n)"  
+#>  [9] "intrinsic_motivation <- 0.36 * needs + 0.39 * external_event + rnorm(n = n)"
+#> [10] "wellbeing <- 0.39 * intrinsic_motivation + 0.56 * needs + rnorm(n = n)"     
 #> [11] "df <- data.frame("                                                          
 #> [12] "external_event = external_event,"                                           
 #> [13] "intrinsic_motivation = intrinsic_motivation,"                               
