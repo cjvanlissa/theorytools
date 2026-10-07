@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">theorytools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +36,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/computational_social_science.html">Conducting Theory-Based Reproducible Simulation Studies</a></li>
     <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
+    <li><a class="dropdown-item" href="../articles/pmgs_hackathon.html">Paul Meehl Graduate School Hackathon</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
     <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
@@ -49,7 +51,6 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cjvanlissa/theorytools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -66,7 +67,7 @@
       <h1>Making a Theory FAIR</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cjvanlissa/theorytools/blob/HEAD/vignettes/fair-theory.Rmd" class="external-link"><code>vignettes/fair-theory.Rmd</code></a></small>
+
       <div class="d-none name"><code>fair-theory.Rmd</code></div>
     </div>
 
@@ -85,7 +86,7 @@ writing. The steps described in this tutorial are largely automated by
 the function <code><a href="../reference/create_fair_theory.html">theorytools::create_fair_theory()</a></code>; expert
 users might use this function directly.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/theorytools" class="external-link">theorytools</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/theorytools/">theorytools</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="time-to-complete">Time to Complete<a class="anchor" aria-label="anchor" href="#time-to-complete"></a>
 </h4>
@@ -119,7 +120,7 @@ theory</label></li>
 your theory and its latest release</label></li>
 </ul>
 <!-- fig.width=600, fig.height=861,  --><div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/Task2.png?raw=true" alt="Conceptual workflow for this task." width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/Task2.png?raw=true" class="r-plt" alt="Conceptual workflow for this task." width="70%"><p class="caption">
 Conceptual workflow for this task.
 </p>
 </div>
@@ -236,7 +237,7 @@ cycle to a text file, say <code>empirical_cycle.dot</code>.</p>
 </h3>
 <p>A license ensures that others know how they can legally reuse your
 work. We recommend a CC0 (Creative Commons Zero) license for FAIR
-theory, which waives all copryright protection and places your work in
+theory, which waives all copyright protection and places your work in
 the public domain. This recommendation is based on the fact that
 copyright protection does not cover ideas, and the assumption that FAIR
 theory is created to maximize reuse. Other licenses are available, see
@@ -340,7 +341,7 @@ files, including the theory file, license, README, and ‘Zenodo’
 metadata, are now visible in the remote repository (green box in the
 image below).</p>
 <div class="figure">
-<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true" alt="Front Page of a 'GitHub' Repository" width="70%"><p class="caption">
+<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/github.png?raw=true" class="r-plt" alt="Front Page of a 'GitHub' Repository" width="70%"><p class="caption">
 Front Page of a ‘GitHub’ Repository
 </p>
 </div>
@@ -365,7 +366,7 @@ irreversibly changed, which makes it a bit concerning to be used for
 longer lasting referencing purposes. ‘Zenodo’ offers more security and
 permanence for research outputs.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true" alt="Sign up for 'Zenodo'" width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/zenodo.png?raw=true" class="r-plt" alt="Sign up for 'Zenodo'" width="70%"><p class="caption">
 Sign up for ‘Zenodo’
 </p>
 </div>
@@ -383,7 +384,7 @@ permissions to use ‘<a href="https://developer.github.com/webhooks/" class="ex
 repositories. You want to authorize ‘Zenodo’ here with the permissions
 it needs to form those links.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/_github.png?raw=true" alt="Authorize  to connect with 'GitHub'" width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/_github.png?raw=true" class="r-plt" alt="Authorize  to connect with 'GitHub'" width="70%"><p class="caption">
 Authorize to connect with ‘GitHub’
 </p>
 </div>
@@ -397,12 +398,12 @@ repository and issue it a DOI. To do this, on the ‘Zenodo’ website
 navigate to the <a href="https://zenodo.org/account/settings/github/" class="external-link">‘GitHub’ repository
 listing page</a> and simply “flip the switch” next to your repository.
 If your repository <strong>does not show up</strong> in the list, you
-may need to press the ‘Syncronize now’ button. At the time of writing,
+may need to press the ‘Synchronize now’ button. At the time of writing,
 we noticed that it can take quite a while (hours?) for ‘Zenodo’ to
 detect new ‘GitHub’ repositories. If so, take a break or come back to
 this last step tomorrow!</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true" alt="Enable individual 'GitHub' repositories to be archived in 'Zenodo'" width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/enabled_repos.png?raw=true" class="r-plt" alt="Enable individual 'GitHub' repositories to be archived in 'Zenodo'" width="70%"><p class="caption">
 Enable individual ‘GitHub’ repositories to be archived in ‘Zenodo’
 </p>
 </div>
@@ -418,7 +419,7 @@ for your repository, and the Webhooks tab on the left hand side menu.
 This should display the new ‘Zenodo’ webhook configured to ‘Zenodo’.
 Note, it may take a little time for the webhook listing to show up.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true" alt="Check that webhooks are enabled for your 'GitHub' repository." width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/webhooks.png?raw=true" class="r-plt" alt="Check that webhooks are enabled for your 'GitHub' repository." width="70%"><p class="caption">
 Check that webhooks are enabled for your ‘GitHub’ repository.
 </p>
 </div>
@@ -429,7 +430,7 @@ Check that webhooks are enabled for your ‘GitHub’ repository.
 <p>To archive a repository on ‘Zenodo’, you must create a new release.
 You can do this using the following code:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_release_publish.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span></code></pre></div>
 <p>If you have not previously published any releases, this function will
 assume that you want to use semantic versioning for both the release tag
 and the release title. This means that the first release will be labeled
@@ -438,7 +439,7 @@ increment the trailing digit, i.e.: “0.1.1”, “0.1.2”. If you make a
 major change to the theory, you may want to manually increment the
 middle digit like so:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_release_publish.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="va">project_path</span>,</span>
 <span>                           tag_name <span class="op">=</span> <span class="st">"0.2.0"</span>,</span>
 <span>                           release_name <span class="op">=</span> <span class="st">"0.2.0"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -448,7 +449,7 @@ middle digit like so:</p>
 <p>To verify that your release was archived on ‘Zenodo’ and assigned a
 DOI, you need to visit the <a href="https://zenodo.org/deposit" class="external-link">Uploads</a> tab.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true" alt="Check the new release has been uploaded." width="70%"><p class="caption">
+<img src="https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/blob/master/content_development/images/upload_release.png?raw=true" class="r-plt" alt="Check the new release has been uploaded." width="70%"><p class="caption">
 Check the new release has been uploaded.
 </p>
 </div>
@@ -462,7 +463,7 @@ adding some extra information on ‘Zenodo’. Note that, if you created a
 metadata will be populated automatically. On ‘Zenodo’ click the <a href="https://zenodo.org/deposit" class="external-link">Upload</a> tab in the main menu, where
 you should find your newly uploaded repository.</p>
 <div class="figure" style="text-align: center">
-<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true" alt="Click the orange Edit button." width="70%"><p class="caption">
+<img src="https://github.com/cjvanlissa/theorytools/blob/master/docs/images/zenodo_edit.png?raw=true" class="r-plt" alt="Click the orange Edit button." width="70%"><p class="caption">
 Click the orange Edit button.
 </p>
 </div>
@@ -596,7 +597,7 @@ can create your FAIR theory as follows:</p>
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>This tutorial is partly adapted from Module 5, Task 2 of <span class="citation">Tennant et al. (2018)</span>.</p>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-degrootMethodologyFoundationsInference1969" class="csl-entry">
 De Groot, Adriaan D., and J. A. A. Spiekerman. 1969. <em>Methodology:
 <span>Foundations</span> of Inference and Research in the Behavioral
@@ -615,11 +616,10 @@ Defense</span> and <span>Two Principles</span> That <span>Warrant
 It</span>.”</span> <em>Psychological Inquiry</em> 1 (2): 108–41. <a href="https://doi.org/10.1207/s15327965pli0102_1" class="external-link">https://doi.org/10.1207/s15327965pli0102_1</a>.
 </div>
 <div id="ref-jon_tennant_2018_1434288" class="csl-entry">
-Tennant, Jon, Simon Worthington, Tania Allard, Philipp Zumstein, Daniel
-S. Katz, Alexander Morley, Stephan Druskat, et al. 2018.
-<span>“<span>OpenScienceMOOC</span>/Module-5-Open-Research-Software-
-and-<span>Open-Source</span>: <span>Second</span> Release.”</span>
-Zenodo. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">https://doi.org/10.5281/zenodo.1434288</a>.
+Tennant, Jon, Simon Worthington, Tania Allard, et al. 2018.
+<em><span>OpenScienceMOOC</span>/Module-5-Open-Research-Software-
+and-<span>Open-Source</span>: <span>Second</span> Release</em>. V. 2.0.
+Zenodo, released September. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">https://doi.org/10.5281/zenodo.1434288</a>.
 </div>
 </div>
 </div>
@@ -634,7 +634,7 @@ Zenodo. <a href="https://doi.org/10.5281/zenodo.1434288" class="external-link">h
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

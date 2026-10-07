@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">theorytools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +36,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/computational_social_science.html">Conducting Theory-Based Reproducible Simulation Studies</a></li>
     <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
+    <li><a class="dropdown-item" href="../articles/pmgs_hackathon.html">Paul Meehl Graduate School Hackathon</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
     <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul>
@@ -49,7 +51,6 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cjvanlissa/theorytools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -66,7 +67,7 @@
       <h1>Using FAIR Theory for Causal Inference</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cjvanlissa/theorytools/blob/HEAD/vignettes/causal-inference.Rmd" class="external-link"><code>vignettes/causal-inference.Rmd</code></a></small>
+
       <div class="d-none name"><code>causal-inference.Rmd</code></div>
     </div>
 
@@ -83,9 +84,9 @@
 <p>Directed acyclic graphs (DAGs) are a powerful tool for expressing and
 testing causal assumptions. They allow researchers to identify potential
 confounders or colliders, and guide decisions about which variables to
-control for (or not) in statistical analyses <span class="citation">(Cinelli, Forney, and Pearl 2022)</span>. DAGs can be
-implemented as FAIR theories, or can be derived from FAIR theories. In
-this vignette, we’ll illustrate how to use DAGs for causal inference in
+control for (or not) in statistical analyses <span class="citation">(Cinelli et al. 2022)</span>. DAGs can be implemented
+as FAIR theories, or can be derived from FAIR theories. In this
+vignette, we’ll illustrate how to use DAGs for causal inference in
 <code>R</code>, inspired by the <em>Tripartite Model</em> of the impact
 of the family on children’s emotion regulation and adjustment <span class="citation">(Morris et al. 2007)</span>.</p>
 <div class="section level4">
@@ -137,7 +138,7 @@ packages:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dagitty"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidySEM"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/theorytools" class="external-link">theorytools</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/theorytools/">theorytools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.dagitty.net" class="external-link">dagitty</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dagitty'</span></span>
@@ -170,7 +171,7 @@ influences the child’s <strong>adjustment (A)</strong> (e.g.,
 internalizing/externalizing problems, social competence).</p>
 <p>The model is visually represented below:</p>
 <div class="figure">
-<img src="morris.png" alt="An interpretation of Morris' Tripartite Model of Emotion Regulation Development" width="70%"><p class="caption">
+<img src="morris.png" class="r-plt" alt="An interpretation of Morris' Tripartite Model of Emotion Regulation Development" width="70%"><p class="caption">
 An interpretation of Morris’ Tripartite Model of Emotion Regulation
 Development
 </p>
@@ -197,7 +198,7 @@ bidirectional arrows. Reading the text helps us direct some arrows: we
 read that <em>“children <strong>learn</strong> about ER through
 [Observation]”</em>, <em>“parenting practices <strong>affect</strong>
 ER”</em>, and <em>“ER <strong>is affected by</strong> the emotional
-climate”</em>. This is all causal language <span class="citation">(Norouzi et al. 2024)</span>. Even though we later read
+climate”</em>. This is all causal language <span class="citation">(Norouzi et al. 2025)</span>. Even though we later read
 that <em>“ER and familial influences are bidirectional processes in our
 model”</em>, and even though some recent publications have argued that
 child effects on parents outweigh parents’ effects on children in
@@ -323,7 +324,7 @@ if everything is set up correctly by running:</p>
 Zenodo, and <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#select-the-repository-to-archive">switch
 on archiving for this GitHub repository</a>. Once this is done, run:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_remote_create.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"tripartite_model"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">worcs</span><span class="fu">::</span><span class="fu"><a href="https://cjvanlissa.github.io/worcs/reference/git_release_publish.html" class="external-link">git_release_publish</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"c:/theories"</span>, <span class="st">"tripartite_model"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, you can <a href="https://cjvanlissa.github.io/theorytools/articles/fair-theory.html#entering-meta-data">edit
 the metadata</a> for the archived version on Zenodo.</p>
 <p>The following DOI shows my version of the FAIR Tripartite Model: <a href="https://doi.org/10.5281/zenodo.14921521" class="external-link uri">https://doi.org/10.5281/zenodo.14921521</a></p>
@@ -363,7 +364,7 @@ using <code>download_zenodo()</code>.</p>
 <p>Interoperability pertains to the ability to use a theory in
 scientific workflows. X-interoperability refers to the ability to use a
 theory for <em>specific operations</em> in scientific workflows. When we
-go through the remainder of the turorial, we are demonstrating that our
+go through the remainder of the tutorial, we are demonstrating that our
 FAIR tripartite model is X-interoperable for visualization in R, for
 selecting control variables, for performing causal inference, et cetera.
 That is to say: we can directly ingest the FAIR theory in R, and
@@ -377,7 +378,7 @@ inference.</p>
 package:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">tripartite</span><span class="op">)</span></span></code></pre></div>
-<p><img src="causal-inference_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="causal-inference_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
 <p>We can optionally specify a layout for the graph, so that it
 resembles the model as visualized by Morris and colleagues:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -389,7 +390,7 @@ resembles the model as visualized by Morris and colleagues:</p>
 <span>  rows <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/graph_sem.html" class="external-link">graph_sem</a></span><span class="op">(</span><span class="va">tripartite</span>, layout <span class="op">=</span> <span class="va">lo</span><span class="op">)</span></span></code></pre></div>
-<p><img src="causal-inference_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="causal-inference_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
 <p>The tidySEM vignette on <a href="https://cjvanlissa.github.io/tidySEM/articles/Plotting_graphs.html" class="external-link">plotting
 structural equation models</a> further explains how to customize this
 figure, which is a <code>ggplot</code> object.</p>
@@ -426,14 +427,15 @@ strangers?
 <p>Simulation studies allow us to explore the implications of model
 assumptions, to plan our analyses before data collection, to conduct
 power analysis and plan our sample size, and to preregister a fully
-reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert, Van Lissa, and
-Brandmaier 2021; Van Lissa 2022)</span>.</p>
+reproducible analysis pipeline <span class="citation">(Preregistration-As-Code, Peikert et al. 2021; Van
+Lissa 2022)</span>.</p>
 <p>Below is a simple code snippet to generate synthetic data using the
-<code><a href="https://rdrr.io/pkg/dagitty/man/simulateSEM.html" class="external-link">dagitty::simulateSEM()</a></code> function. This function interprets
-the DAG as a structural equation model, samples random values for the
-path coefficients (unless specific values are provided), and assumes
-normal residual variances. Note that many other functions for simulating
-data exist, and some may be better suited to particular use cases.</p>
+<code><a href="../reference/simulate_data.html">theorytools::simulate_data()</a></code> function. This function
+interprets the DAG as a structural equation model, samples random values
+for the path coefficients (unless specific values are provided), and
+assumes normal residual variances. Note that many other functions for
+simulating data exist, and some may be better suited to particular use
+cases.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_data.html">simulate_data</a></span><span class="op">(</span><span class="va">tripartite</span>, n <span class="op">=</span> <span class="fl">497</span><span class="op">)</span></span>
@@ -558,40 +560,38 @@ variables, as you can just use the model formula
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span><span class="co">#&gt; -2.7096 -0.6396  0.0236  0.5654  3.8339 </span></span>
+<span><span class="co">#&gt; -2.8773 -0.6705 -0.0366  0.7262  3.2154 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)   </span></span>
-<span><span class="co">#&gt; (Intercept)  0.01203    0.04310   0.279  0.78028   </span></span>
-<span><span class="co">#&gt; O            0.12287    0.04400   2.792  0.00544 **</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span><span class="co">#&gt; (Intercept) -0.02616    0.04608  -0.568    0.571</span></span>
+<span><span class="co">#&gt; O            0.06788    0.04652   1.459    0.145</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 0.9577 on 495 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.01551,    Adjusted R-squared:  0.01352 </span></span>
-<span><span class="co">#&gt; F-statistic: 7.797 on 1 and 495 DF,  p-value: 0.005436</span></span>
+<span><span class="co">#&gt; Residual standard error: 1.023 on 495 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.004283,   Adjusted R-squared:  0.002271 </span></span>
+<span><span class="co">#&gt; F-statistic: 2.129 on 1 and 495 DF,  p-value: 0.1452</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_causal</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; lm(formula = ER ~ ., data = df_controls)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
-<span><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></span>
-<span><span class="co">#&gt; -2.28457 -0.57563 -0.02952  0.52891  2.90854 </span></span>
+<span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">#&gt; -2.5732 -0.5483  0.0839  0.6073  3.4954 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  0.02641    0.03758   0.703    0.483    </span></span>
-<span><span class="co">#&gt; O            0.18607    0.03881   4.794 2.17e-06 ***</span></span>
-<span><span class="co">#&gt; CC           0.42455    0.03641  11.659  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; EC           0.15208    0.03650   4.166 3.66e-05 ***</span></span>
-<span><span class="co">#&gt; PP           0.02262    0.03756   0.602    0.547    </span></span>
+<span><span class="co">#&gt; (Intercept) -0.03514    0.04053  -0.867  0.38633    </span></span>
+<span><span class="co">#&gt; O            0.13537    0.04140   3.270  0.00115 ** </span></span>
+<span><span class="co">#&gt; CC           0.46224    0.04085  11.315  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; EC           0.19545    0.03996   4.891 1.36e-06 ***</span></span>
+<span><span class="co">#&gt; PP          -0.04527    0.04082  -1.109  0.26793    </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 0.8324 on 492 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.2607, Adjusted R-squared:  0.2547 </span></span>
-<span><span class="co">#&gt; F-statistic: 43.38 on 4 and 492 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<span><span class="co">#&gt; Residual standard error: 0.8965 on 492 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.2397, Adjusted R-squared:  0.2335 </span></span>
+<span><span class="co">#&gt; F-statistic: 38.78 on 4 and 492 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
 <div class="webex-check webex-box">
 <span>
 <p style="margin-top:1em; text-align:center">
@@ -619,11 +619,10 @@ unbiased estimate of the effect of Observation on Emotion Regulation.
 <p>When working with real data, causal inference quickly becomes more
 complicated. Therefore, we provide a “real data” example here, to
 practice the relevant skills. The <code>theorytools</code> package
-includes a dataset that is based on <a href="https://aifs.gov.au/growing-up-in-australia" class="external-link">“Growing Up in
-Australia - the Longitudinal Study of Australian Children” (LSAC)</a>.
-As the LSAC dataset is accessible by explicit permission only, this is a
-synthetic dataset with similar properties to the real data. Let’s access
-the data:</p>
+includes a dataset that takes inspiration from “Growing Up in Australia
+- the Longitudinal Study of Australian Children” <span class="citation">(LSAC, Family Studies 2020)</span>. As the LSAC dataset
+is accessible by explicit permission only, this is a synthetic dataset
+with similar properties to the real data. Let’s access the data:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lsac</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     warmth relationship_quality temperament_negreact emotion_regulation</span></span>
@@ -657,12 +656,12 @@ practices in handling missing data; here, we use single imputation for
 pragmatic reasons.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Impute missing data</span></span>
-<span><span class="va">df_real</span> <span class="op">&lt;-</span> <span class="fu">VIM</span><span class="fu">::</span><span class="fu">kNN</span><span class="op">(</span><span class="va">lsac</span>, numFun <span class="op">=</span> <span class="va">median</span><span class="op">)</span></span>
+<span><span class="va">df_real</span> <span class="op">&lt;-</span> <span class="fu">VIM</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/VIM/man/kNN.html" class="external-link">kNN</a></span><span class="op">(</span><span class="va">lsac</span>, numFun <span class="op">=</span> <span class="va">median</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_real</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">operationalizations</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">operationalizations</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_real</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <p>Note that one variable is missing: Observation (O). This is
 unfortunate, as for the previous example we used O as our exposure
 variable. For the remainder of the examples, we will use Parenting
-Practices as our exposure variable. Obtain the adjusment set for the
+Practices as our exposure variable. Obtain the adjustment set for the
 effect of Parenting Practices on Emotion Regulation:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html" class="external-link">adjustmentSets</a></span><span class="op">(</span><span class="va">tripartite</span>, exposure <span class="op">=</span> <span class="st">"EC"</span>, outcome <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span>
@@ -699,17 +698,17 @@ following code block:</p>
 <span><span class="va">ci_tests</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/localTests.html" class="external-link">localTests</a></span><span class="op">(</span><span class="va">tripartite</span>, <span class="va">df_sim</span>, type <span class="op">=</span> <span class="st">"cis.loess"</span>, R <span class="op">=</span> <span class="fl">1000</span>, tests <span class="op">=</span> <span class="va">cis</span>, conf.level <span class="op">=</span> <span class="va">bonferroni</span><span class="op">)</span></span>
 <span><span class="co"># Print result, with added significance asterisks</span></span>
 <span><span class="fu"><a href="../reference/add_significance.html">add_significance</a></span><span class="op">(</span><span class="va">ci_tests</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                estimate  std.error      0.25%      99.75%</span></span>
-<span><span class="co">#&gt; A _||_ CC | ER             -0.013574751 0.04521815 -0.1249765 0.103419766</span></span>
-<span><span class="co">#&gt; A _||_ EC | ER             -0.067963372 0.04899751 -0.2026027 0.059623609</span></span>
-<span><span class="co">#&gt; A _||_ O | ER              -0.032075703 0.03925539 -0.1460065 0.082468770</span></span>
-<span><span class="co">#&gt; A _||_ PC | CC, EC, O, PP  -0.108268605 0.04378309 -0.2343738 0.009319617</span></span>
-<span><span class="co">#&gt; A _||_ PC | ER             -0.074632477 0.04341100 -0.1832199 0.042081582</span></span>
-<span><span class="co">#&gt; A _||_ PP | ER             -0.057487551 0.04041972 -0.1782834 0.059505723</span></span>
-<span><span class="co">#&gt; CC _||_ EC | PC             0.004924626 0.04618816 -0.1218149 0.132872164</span></span>
-<span><span class="co">#&gt; CC _||_ O | PC             -0.079341937 0.04305753 -0.2037448 0.052084854</span></span>
-<span><span class="co">#&gt; CC _||_ PP | PC            -0.004823582 0.04646765 -0.1272407 0.120773019</span></span>
-<span><span class="co">#&gt; ER _||_ PC | CC, EC, O, PP -0.123590237 0.04662597 -0.2499145 0.001300478</span></span>
+<span><span class="co">#&gt;                               estimate  std.error       0.25%      99.75%</span></span>
+<span><span class="co">#&gt; A _||_ CC | ER             -0.02488395 0.04541527 -0.14715226 0.108502878</span></span>
+<span><span class="co">#&gt; A _||_ EC | ER             -0.08206144 0.04910397 -0.20560400 0.055630567</span></span>
+<span><span class="co">#&gt; A _||_ O | ER               0.01604344 0.04103371 -0.09277371 0.135921735</span></span>
+<span><span class="co">#&gt; A _||_ PC | CC, EC, O, PP  -0.06710313 0.04162413 -0.18500210 0.033920284</span></span>
+<span><span class="co">#&gt; A _||_ PC | ER             -0.06037961 0.04378464 -0.17342936 0.056272447</span></span>
+<span><span class="co">#&gt; A _||_ PP | ER             -0.01504872 0.04463377 -0.13707558 0.109638952</span></span>
+<span><span class="co">#&gt; CC _||_ EC | PC            -0.06701484 0.04548868 -0.18696604 0.058277531</span></span>
+<span><span class="co">#&gt; CC _||_ O | PC             -0.04608873 0.04135799 -0.15492342 0.067892851</span></span>
+<span><span class="co">#&gt; CC _||_ PP | PC             0.03402876 0.04614528 -0.09232252 0.161732327</span></span>
+<span><span class="co">#&gt; ER _||_ PC | CC, EC, O, PP -0.11134996 0.04751354 -0.23923411 0.009837374</span></span>
 <span><span class="co">#&gt;                            significant</span></span>
 <span><span class="co">#&gt; A _||_ CC | ER                        </span></span>
 <span><span class="co">#&gt; A _||_ EC | ER                        </span></span>
@@ -789,12 +788,16 @@ to your answers in the previous two questions?
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-cinelliCrashCourseGood2022" class="csl-entry">
 Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. <span>“A
 <span>Crash Course</span> in <span>Good</span> and <span>Bad
 Controls</span>.”</span> <em>Sociological Methods &amp; Research</em>,
-May, 00491241221099552. <a href="https://doi.org/10.1177/00491241221099552" class="external-link">https://doi.org/10.1177/00491241221099552</a>.
+May 20, 00491241221099552. <a href="https://doi.org/10.1177/00491241221099552" class="external-link">https://doi.org/10.1177/00491241221099552</a>.
+</div>
+<div id="ref-australianinstituteoffamilystudiesGrowingAustralia2020" class="csl-entry">
+Family Studies, Australian Institute of. 2020. <span>“Growing
+<span>Up</span> in <span>Australia</span>.”</span> March 23.
 </div>
 <div id="ref-morrisRoleFamilyContext2007" class="csl-entry">
 Morris, Amanda Sheffield, Jennifer S. Silk, Laurence Steinberg, Sonya S.
@@ -802,11 +805,11 @@ Myers, and Lara Rachel Robinson. 2007. <span>“The Role of the Family
 Context in the Development of Emotion Regulation.”</span> <em>Social
 Development</em> 16 (2): 361–88. <a href="https://doi.org/10.1111/j.1467-9507.2007.00389.x" class="external-link">https://doi.org/10.1111/j.1467-9507.2007.00389.x</a>.
 </div>
-<div id="ref-norouziCapturingCausalClaims2024" class="csl-entry">
-Norouzi, Rasoul, Bennett Kleinberg, Jeroen Vermunt, and Caspar J. Van
-Lissa. 2024. <span>“Capturing <span>Causal Claims</span>: <span>A Fine
-Tuned Text Mining Model</span> for <span>Extracting Causal
-Sentences</span> from <span>Social Science Papers</span>.”</span> <a href="https://osf.io/kwtpm/download" class="external-link">https://osf.io/kwtpm/download</a>.
+<div id="ref-norouzi_capturing_2025" class="csl-entry">
+Norouzi, Rasoul, Bennett Kleinberg, Jeroen K. Vermunt, and Caspar J. van
+Lissa. 2025. <span>“Capturing Causal Claims: <span>A</span> Fine-Tuned
+Text Mining Model for Extracting Causal Sentences from Social Science
+Papers.”</span> <em>Research Synthesis Methods</em> 16 (1): 139–56. <a href="https://doi.org/10.1017/rsm.2024.13" class="external-link">https://doi.org/10.1017/rsm.2024.13</a>.
 </div>
 <div id="ref-pearlCausalDiagramsEmpirical1995" class="csl-entry">
 Pearl, Judea. 1995. <span>“Causal <span>Diagrams</span> for
@@ -845,7 +848,7 @@ Within-Family Investigation.”</span> <em>Developmental Psychology</em>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

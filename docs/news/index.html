@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">theorytools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,16 +20,17 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/augmented_dags.html">Specifying Augmented Directed Acyclic Graphs</a></li>
     <li><a class="dropdown-item" href="../articles/causal-inference.html">Using FAIR Theory for Causal Inference</a></li>
+    <li><a class="dropdown-item" href="../articles/computational_social_science.html">Conducting Theory-Based Reproducible Simulation Studies</a></li>
     <li><a class="dropdown-item" href="../articles/dunning-kruger.html">FAIRifying the Dunning-Kruger Effect</a></li>
     <li><a class="dropdown-item" href="../articles/fair-theory.html">Making a Theory FAIR</a></li>
     <li><a class="dropdown-item" href="../articles/formalizing_sdt.html">Formalizing Self-Determination Theory</a></li>
+    <li><a class="dropdown-item" href="../articles/pmgs_hackathon.html">Paul Meehl Graduate School Hackathon</a></li>
     <li><a class="dropdown-item" href="../articles/readme.html">What to Include in a README?</a></li>
     <li><a class="dropdown-item" href="../articles/updating_theory.html">Updating a Theory</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cjvanlissa/theorytools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -39,12 +40,29 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/cjvanlissa/theorytools/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="theorytools-011">theorytools 0.1.1<a class="anchor" aria-label="anchor" href="#theorytools-011"></a></h2>
-<ul><li>Add README vignette</li>
+<h2 class="pkg-version" data-toc-text="0.1.3" id="theorytools-013">theorytools 0.1.3<a class="anchor" aria-label="anchor" href="#theorytools-013"></a></h2><p class="text-muted">CRAN release: 2026-02-07</p>
+<ul><li>Fix issue raised by Prof. Brian Ripley: download_theory() examples fail if no internet.</li>
+<li>Add support for Python functions</li>
+<li>Add download_huggingface() to download models from huggingface</li>
+<li>Add get_embeddings() to get vector embeddings using huggingface model</li>
+<li>Add code() to code qualitative text entries with support of cosine similarity or string distance</li>
+<li>Add add_level() for recursive coding of qualitative text entries</li>
+<li>Add similarity_stringdist() to calculate similarity between character vectors based on string distance</li>
+<li>Add similarity_cosine() to calculate cosine similarity between vector embeddings, see get_embeddings()</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.2" id="theorytools-012">theorytools 0.1.2<a class="anchor" aria-label="anchor" href="#theorytools-012"></a></h2><p class="text-muted">CRAN release: 2025-07-13</p>
+<ul><li>Minor bugfixes</li>
+<li>Add prune_dag()</li>
+<li>Add vignette computational_social_science.Rmd</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="theorytools-011">theorytools 0.1.1<a class="anchor" aria-label="anchor" href="#theorytools-011"></a></h2><p class="text-muted">CRAN release: 2025-06-23</p>
+<ul><li>Add several vignettes to accompany the paper release</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="theorytools-010">theorytools 0.1.0<a class="anchor" aria-label="anchor" href="#theorytools-010"></a></h2><p class="text-muted">CRAN release: 2025-01-14</p>
@@ -59,7 +77,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

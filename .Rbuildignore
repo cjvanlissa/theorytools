@@ -15,3 +15,5 @@
 ^vignettes/articles$
 ^vignettes/formalizing_sdt.Rmd$
 ^tikz.*\.log$
+^vignettes/\.quarto$
+^vignettes/*_files$
